@@ -1,11 +1,16 @@
 # ── Stage 1: Dependencies ──────────────────────────────────────────────
 FROM node:20-alpine AS deps
 
+# Install native build tools (needed by better-sqlite3)
 RUN apk add --no-cache libc6-compat python3 make g++
 
 WORKDIR /app
 
+# Copy package files AND prisma schema BEFORE npm ci
+# (postinstall runs "prisma generate" which needs schema.prisma)
 COPY package.json package-lock.json ./
+COPY prisma ./prisma
+
 RUN npm ci
 
 # ── Stage 2: Build ─────────────────────────────────────────────────────
@@ -13,61 +18,74 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Bring node_modules (including generated Prisma client) from deps stage
 COPY --from=deps /app/node_modules ./node_modules
+
+# Copy all source files
 COPY . .
 
-# Generate Prisma client
-RUN npx prisma generate
+# Re-generate Prisma client targeting the builder's Linux environment
+RUN npx prisma generate --schema=prisma/schema.prisma
 
-# Build Next.js (standalone mode)
+# Build Next.js standalone bundle
+# Dummy DATABASE_URL so the build succeeds without a real DB
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-
-# Provide dummy env vars so the build doesn't fail on missing secrets
-# (they're injected at runtime via docker-compose or DO App Platform)
-ENV DATABASE_URL="file:./dev.db"
+ENV DATABASE_URL="file:/tmp/build.db"
 
 RUN npx next build
 
 # ── Stage 3: Production Runner ─────────────────────────────────────────
 FROM node:20-alpine AS runner
 
+# Need build tools for better-sqlite3 native bindings
+RUN apk add --no-cache libc6-compat python3 make g++
+
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Create non-root user
+# Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-# Copy standalone build output
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+# ── Next.js standalone output ──
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# Copy Prisma files (schema, migrations, generated client)
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+# ── Prisma schema + migrations (for migrate deploy at runtime) ──
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
-# Copy seed script + helpers
-COPY --from=builder /app/scripts ./scripts
-COPY --from=builder /app/package.json ./package.json
+# ── Seed script ──
+COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 
-# Install only the runtime deps needed for seeding & Prisma CLI
-# (tsx for seed script, prisma for migrations, dotenv for env loading)
-RUN npm install --no-save prisma tsx dotenv @prisma/client @prisma/adapter-better-sqlite3 better-sqlite3
+# ── package.json + lock (so npm install can resolve versions) ──
+COPY package.json package-lock.json ./
 
-# Copy the entrypoint script
+# Install runtime-only tools as root (before USER switch):
+#   prisma   → run migrations at startup
+#   tsx      → execute seed.ts
+#   dotenv   → load .env in seed script
+#   @prisma/client + adapter + better-sqlite3 → database access
+RUN npm install --ignore-scripts \
+    prisma \
+    tsx \
+    dotenv \
+    @prisma/client \
+    @prisma/adapter-better-sqlite3 \
+    better-sqlite3 \
+    && npx prisma generate --schema=prisma/schema.prisma
+
+# ── Entrypoint script ──
 COPY docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x ./docker-entrypoint.sh
 
-# Create data directory for SQLite (persistent volume mount point)
+# ── Persistent SQLite data directory ──
+# Mount a DigitalOcean Volume (or docker volume) here to survive redeploys
 RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
 
-# The SQLite DB will live at /app/data/satsrouter.db
-# Map DATABASE_URL to this path in docker-compose
 ENV DATABASE_URL="file:/app/data/satsrouter.db"
 
 USER nextjs
