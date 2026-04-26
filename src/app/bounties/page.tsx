@@ -2,6 +2,25 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import {
+  Zap,
+  Coins,
+  Bot,
+  User,
+  KeyRound,
+  Clock,
+  Loader2,
+  CheckCircle,
+  CircleCheck,
+  Star,
+  Tag,
+  Pencil,
+  FlagTriangleRight,
+  ClipboardList,
+  AlertTriangle,
+  Hand,
+} from "@/lib/icons";
+import type { LucideIcon } from "lucide-react";
 
 interface Bounty {
   id: string;
@@ -25,12 +44,12 @@ interface BountyStats {
   totalSatsPaid: number;
 }
 
-const TYPE_CONFIG: Record<string, { icon: string; label: string; color: string }> = {
-  verify: { icon: "✅", label: "Verify", color: "var(--accent-emerald)" },
-  rate: { icon: "⭐", label: "Rate", color: "var(--accent-amber)" },
-  label: { icon: "🏷️", label: "Label", color: "var(--accent-cyan)" },
-  write: { icon: "✍️", label: "Write", color: "var(--accent-violet)" },
-  flag: { icon: "🚩", label: "Flag", color: "var(--accent-rose)" },
+const TYPE_CONFIG: Record<string, { Icon: LucideIcon; label: string; color: string }> = {
+  verify: { Icon: CircleCheck, label: "Verify", color: "var(--accent-emerald)" },
+  rate: { Icon: Star, label: "Rate", color: "var(--accent-amber)" },
+  label: { Icon: Tag, label: "Label", color: "var(--accent-cyan)" },
+  write: { Icon: Pencil, label: "Write", color: "var(--accent-violet)" },
+  flag: { Icon: FlagTriangleRight, label: "Flag", color: "var(--accent-rose)" },
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -119,7 +138,7 @@ export default function BountiesPage() {
           ...p,
           [bountyId]: {
             type: "success",
-            msg: `⚡ ${rewardSats} sats sent! Hash: ${data.paymentProof.paymentHash.substring(0, 20)}...`,
+            msg: `${rewardSats} sats sent! Hash: ${data.paymentProof.paymentHash.substring(0, 20)}...`,
           },
         }));
       } else {
@@ -170,7 +189,7 @@ export default function BountiesPage() {
                 animationDelay: `${Math.random() * 0.5}s`,
               }}
             >
-              ⚡
+              <Zap size={16} aria-hidden="true" style={{ color: "var(--accent-amber)" }} />
             </div>
           ))}
           <style>{`
@@ -182,91 +201,44 @@ export default function BountiesPage() {
         </div>
       )}
 
-      {/* Header */}
-      <header
+      {/* Page heading */}
+      <div
         style={{
-          padding: "16px 32px",
+          padding: "var(--space-6) var(--space-8) var(--space-4)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          borderBottom: "1px solid var(--border)",
-          background: "rgba(255, 255, 255, 0.85)",
-          backdropFilter: "blur(20px)",
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <Link
-            href="/"
+        <div>
+          <h1 style={{ fontSize: "var(--text-lg)", fontWeight: 700, letterSpacing: "-0.02em" }}>
+            Bounty Board
+          </h1>
+          <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 500 }}>
+            Earn real sats for tasks only humans can do
+          </p>
+        </div>
+
+        {satsEarned > 0 && (
+          <div
+            className="font-mono animate-number-pop"
             style={{
-              display: "flex",
+              padding: "var(--space-2) var(--space-4)",
+              borderRadius: "var(--radius-full)",
+              background: "rgba(245, 158, 11, 0.15)",
+              border: "1px solid rgba(245, 158, 11, 0.3)",
+              color: "var(--accent-amber)",
+              fontWeight: 700,
+              fontSize: "var(--text-sm)",
+              display: "inline-flex",
               alignItems: "center",
-              gap: "12px",
-              textDecoration: "none",
-              color: "inherit",
+              gap: 4,
             }}
           >
-            <div
-              style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "9px",
-                background: "linear-gradient(135deg, var(--accent-emerald), var(--accent-amber))",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "18px",
-              }}
-            >
-              💰
-            </div>
-            <div>
-              <h1 style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "-0.02em" }}>
-                Bounty Board
-              </h1>
-              <p style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>
-                Earn real sats for tasks only humans can do
-              </p>
-            </div>
-          </Link>
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          {satsEarned > 0 && (
-            <div
-              className="font-mono animate-number-pop"
-              style={{
-                padding: "6px 16px",
-                borderRadius: "999px",
-                background: "rgba(245, 158, 11, 0.15)",
-                border: "1px solid rgba(245, 158, 11, 0.3)",
-                color: "var(--accent-amber)",
-                fontWeight: 700,
-                fontSize: "13px",
-              }}
-            >
-              ⚡ {satsEarned} sats earned
-            </div>
-          )}
-
-          <Link
-            href="/dashboard"
-            style={{
-              padding: "8px 16px",
-              borderRadius: "8px",
-              border: "1px solid var(--border)",
-              color: "var(--text-secondary)",
-              textDecoration: "none",
-              fontSize: "12px",
-              fontWeight: 500,
-            }}
-          >
-            Dashboard →
-          </Link>
-        </div>
-      </header>
+            <Zap size={13} aria-hidden="true" /> {satsEarned} sats earned
+          </div>
+        )}
+      </div>
 
       {/* Hero Stats */}
       <div
@@ -309,7 +281,7 @@ export default function BountiesPage() {
             TOTAL SATS PAID
           </div>
           <div className="font-mono" style={{ fontSize: "28px", fontWeight: 700, color: "var(--accent-amber)" }}>
-            ⚡ {stats.totalSatsPaid}
+            <Zap size={14} aria-hidden="true" style={{ marginRight: 2 }} /> {stats.totalSatsPaid}
           </div>
         </div>
       </div>
@@ -365,7 +337,7 @@ export default function BountiesPage() {
               color: "var(--text-muted)",
             }}
           >
-            <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤖</div>
+            <div style={{ fontSize: "48px", marginBottom: "16px" }}><Bot size={48} aria-hidden="true" style={{ color: "var(--text-muted)" }} /></div>
             <p style={{ fontSize: "14px", marginBottom: "8px" }}>No bounties yet</p>
             <p style={{ fontSize: "12px" }}>
               Go to the{" "}
@@ -377,7 +349,7 @@ export default function BountiesPage() {
           </div>
         ) : (
           bounties.map((b) => {
-            const config = TYPE_CONFIG[b.type] || { icon: "📋", label: b.type, color: "var(--accent-violet)" };
+            const config = TYPE_CONFIG[b.type] || { Icon: ClipboardList, label: b.type, color: "var(--accent-violet)" };
             const isActive = activeBounty === b.id;
             const fb = feedback[b.id];
             const busy = loading[b.id];
@@ -422,7 +394,7 @@ export default function BountiesPage() {
                       flexShrink: 0,
                     }}
                   >
-                    {config.icon}
+                    <config.Icon size={20} aria-hidden="true" style={{ color: config.color }} />
                   </div>
 
                   {/* Content */}
@@ -485,11 +457,11 @@ export default function BountiesPage() {
                         {config.label}
                       </span>
                       {remaining && !isExpired && (
-                        <span>⏱️ {remaining} left</span>
+                        <span><Clock size={10} aria-hidden="true" style={{ marginRight: 2, verticalAlign: "middle" }} /> {remaining} left</span>
                       )}
-                      {isExpired && <span style={{ color: "var(--accent-rose)" }}>⏱️ Expired</span>}
+                      {isExpired && <span style={{ color: "var(--accent-rose)" }}><Clock size={10} aria-hidden="true" style={{ marginRight: 2, verticalAlign: "middle" }} /> Expired</span>}
                       {b.claimedBy && (
-                        <span>👤 {b.claimedBy}</span>
+                        <span><User size={10} aria-hidden="true" style={{ marginRight: 2, verticalAlign: "middle" }} /> {b.claimedBy}</span>
                       )}
                       {b.paymentHash && (
                         <span
@@ -497,7 +469,7 @@ export default function BountiesPage() {
                           style={{ color: "var(--accent-emerald)" }}
                           title={b.paymentHash}
                         >
-                          🔐 {b.paymentHash.substring(0, 12)}...
+                          <KeyRound size={10} aria-hidden="true" style={{ marginRight: 2 }} /> {b.paymentHash.substring(0, 12)}...
                         </span>
                       )}
                     </div>
@@ -579,7 +551,7 @@ export default function BountiesPage() {
                         boxShadow: busy ? "none" : "0 2px 12px rgba(22,101,52,0.25)",
                       }}
                     >
-                      {busy ? "⏳" : `🙋 Claim for ${b.rewardSats} sats`}
+                      {busy ? <><Loader2 size={12} className="animate-spin" aria-hidden="true" style={{ marginRight: 3 }} /></> : <><Hand size={14} aria-hidden="true" style={{ marginRight: 3 }} /> Claim for {b.rewardSats} sats</>}
                     </button>
                   </div>
                 )}
@@ -664,7 +636,7 @@ export default function BountiesPage() {
                         }}
                       >
                         {lightningAddr.includes("@") || bolt11.toLowerCase().startsWith("lnbc")
-                          ? `✓ Payment method detected — you'll receive ${b.rewardSats} real sats via Lightning`
+                          ? <><CircleCheck size={10} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Payment method detected — you&apos;ll receive {b.rewardSats} real sats via Lightning</>
                           : "Provide a Lightning address or bolt11 invoice to receive your reward instantly"}
                       </div>
                       <button
@@ -682,7 +654,7 @@ export default function BountiesPage() {
                         }}
                         title="Flag this provider for bad work quality — reduces their reputation"
                       >
-                        🚩 {flagProvider ? "Flagged" : "Flag Bad Work"}
+                        <FlagTriangleRight size={12} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> {flagProvider ? "Flagged" : "Flag Bad Work"}
                       </button>
                     </div>
                     <button
@@ -707,7 +679,7 @@ export default function BountiesPage() {
                             : "0 0 20px rgba(245, 158, 11, 0.3)",
                       }}
                     >
-                      {busy ? "⏳ Submitting & paying..." : `⚡ Submit & Earn ${b.rewardSats} sats`}
+                      {busy ? <><Loader2 size={12} className="animate-spin" aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Submitting & paying...</> : <><Zap size={12} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Submit & Earn {b.rewardSats} sats</>}
                     </button>
                   </div>
                 )}
@@ -730,7 +702,7 @@ export default function BountiesPage() {
                       }}
                     >
                       <p style={{ fontSize: "9px", fontWeight: 700, color: "var(--accent-cyan)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "4px" }}>
-                        ⚡ Lightning Payment Proof
+                        <Zap size={11} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Lightning Payment Proof
                       </p>
                       <p className="font-mono" style={{ fontSize: "9px", color: "var(--accent-emerald)", wordBreak: "break-all" }}>
                         {b.paymentHash}
@@ -758,46 +730,24 @@ export default function BountiesPage() {
         )}
       </div>
 
-      {/* Footer CTA */}
+      {/* Info Bar */}
       <div
         style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "14px 32px",
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(20px)",
-          borderTop: "1px solid var(--border)",
+          padding: "var(--space-4) var(--space-8)",
+          background: "var(--bg-secondary)",
+          borderTop: "1px solid var(--border-subtle)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          zIndex: 50,
-          boxShadow: "0 -4px 20px rgba(62,39,35,0.06)",
+          marginTop: "var(--space-8)",
         }}
       >
-        <p style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
-          <span style={{ color: "var(--accent-amber)", fontWeight: 600 }}>⚡ Powered by Lightning</span>{" — "}Payments settle instantly. No minimums. No sign-up.
+        <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
+          <span style={{ color: "var(--accent-amber)", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 3 }}><Zap size={13} aria-hidden="true" /> Powered by Lightning</span>{" — "}Payments settle instantly. No minimums. No sign-up.
         </p>
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          <span className="font-mono" style={{ fontSize: "11px", color: "var(--text-muted)" }}>
-            {stats.totalSatsPaid} sats paid to humans
-          </span>
-          <Link
-            href="/dashboard"
-            style={{
-              padding: "6px 14px",
-              borderRadius: "6px",
-              background: "var(--text-primary)",
-              color: "#FFFFFF",
-              textDecoration: "none",
-              fontSize: "11px",
-              fontWeight: 600,
-            }}
-          >
-            Agent Dashboard →
-          </Link>
-        </div>
+        <span className="font-mono" style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+          {stats.totalSatsPaid} sats paid to humans
+        </span>
       </div>
     </div>
   );

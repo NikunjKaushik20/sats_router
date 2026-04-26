@@ -42,11 +42,11 @@ const CAPABILITY_LABEL: Record<string, string> = {
 };
 
 const CAPABILITY_ICON: Record<string, string> = {
-  quick_scan:       "🔍",
-  deep_diagnose:    "🔬",
-  incident_summary: "📝",
-  human_verify:     "👤",
-  code_review:      "💻",
+  quick_scan:       "⊞",
+  deep_diagnose:    "⊛",
+  incident_summary: "≡",
+  human_verify:     "⊕",
+  code_review:      "⟡",
 };
 
 export default function AgentNetworkGraph({
@@ -148,7 +148,7 @@ export default function AgentNetworkGraph({
                   fontSize={13}
                   dominantBaseline="middle"
                 >
-                  {CAPABILITY_ICON[p.capability] || "🤖"}
+                  {CAPABILITY_ICON[p.capability] || "◈"}
                 </text>
                 {/* Price */}
                 <text
@@ -180,7 +180,7 @@ export default function AgentNetworkGraph({
                   fill="rgba(62,39,35,0.5)"
                   style={{ fontFamily: "system-ui" }}
                 >
-                  ⭐ {p.reputationScore.toFixed(1)}
+                  ★ {p.reputationScore.toFixed(1)}
                 </text>
               </g>
             );
@@ -201,7 +201,7 @@ export default function AgentNetworkGraph({
               fontSize={16}
               dominantBaseline="middle"
             >
-              🤖
+              ◈
             </text>
             <text
               x={CENTER} y={CENTER + 10}

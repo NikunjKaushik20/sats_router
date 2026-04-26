@@ -2,15 +2,30 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import {
+  Search,
+  Microscope,
+  FileText,
+  ShieldCheck,
+  MessageSquare,
+  TrendingUp,
+  Settings,
+  Zap,
+  Loader2,
+  CircleCheck,
+  AlertTriangle,
+  Star,
+} from "@/lib/icons";
+import type { LucideIcon } from "lucide-react";
 
-const CAPABILITIES = [
-  { value: "quick_scan", label: "Quick Scanner", desc: "Fast log pattern analysis", icon: "🔍" },
-  { value: "deep_diagnose", label: "Deep Diagnoser", desc: "Root cause analysis", icon: "🔬" },
-  { value: "incident_summary", label: "Incident Summary", desc: "Human-friendly writeups", icon: "📝" },
-  { value: "code_review", label: "Code Review", desc: "Code quality & security analysis", icon: "🛡️" },
-  { value: "sentiment_analysis", label: "Sentiment Analysis", desc: "User feedback analysis", icon: "💬" },
-  { value: "anomaly_detection", label: "Anomaly Detection", desc: "Statistical anomaly finder", icon: "📈" },
-  { value: "custom", label: "Custom Capability", desc: "Define your own", icon: "⚙️" },
+const CAPABILITIES: { value: string; label: string; desc: string; Icon: LucideIcon }[] = [
+  { value: "quick_scan", label: "Quick Scanner", desc: "Fast log pattern analysis", Icon: Search },
+  { value: "deep_diagnose", label: "Deep Diagnoser", desc: "Root cause analysis", Icon: Microscope },
+  { value: "incident_summary", label: "Incident Summary", desc: "Human-friendly writeups", Icon: FileText },
+  { value: "code_review", label: "Code Review", desc: "Code quality & security analysis", Icon: ShieldCheck },
+  { value: "sentiment_analysis", label: "Sentiment Analysis", desc: "User feedback analysis", Icon: MessageSquare },
+  { value: "anomaly_detection", label: "Anomaly Detection", desc: "Statistical anomaly finder", Icon: TrendingUp },
+  { value: "custom", label: "Custom Capability", desc: "Define your own", Icon: Settings },
 ];
 
 export default function RegisterProviderPage() {
@@ -52,7 +67,7 @@ export default function RegisterProviderPage() {
       if (res.ok) {
         setResult({
           success: true,
-          message: `✅ Agent "${form.name}" registered! It will now appear in the marketplace and receive routed requests.`,
+          message: `Agent "${form.name}" registered! It will now appear in the marketplace and receive routed requests.`,
           provider: data,
         });
       } else {
@@ -73,54 +88,17 @@ export default function RegisterProviderPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-primary)" }}>
-      {/* Header */}
-      <header
+      {/* Page heading */}
+      <div
         style={{
-          padding: "16px 32px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid var(--border)",
-          background: "rgba(255, 255, 255, 0.85)",
-          backdropFilter: "blur(20px)",
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
+          padding: "var(--space-6) var(--space-8) var(--space-4)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none", color: "inherit" }}>
-            <div
-              style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "9px",
-                background: "linear-gradient(135deg, var(--accent-violet), var(--accent-amber))",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "18px",
-              }}
-            >
-              ⚡
-            </div>
-            <div>
-              <h1 style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "-0.02em" }}>Register Your Agent</h1>
-              <p style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>
-                List your AI agent in the SatsRouter marketplace
-              </p>
-            </div>
-          </Link>
-        </div>
-        <div style={{ display: "flex", gap: "8px" }}>
-          <Link href="/providers" style={{ padding: "8px 16px", borderRadius: "8px", border: "1px solid var(--border)", color: "var(--text-secondary)", textDecoration: "none", fontSize: "12px", fontWeight: 500 }}>
-            Directory →
-          </Link>
-          <Link href="/dashboard" style={{ padding: "8px 16px", borderRadius: "8px", border: "1px solid var(--border)", color: "var(--text-secondary)", textDecoration: "none", fontSize: "12px", fontWeight: 500 }}>
-            Dashboard →
-          </Link>
-        </div>
-      </header>
+        <h1 style={{ fontSize: "var(--text-lg)", fontWeight: 700, letterSpacing: "-0.02em" }}>Register Your Agent</h1>
+        <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 500 }}>
+          List your AI agent in the SatsRouter marketplace
+        </p>
+      </div>
 
       <div style={{ maxWidth: "640px", margin: "0 auto", padding: "40px 32px" }}>
         {/* Progress bar */}
@@ -159,7 +137,7 @@ export default function RegisterProviderPage() {
                 padding: "12px 14px",
                 borderRadius: "10px",
                 border: "1px solid var(--border)",
-                background: "rgba(0,0,0,0.2)",
+                background: "rgba(255,255,255,0.8)",
                 color: "var(--text-primary)",
                 fontSize: "14px",
                 marginBottom: "20px",
@@ -179,7 +157,7 @@ export default function RegisterProviderPage() {
                 padding: "12px 14px",
                 borderRadius: "10px",
                 border: "1px solid var(--border)",
-                background: "rgba(0,0,0,0.2)",
+                background: "rgba(255,255,255,0.8)",
                 color: "var(--text-primary)",
                 fontSize: "13px",
                 resize: "vertical",
@@ -206,7 +184,7 @@ export default function RegisterProviderPage() {
                     transition: "all 0.2s",
                   }}
                 >
-                  <span style={{ fontSize: "18px" }}>{cap.icon}</span>
+                  <cap.Icon size={20} aria-hidden="true" style={{ color: form.capability === cap.value ? "var(--accent-violet)" : "var(--text-muted)" }} />
                   <div style={{ fontSize: "12px", fontWeight: 600, marginTop: "4px" }}>{cap.label}</div>
                   <div style={{ fontSize: "10px", color: "var(--text-muted)" }}>{cap.desc}</div>
                 </button>
@@ -223,7 +201,7 @@ export default function RegisterProviderPage() {
                   padding: "10px 14px",
                   borderRadius: "8px",
                   border: "1px solid var(--border)",
-                  background: "rgba(0,0,0,0.2)",
+                  background: "rgba(255,255,255,0.8)",
                   color: "var(--text-primary)",
                   fontSize: "13px",
                   marginBottom: "12px",
@@ -326,7 +304,7 @@ export default function RegisterProviderPage() {
             </div>
             {form.bidMultiplier < 1.0 && (
               <p style={{ fontSize: "10px", color: "var(--accent-emerald)", marginBottom: "20px" }}>
-                ⚡ Effective price: <strong>{Math.round(form.priceSats * form.bidMultiplier)} sats</strong> — you&apos;ll win more routing competitions but earn less per job
+                <Zap size={10} aria-hidden="true" style={{ marginRight: 2, verticalAlign: "middle" }} /> Effective price: <strong>{Math.round(form.priceSats * form.bidMultiplier)} sats</strong> — you&apos;ll win more routing competitions but earn less per job
               </p>
             )}
             {form.bidMultiplier >= 1.0 && (
@@ -347,7 +325,7 @@ export default function RegisterProviderPage() {
                 padding: "12px 14px",
                 borderRadius: "10px",
                 border: "1px solid var(--border)",
-                background: "rgba(0,0,0,0.2)",
+                background: "rgba(255,255,255,0.8)",
                 color: "var(--text-primary)",
                 fontSize: "13px",
                 fontFamily: "monospace",
@@ -420,7 +398,7 @@ export default function RegisterProviderPage() {
                 border: form.payoutLightningAddress.includes("@")
                   ? "1px solid rgba(16, 185, 129, 0.4)"
                   : "1px solid var(--border)",
-                background: "rgba(0,0,0,0.2)",
+                background: "rgba(255,255,255,0.8)",
                 color: "var(--text-primary)",
                 fontSize: "14px",
                 fontFamily: "monospace",
@@ -429,7 +407,7 @@ export default function RegisterProviderPage() {
             />
             <p style={{ fontSize: "10px", color: form.payoutLightningAddress.includes("@") ? "var(--accent-emerald)" : "var(--text-muted)", marginBottom: "20px" }}>
               {form.payoutLightningAddress.includes("@")
-                ? `✓ Looks valid — will receive ${form.priceSats - Math.ceil(form.priceSats * 0.1)} sats per job via Lightning`
+                ? <><CircleCheck size={10} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Looks valid — will receive {form.priceSats - Math.ceil(form.priceSats * 0.1)} sats per job via Lightning</>
                 : "Optional — without this, earnings are tracked but not auto-paid"}
             </p>
 
@@ -517,7 +495,7 @@ export default function RegisterProviderPage() {
                   boxShadow: loading ? "none" : "0 0 25px rgba(16, 185, 129, 0.3)",
                 }}
               >
-                {loading ? "⏳ Registering (validating Lightning address)..." : "⚡ Register Agent — Start Earning"}
+                {loading ? <><Loader2 size={14} className="animate-spin" aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Registering (validating Lightning address)...</> : <><Zap size={14} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Register Agent — Start Earning</>}
               </button>
             </div>
           </div>
@@ -536,7 +514,7 @@ export default function RegisterProviderPage() {
                 textAlign: "center",
               }}
             >
-              <div style={{ fontSize: "48px", marginBottom: "16px" }}>{result.success ? "🎉" : "⚠️"}</div>
+              <div style={{ fontSize: "48px", marginBottom: "16px" }}>{result.success ? <CircleCheck size={48} aria-hidden="true" style={{ color: "var(--accent-emerald)" }} /> : <AlertTriangle size={48} aria-hidden="true" style={{ color: "var(--accent-rose)" }} />}</div>
               <p style={{ fontSize: "14px", fontWeight: 600, marginBottom: "8px", color: result.success ? "var(--accent-emerald)" : "var(--accent-rose)" }}>
                 {result.success ? "Agent Registered!" : "Registration Failed"}
               </p>
@@ -550,7 +528,7 @@ export default function RegisterProviderPage() {
                   style={{ padding: "12px", borderRadius: "8px", fontSize: "10px", color: "var(--text-muted)", textAlign: "left", marginBottom: "16px" }}
                 >
                   <div>Provider ID: <span style={{ color: "var(--accent-cyan)" }}>{String(result.provider.id)}</span></div>
-                  <div>Reputation: <span style={{ color: "var(--accent-amber)" }}>{String(result.provider.reputationScore)}★</span></div>
+                  <div>Reputation: <span style={{ color: "var(--accent-amber)", display: "inline-flex", alignItems: "center", gap: 2 }}>{String(result.provider.reputationScore)} <Star size={10} aria-hidden="true" /></span></div>
                   <div>Status: <span style={{ color: "var(--accent-emerald)" }}>Active — accepting requests</span></div>
                 </div>
               )}

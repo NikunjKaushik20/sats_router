@@ -1,7 +1,29 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import Link from "next/link";
+import {
+  CAPABILITY_ICON_MAP,
+  TRUST_ICON_MAP,
+  Bot,
+  Zap,
+  Lock,
+  Star,
+  FlagTriangleRight,
+  AlertTriangle,
+  Ban,
+  Bomb,
+  ShieldCheck,
+  CircleCheck,
+  Search,
+  Microscope,
+  FileText,
+  User,
+  MessageSquare,
+  TrendingUp,
+  Settings,
+} from "@/lib/icons";
+import type { LucideIcon } from "lucide-react";
 
 interface Provider {
   id: string;
@@ -20,40 +42,38 @@ interface Provider {
   bidMultiplier: number;
 }
 
-function getTrustBadge(p: Provider): { emoji: string; label: string; color: string; bg: string } | null {
-  if (!p.isActive) return { emoji: "🚫", label: "Suspended", color: "var(--accent-rose)", bg: "rgba(244,63,94,0.12)" };
-  if (p.stakeStatus === "slashed") return { emoji: "💥", label: "Slashed", color: "var(--accent-rose)", bg: "rgba(244,63,94,0.12)" };
-  if (p.reputationScore < 2.5 && p.flagCount > 0) return { emoji: "⚠️", label: "Under Review", color: "var(--accent-amber)", bg: "rgba(245,158,11,0.12)" };
-  if (p.stakeStatus === "staked" && p.reputationScore >= 4.0 && p.totalJobs >= 5) return { emoji: "🛡️", label: "Trusted + Staked", color: "var(--accent-emerald)", bg: "rgba(16,185,129,0.12)" };
-  if (p.stakeStatus === "staked") return { emoji: "🔒", label: "Staked", color: "var(--accent-cyan)", bg: "rgba(6,182,212,0.12)" };
-  if (p.totalJobs < 3) return { emoji: "🆕", label: "New", color: "var(--accent-cyan)", bg: "rgba(6,182,212,0.12)" };
-  if (p.reputationScore >= 4.0 && p.totalJobs >= 5) return { emoji: "🛡️", label: "Trusted", color: "var(--accent-emerald)", bg: "rgba(16,185,129,0.12)" };
+function getTrustBadge(p: Provider): { Icon: LucideIcon; label: string; color: string; bg: string } | null {
+  if (!p.isActive) return { Icon: Ban, label: "Suspended", color: "var(--accent-rose)", bg: "rgba(244,63,94,0.12)" };
+  if (p.stakeStatus === "slashed") return { Icon: Bomb, label: "Slashed", color: "var(--accent-rose)", bg: "rgba(244,63,94,0.12)" };
+  if (p.reputationScore < 2.5 && p.flagCount > 0) return { Icon: AlertTriangle, label: "Under Review", color: "var(--accent-amber)", bg: "rgba(245,158,11,0.12)" };
+  if (p.stakeStatus === "staked" && p.reputationScore >= 4.0 && p.totalJobs >= 5) return { Icon: ShieldCheck, label: "Trusted + Staked", color: "var(--accent-emerald)", bg: "rgba(16,185,129,0.12)" };
+  if (p.stakeStatus === "staked") return { Icon: Lock, label: "Staked", color: "var(--accent-cyan)", bg: "rgba(6,182,212,0.12)" };
+  if (p.totalJobs < 3) return { Icon: CircleCheck, label: "New", color: "var(--accent-cyan)", bg: "rgba(6,182,212,0.12)" };
+  if (p.reputationScore >= 4.0 && p.totalJobs >= 5) return { Icon: ShieldCheck, label: "Trusted", color: "var(--accent-emerald)", bg: "rgba(16,185,129,0.12)" };
   return null;
 }
 
-const CAP_CONFIG: Record<string, { icon: string; color: string; label: string }> = {
-  quick_scan: { icon: "🔍", color: "var(--accent-cyan)", label: "Quick Scan" },
-  deep_diagnose: { icon: "🔬", color: "var(--accent-violet)", label: "Deep Diagnose" },
-  incident_summary: { icon: "📝", color: "var(--accent-amber)", label: "Summary" },
-  human_verify: { icon: "👤", color: "var(--accent-emerald)", label: "Human Verify" },
-  code_review: { icon: "🛡️", color: "var(--accent-rose)", label: "Code Review" },
-  sentiment_analysis: { icon: "💬", color: "var(--accent-cyan)", label: "Sentiment" },
-  anomaly_detection: { icon: "📈", color: "var(--accent-amber)", label: "Anomaly" },
+const CAP_CONFIG: Record<string, { Icon: LucideIcon; color: string; label: string }> = {
+  quick_scan: { Icon: Search, color: "var(--accent-cyan)", label: "Quick Scan" },
+  deep_diagnose: { Icon: Microscope, color: "var(--accent-violet)", label: "Deep Diagnose" },
+  incident_summary: { Icon: FileText, color: "var(--accent-amber)", label: "Summary" },
+  human_verify: { Icon: User, color: "var(--accent-emerald)", label: "Human Verify" },
+  code_review: { Icon: ShieldCheck, color: "var(--accent-rose)", label: "Code Review" },
+  sentiment_analysis: { Icon: MessageSquare, color: "var(--accent-cyan)", label: "Sentiment" },
+  anomaly_detection: { Icon: TrendingUp, color: "var(--accent-amber)", label: "Anomaly" },
 };
 
 function getCapConfig(cap: string) {
-  return CAP_CONFIG[cap] || { icon: "⚙️", color: "var(--accent-violet)", label: cap };
+  return CAP_CONFIG[cap] || { Icon: Settings, color: "var(--accent-violet)", label: cap };
 }
 
 function renderStars(score: number) {
   const full = Math.floor(score);
-  const half = score - full >= 0.5;
-  const empty = 5 - full - (half ? 1 : 0);
+  const empty = 5 - full;
   return (
-    <span style={{ letterSpacing: "1px" }}>
-      {"★".repeat(full)}
-      {half ? "½" : ""}
-      {"☆".repeat(empty)}
+    <span style={{ display: "inline-flex", gap: 1, color: "var(--accent-amber)" }}>
+      {Array.from({ length: full }).map((_, i) => <Star key={`f${i}`} size={12} fill="currentColor" aria-hidden="true" />)}
+      {Array.from({ length: empty }).map((_, i) => <Star key={`e${i}`} size={12} aria-hidden="true" />)}
     </span>
   );
 }
@@ -96,69 +116,25 @@ export default function ProviderDirectoryPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-primary)" }}>
-      {/* Header */}
-      <header
+      {/* Page header section */}
+      <div
         style={{
-          padding: "16px 32px",
+          padding: "var(--space-6) var(--space-8) var(--space-4)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          borderBottom: "1px solid var(--border)",
-          background: "rgba(255, 255, 255, 0.85)",
-          backdropFilter: "blur(20px)",
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none", color: "inherit" }}>
-            <div
-              style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "9px",
-                background: "linear-gradient(135deg, var(--accent-cyan), var(--accent-violet))",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "18px",
-              }}
-            >
-              🤖
-            </div>
-            <div>
-              <h1 style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "-0.02em" }}>Agent Directory</h1>
-              <p style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>
-                {activeAgents} active agents • {totalJobs} total jobs
-              </p>
-            </div>
-          </Link>
+        <div>
+          <h1 style={{ fontSize: "var(--text-lg)", fontWeight: 700, letterSpacing: "-0.02em" }}>Agent Directory</h1>
+          <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 500 }}>
+            {activeAgents} active agents • {totalJobs} total jobs
+          </p>
         </div>
-        <div style={{ display: "flex", gap: "8px" }}>
-          <Link
-            href="/providers/register"
-            style={{
-              padding: "8px 16px",
-              borderRadius: "8px",
-              background: "linear-gradient(135deg, var(--accent-emerald), #34d399)",
-              color: "var(--bg-primary)",
-              textDecoration: "none",
-              fontSize: "12px",
-              fontWeight: 600,
-              boxShadow: "0 0 12px rgba(16, 185, 129, 0.2)",
-            }}
-          >
-            + Register Agent
-          </Link>
-          <Link href="/dashboard" style={{ padding: "8px 16px", borderRadius: "8px", border: "1px solid var(--border)", color: "var(--text-secondary)", textDecoration: "none", fontSize: "12px", fontWeight: 500 }}>
-            Dashboard
-          </Link>
-          <Link href="/bounties" style={{ padding: "8px 16px", borderRadius: "8px", border: "1px solid var(--border)", color: "var(--text-secondary)", textDecoration: "none", fontSize: "12px", fontWeight: 500 }}>
-            Bounties
-          </Link>
-        </div>
-      </header>
+        <Link href="/providers/register" className="btn btn-success" style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
+          <User size={14} aria-hidden="true" /> Register Agent
+        </Link>
+      </div>
 
       {/* Stats */}
       <div
@@ -175,7 +151,7 @@ export default function ProviderDirectoryPage() {
           { label: "REGISTERED AGENTS", value: totalAgents, color: "var(--accent-violet)" },
           { label: "ACTIVE NOW", value: activeAgents, color: "var(--accent-emerald)" },
           { label: "TOTAL JOBS", value: totalJobs, color: "var(--accent-cyan)" },
-          { label: "TOTAL EARNED", value: `⚡${totalEarned}`, color: "var(--accent-amber)" },
+          { label: "TOTAL EARNED", value: `${totalEarned} sats`, color: "var(--accent-amber)" },
         ].map((s) => (
           <div
             key={s.label}
@@ -236,7 +212,7 @@ export default function ProviderDirectoryPage() {
                   cursor: "pointer",
                 }}
               >
-                {cfg.icon} {cfg.label}
+                <cfg.Icon size={12} aria-hidden="true" style={{ marginRight: 3 }} /> {cfg.label}
               </button>
             );
           })}
@@ -281,7 +257,7 @@ export default function ProviderDirectoryPage() {
             className="glass"
             style={{ gridColumn: "1/3", padding: "48px", borderRadius: "16px", textAlign: "center", color: "var(--text-muted)" }}
           >
-            <div style={{ fontSize: "48px", marginBottom: "16px" }}>🤖</div>
+            <div style={{ fontSize: "48px", marginBottom: "16px" }}><Bot size={48} aria-hidden="true" style={{ color: "var(--text-muted)" }} /></div>
             <p style={{ fontSize: "14px", marginBottom: "8px" }}>No agents registered yet</p>
             <Link href="/providers/register" style={{ color: "var(--accent-violet)", textDecoration: "underline", fontSize: "12px" }}>
               Be the first to register →
@@ -317,7 +293,7 @@ export default function ProviderDirectoryPage() {
                       flexShrink: 0,
                     }}
                   >
-                    {cfg.icon}
+                    <cfg.Icon size={20} aria-hidden="true" style={{ color: cfg.color }} />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -368,13 +344,13 @@ export default function ProviderDirectoryPage() {
                           fontWeight: 700,
                         }}
                       >
-                        {badge.emoji} {badge.label}
+                        <badge.Icon size={10} aria-hidden="true" style={{ marginRight: 3 }} /> {badge.label}
                       </span>
                     );
                   })()}
                   {p.flagCount > 0 && (
                     <span style={{ fontSize: "9px", color: "var(--accent-rose)" }}>
-                      🚩 {p.flagCount}
+                      <FlagTriangleRight size={10} aria-hidden="true" style={{ marginRight: 2 }} /> {p.flagCount}
                     </span>
                   )}
                 </div>
@@ -387,7 +363,7 @@ export default function ProviderDirectoryPage() {
                     gap: "8px",
                     padding: "10px",
                     borderRadius: "8px",
-                    background: "rgba(0,0,0,0.15)",
+                    background: "var(--bg-secondary)",
                     marginBottom: "10px",
                   }}
                 >
@@ -418,7 +394,7 @@ export default function ProviderDirectoryPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "10px", marginBottom: "4px" }}>
                     <span style={{ color: "var(--text-muted)" }}>Stake:</span>
                     <span className="font-mono" style={{ fontWeight: 700, color: p.stakeStatus === "slashed" ? "var(--accent-rose)" : "var(--accent-cyan)" }}>
-                      {p.stakeStatus === "slashed" ? `⚡ ${p.stakeSats} sats SLASHED` : `🔒 ${p.stakeSats} sats locked`}
+                      {p.stakeStatus === "slashed" ? <><Zap size={10} aria-hidden="true" style={{ marginRight: 2 }} /> {p.stakeSats} sats SLASHED</> : <><Lock size={10} aria-hidden="true" style={{ marginRight: 2 }} /> {p.stakeSats} sats locked</>}
                     </span>
                   </div>
                 )}
@@ -438,7 +414,7 @@ export default function ProviderDirectoryPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "10px" }}>
                     <span style={{ color: "var(--text-muted)" }}>Lifetime earnings:</span>
                     <span className="font-mono" style={{ color: "var(--accent-emerald)", fontWeight: 700 }}>
-                      ⚡ {p.totalEarnedSats} sats
+                      <Zap size={10} aria-hidden="true" style={{ marginRight: 2 }} /> {p.totalEarnedSats} sats
                     </span>
                   </div>
                 )}
@@ -446,7 +422,7 @@ export default function ProviderDirectoryPage() {
                 {/* Lightning address indicator */}
                 {p.payoutLightningAddress && (
                   <div style={{ marginTop: "6px", fontSize: "9px", color: "var(--text-muted)" }}>
-                    ⚡ Payouts to: <span className="font-mono" style={{ color: "var(--accent-emerald)" }}>{p.payoutLightningAddress}</span>
+                    <Zap size={10} aria-hidden="true" style={{ marginRight: 2 }} /> Payouts to: <span className="font-mono" style={{ color: "var(--accent-emerald)" }}>{p.payoutLightningAddress}</span>
                   </div>
                 )}
               </div>
@@ -455,38 +431,24 @@ export default function ProviderDirectoryPage() {
         )}
       </div>
 
-      {/* Footer CTA */}
+      {/* CTA Bar */}
       <div
         style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "12px 32px",
-          background: "rgba(10, 10, 15, 0.95)",
-          backdropFilter: "blur(20px)",
-          borderTop: "1px solid var(--border)",
+          padding: "var(--space-4) var(--space-8)",
+          background: "var(--bg-secondary)",
+          borderTop: "1px solid var(--border-subtle)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          zIndex: 50,
+          marginTop: "var(--space-8)",
         }}
       >
-        <p style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+        <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}>
           Anyone can register an agent and earn sats — <span style={{ color: "var(--accent-amber)" }}>no API keys, no sign-up, just Lightning</span>
         </p>
         <Link
           href="/providers/register"
-          style={{
-            padding: "8px 20px",
-            borderRadius: "8px",
-            background: "linear-gradient(135deg, var(--accent-emerald), #34d399)",
-            color: "var(--bg-primary)",
-            textDecoration: "none",
-            fontSize: "12px",
-            fontWeight: 700,
-            boxShadow: "0 0 15px rgba(16, 185, 129, 0.25)",
-          }}
+          className="btn btn-success"
         >
           + Register Your Agent
         </Link>

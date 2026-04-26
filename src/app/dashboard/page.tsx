@@ -1,8 +1,28 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import AgentNetworkGraph, { NetworkPulse } from "./AgentNetworkGraph";
+import {
+  CAPABILITY_ICON_MAP,
+  EVENT_TYPE_ICON_MAP,
+  Zap,
+  Bot,
+  Coins,
+  BarChart3,
+  Send,
+  KeyRound,
+  ClipboardList,
+  User,
+  Star,
+  Brain,
+  RefreshCw,
+  CheckCircle,
+  CircleX,
+  Loader2,
+  Flag as FlagIcon,
+} from "@/lib/icons";
+import type { LucideIcon } from "lucide-react";
 
 interface DashboardEvent {
   id: string;
@@ -75,30 +95,11 @@ interface BudgetState {
   jobsCompletedToday: number;
 }
 
-const CAPABILITY_ICONS: Record<string, string> = {
-  quick_scan: "🔍",
-  deep_diagnose: "🔬",
-  incident_summary: "📝",
-  human_verify: "👤",
-};
-
 const CAPABILITY_COLORS: Record<string, string> = {
   quick_scan: "var(--accent-cyan)",
   deep_diagnose: "var(--accent-violet)",
   incident_summary: "var(--accent-amber)",
   human_verify: "var(--accent-emerald)",
-};
-
-const EVENT_TYPE_ICONS: Record<string, string> = {
-  route: "🔀",
-  payment: "⚡",
-  payout: "💸",
-  execution: "🔄",
-  completion: "✅",
-  orchestrator: "🧠",
-  human_task: "👤",
-  bounty: "🏷️",
-  error: "❌",
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -340,7 +341,6 @@ export default function Dashboard() {
   return (
     <div
       style={{
-        minHeight: "100vh",
         background: "var(--bg-primary)",
         position: "relative",
         overflow: "hidden",
@@ -367,150 +367,95 @@ export default function Dashboard() {
         />
       ))}
 
-      {/* Header */}
-      <header
+      {/* Dashboard Toolbar — page-specific controls */}
+      <div
         style={{
-          padding: "16px 32px",
+          padding: "var(--space-3) var(--space-8)",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid var(--border)",
-          background: "rgba(255, 255, 255, 0.92)",
-          backdropFilter: "blur(20px)",
-          position: "sticky",
-          top: 0,
-          zIndex: 50,
-          gap: "12px",
+          justifyContent: "flex-end",
+          gap: "var(--space-2)",
+          borderBottom: "1px solid var(--border-subtle)",
+          background: "var(--bg-secondary)",
+          flexWrap: "wrap",
         }}
       >
-        {/* Left: Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
-          <Link
-            href="/"
+        {/* Lightning node status pill */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--space-2)",
+            padding: "5px var(--space-3)",
+            borderRadius: "var(--radius-full)",
+            border: `1px solid ${wallet.status === "connected" ? "rgba(22,101,52,0.3)" : "var(--border)"}`,
+            background:
+              wallet.status === "connected"
+                ? "rgba(22,101,52,0.07)"
+                : "rgba(62, 39, 35, 0.03)",
+            fontSize: "var(--text-xs)",
+            fontWeight: 600,
+          }}
+        >
+          <span
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              textDecoration: "none",
-              color: "inherit",
-            }}
-          >
-            <div
-              style={{
-                width: "34px",
-                height: "34px",
-                borderRadius: "9px",
-                background:
-                  "linear-gradient(135deg, var(--accent-violet), var(--accent-amber))",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "17px",
-              }}
-            >
-              ⚡
-            </div>
-            <div>
-              <h1 style={{ fontSize: "16px", fontWeight: 700, letterSpacing: "-0.02em" }}>
-                SatsRouter
-              </h1>
-              <p style={{ fontSize: "10px", color: "var(--text-muted)", fontWeight: 500 }}>
-                Lightning Agent Economy
-              </p>
-            </div>
-          </Link>
-        </div>
-
-        {/* Right: all controls grouped tightly */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-          {/* Lightning node status pill */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "5px 12px",
-              borderRadius: "999px",
-              border: `1px solid ${wallet.status === "connected" ? "rgba(22,101,52,0.3)" : "var(--border)"}`,
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
               background:
                 wallet.status === "connected"
-                  ? "rgba(22,101,52,0.07)"
-                  : "rgba(62, 39, 35, 0.03)",
-              fontSize: "11px",
-              fontWeight: 600,
+                  ? "var(--accent-emerald)"
+                  : wallet.status === "loading"
+                  ? "var(--accent-amber)"
+                  : "var(--accent-rose)",
+              display: "inline-block",
+              flexShrink: 0,
             }}
-          >
-            <span
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background:
-                  wallet.status === "connected"
-                    ? "var(--accent-emerald)"
-                    : wallet.status === "loading"
-                    ? "var(--accent-amber)"
-                    : "var(--accent-rose)",
-                display: "inline-block",
-                flexShrink: 0,
-              }}
-            />
-            <span style={{ color: wallet.status === "connected" ? "var(--accent-emerald)" : "var(--text-muted)" }}>
-              {wallet.status === "loading"
-                ? "Connecting..."
-                : wallet.status === "connected"
-                ? "Lightning Node • Live"
-                : wallet.error || "Node offline"}
-            </span>
-          </div>
-
-          {/* Divider */}
-          <div style={{ width: "1px", height: "20px", background: "var(--border)" }} />
-
-          {/* Bounty Board */}
-          <a
-            href="/bounties"
-            style={{
-              padding: "8px 14px",
-              borderRadius: "8px",
-              border: "1px solid rgba(180,83,9,0.3)",
-              background: "rgba(180,83,9,0.07)",
-              color: "var(--accent-amber)",
-              fontWeight: 600,
-              fontSize: "12px",
-              textDecoration: "none",
-              transition: "all 0.2s",
-              whiteSpace: "nowrap",
-            }}
-          >
-            💰 Bounty Board
-          </a>
-
-          {/* Trigger Incident */}
-          <button
-            onClick={handleTriggerDemo}
-            disabled={isOrchestratingDemo}
-            style={{
-              padding: "8px 18px",
-              borderRadius: "8px",
-              border: "none",
-              background: isOrchestratingDemo
-                ? "rgba(62,39,35,0.15)"
-                : "var(--text-primary)",
-              color: isOrchestratingDemo ? "var(--text-muted)" : "#FFFFFF",
-              fontWeight: 600,
-              fontSize: "12px",
-              cursor: isOrchestratingDemo ? "not-allowed" : "pointer",
-              transition: "all 0.2s",
-              opacity: isOrchestratingDemo ? 0.7 : 1,
-              boxShadow: isOrchestratingDemo ? "none" : "0 2px 10px rgba(62,39,35,0.25)",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {isOrchestratingDemo ? "🔄 Working..." : "⚡ Trigger Incident"}
-          </button>
+          />
+          <span style={{ color: wallet.status === "connected" ? "var(--accent-emerald)" : "var(--text-muted)" }}>
+            {wallet.status === "loading"
+              ? "Connecting..."
+              : wallet.status === "connected"
+              ? "Lightning Node • Live"
+              : wallet.error || "Node offline"}
+          </span>
         </div>
-      </header>
+
+        {/* Divider */}
+        <div style={{ width: 1, height: 20, background: "var(--border)" }} />
+
+        {/* Bounty Board */}
+        <Link
+          href="/bounties"
+          style={{
+            padding: "var(--space-2) var(--space-4)",
+            borderRadius: "var(--radius-md)",
+            border: "1px solid rgba(180,83,9,0.3)",
+            background: "rgba(180,83,9,0.07)",
+            color: "var(--accent-amber)",
+            fontWeight: 600,
+            fontSize: "var(--text-sm)",
+            textDecoration: "none",
+            transition: "all var(--transition-base)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <Coins size={14} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Bounty Board
+        </Link>
+
+        {/* Trigger Incident */}
+        <button
+          onClick={handleTriggerDemo}
+          disabled={isOrchestratingDemo}
+          className="btn btn-primary"
+          style={{
+            opacity: isOrchestratingDemo ? 0.7 : 1,
+            cursor: isOrchestratingDemo ? "not-allowed" : "pointer",
+          }}
+        >
+          {isOrchestratingDemo ? <><Loader2 size={14} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} className="animate-spin" /> Working...</> : <><Zap size={14} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Trigger Incident</>}
+        </button>
+      </div>
 
       {/* Budget Burn-Down Bar */}
       {budget && (
@@ -574,25 +519,25 @@ export default function Dashboard() {
           padding: "16px 32px",
         }}
       >
-        <StatCard label="Total Jobs" value={stats.totalJobs} icon="📊" />
+        <StatCard label="Total Jobs" value={stats.totalJobs} IconComponent={BarChart3} />
         <StatCard
           label="Sats Moved"
           value={stats.totalSatsMoved}
-          icon="⚡"
+          IconComponent={Zap}
           suffix=" sats"
           color="var(--accent-amber)"
         />
         <StatCard
           label="Fees Earned"
           value={stats.totalSatsEarned}
-          icon="💰"
+          IconComponent={Coins}
           suffix=" sats"
           color="var(--accent-emerald)"
         />
         <StatCard
           label="Provider Payouts"
           value={stats.totalPayoutsSent ?? 0}
-          icon="💸"
+          IconComponent={Send}
           suffix=" sats"
           color="var(--accent-cyan)"
           subtitle={`${stats.provenPayouts ?? 0} on-chain proofs`}
@@ -600,7 +545,7 @@ export default function Dashboard() {
         <StatCard
           label="Proven Payments"
           value={provenJobs.length}
-          icon="🔐"
+          IconComponent={KeyRound}
           color="var(--accent-violet)"
           subtitle={`+${provenPayoutJobs.length} payouts proven`}
         />
@@ -608,7 +553,7 @@ export default function Dashboard() {
           <StatCard
             label="Human Bounties"
             value={stats.openBounties ?? 0}
-            icon="💰"
+            IconComponent={Coins}
             color="var(--accent-rose)"
             suffix=" open"
             subtitle={`${stats.humanSatsPaid ?? 0} sats paid to humans`}
@@ -645,7 +590,7 @@ export default function Dashboard() {
               letterSpacing: "0.08em",
             }}
           >
-            🤖 Agent Network
+            <Bot size={13} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Agent Network
           </h2>
 
           <AgentNetworkGraph
@@ -723,8 +668,8 @@ export default function Dashboard() {
                     marginBottom: "4px",
                   }}
                 >
-                  <span style={{ fontSize: "13px", fontWeight: 600 }}>
-                    {CAPABILITY_ICONS[p.capability] || "🤖"}{" "}
+                  <span style={{ fontSize: "13px", fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 5 }}>
+                    {(() => { const I = CAPABILITY_ICON_MAP[p.capability] || Bot; return <I size={14} aria-hidden="true" />; })()}
                     {p.name.split(" — ")[1] || p.name}
                   </span>
                   <span
@@ -745,8 +690,8 @@ export default function Dashboard() {
                     alignItems: "center",
                   }}
                 >
-                  <span style={{ fontSize: "10px", color: "var(--text-muted)" }}>
-                    ⭐ {p.reputationScore.toFixed(1)} · {p.totalJobs} jobs
+                  <span style={{ fontSize: "10px", color: "var(--text-muted)", display: "inline-flex", alignItems: "center", gap: 3 }}>
+                    <Star size={10} aria-hidden="true" /> {p.reputationScore.toFixed(1)} · {p.totalJobs} jobs
                   </span>
                   <span
                     style={{
@@ -781,7 +726,7 @@ export default function Dashboard() {
                       }}
                       title={p.payoutLightningAddress}
                     >
-                      💸 {p.payoutLightningAddress}
+                      <Send size={10} aria-hidden="true" style={{ marginRight: 3, flexShrink: 0 }} /> {p.payoutLightningAddress}
                     </span>
                     {Boolean(p.totalEarnedSats) && (
                       <span className="font-mono" style={{ color: "var(--accent-amber)" }}>
@@ -836,7 +781,7 @@ export default function Dashboard() {
               letterSpacing: "0.08em",
             }}
           >
-            ⚡ Live Transaction Feed
+            <Zap size={13} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Live Transaction Feed
           </h2>
           <div
             ref={eventFeedRef}
@@ -897,8 +842,8 @@ export default function Dashboard() {
                       alignItems: "flex-start",
                     }}
                   >
-                    <span style={{ fontSize: "12px", flexShrink: 0 }}>
-                      {EVENT_TYPE_ICONS[e.type] || "📌"}
+                    <span style={{ fontSize: "12px", flexShrink: 0, display: "flex" }}>
+                      {(() => { const I = EVENT_TYPE_ICON_MAP[e.type] || EVENT_TYPE_ICON_MAP.default; return <I size={13} aria-hidden="true" />; })()}
                     </span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p
@@ -923,7 +868,7 @@ export default function Dashboard() {
                               whiteSpace: "nowrap",
                             }}
                           >
-                            🔐 {String((e.data as Record<string, unknown>).paymentHash).substring(0, 32)}...
+                            <KeyRound size={10} aria-hidden="true" style={{ marginRight: 3 }} />{String((e.data as Record<string, unknown>).paymentHash).substring(0, 32)}...
                           </p>
                         )}
                       {e.type === "payout" &&
@@ -939,7 +884,7 @@ export default function Dashboard() {
                               whiteSpace: "nowrap",
                             }}
                           >
-                            💸 {String((e.data as Record<string, unknown>).payoutHash).substring(0, 32)}...
+                            <Send size={10} aria-hidden="true" style={{ marginRight: 3 }} />{String((e.data as Record<string, unknown>).payoutHash).substring(0, 32)}...
                           </p>
                         )}
                       <p
@@ -980,7 +925,7 @@ export default function Dashboard() {
               letterSpacing: "0.08em",
             }}
           >
-            🧠 Orchestrator Thought Log
+            <Brain size={13} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Orchestrator Thought Log
           </h2>
           <div
             ref={thoughtLogRef}
@@ -1077,7 +1022,7 @@ export default function Dashboard() {
                 letterSpacing: "0.08em",
               }}
             >
-              📋 Recent Jobs
+              <ClipboardList size={13} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Recent Jobs
             </h2>
             <div
               style={{
@@ -1122,8 +1067,8 @@ export default function Dashboard() {
                       transition: "all 0.15s",
                     }}
                   >
-                    <span style={{ fontSize: "14px" }}>
-                      {CAPABILITY_ICONS[j.capability] || "🤖"}
+                    <span style={{ fontSize: "14px", display: "flex" }}>
+                      {(() => { const I = CAPABILITY_ICON_MAP[j.capability] || Bot; return <I size={14} aria-hidden="true" />; })()}
                     </span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: "11px", fontWeight: 500 }}>
@@ -1132,8 +1077,8 @@ export default function Dashboard() {
                       <div className="font-mono" style={{ fontSize: "9px", color: "var(--text-muted)" }}>
                         {j.id.substring(0, 10)}...
                         {j.paymentHash && (
-                          <span style={{ color: "var(--accent-violet)", marginLeft: "4px" }}>
-                            🔐
+                          <span style={{ color: "var(--accent-violet)", marginLeft: "4px", display: "inline-flex" }}>
+                            <KeyRound size={9} aria-hidden="true" />
                           </span>
                         )}
                       </div>
@@ -1183,7 +1128,7 @@ export default function Dashboard() {
                     marginBottom: "6px",
                   }}
                 >
-                  🔐 L402 Payment Proof (Riya → Router)
+                  <KeyRound size={10} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> L402 Payment Proof (Riya → Router)
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <div>
@@ -1244,7 +1189,7 @@ export default function Dashboard() {
                     marginBottom: "6px",
                   }}
                 >
-                  💸 Provider Payout Proof
+                  <Send size={10} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Provider Payout Proof
                   {selectedJob.payoutSats ? ` (${selectedJob.payoutSats} sats)` : ""}
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -1300,7 +1245,7 @@ export default function Dashboard() {
                 letterSpacing: "0.08em",
               }}
             >
-              👤 Human Verification Queue
+              <User size={13} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Human Verification Queue
             </h2>
             {humanTasks.length === 0 ? (
               <div
@@ -1347,7 +1292,7 @@ export default function Dashboard() {
                         marginBottom: "8px",
                       }}
                     >
-                      💰 Reward:{" "}
+                      <Coins size={10} aria-hidden="true" style={{ marginRight: 3 }} /> Reward:{" "}
                       <span
                         className="font-mono"
                         style={{ color: "var(--accent-amber)" }}
@@ -1404,7 +1349,7 @@ export default function Dashboard() {
                       }}
                     >
                       {invoiceLooksValid
-                        ? "✓ Invoice detected — approve will pay you in real sats"
+                        ? <><CheckCircle size={10} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Invoice detected — approve will pay you in real sats</>
                         : "Without an invoice, the reward is logged as owed."}
                     </div>
                     <div style={{ display: "flex", gap: "6px" }}>
@@ -1426,7 +1371,7 @@ export default function Dashboard() {
                           opacity: busy ? 0.7 : 1,
                         }}
                       >
-                        {busy ? "⏳ Paying…" : invoiceLooksValid ? "⚡ Approve & Pay" : "✅ Approve"}
+                        {busy ? <><Loader2 size={12} className="animate-spin" aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Paying…</> : invoiceLooksValid ? <><Zap size={12} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Approve & Pay</> : <><CheckCircle size={12} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Approve</>}
                       </button>
                       <button
                         onClick={() => handleHumanAction(t.id, "reject")}
@@ -1444,7 +1389,7 @@ export default function Dashboard() {
                           opacity: busy ? 0.5 : 1,
                         }}
                       >
-                        ❌ Reject
+                        <CircleX size={12} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> Reject
                       </button>
                     </div>
                   </div>
@@ -1483,8 +1428,8 @@ export default function Dashboard() {
               marginBottom: "12px",
             }}
           >
-            <h3 style={{ fontSize: "13px", fontWeight: 700 }}>
-              🏁 Orchestration Result
+            <h3 style={{ fontSize: "13px", fontWeight: 700, display: "flex", alignItems: "center", gap: 5 }}>
+              <FlagIcon size={14} aria-hidden="true" /> Orchestration Result
             </h3>
             <button
               onClick={() => setDemoResult(null)}
@@ -1534,7 +1479,7 @@ export default function Dashboard() {
                     fontFamily: "monospace",
                   }}
                 >
-                  ⚡ {String(demoResult.totalSatsSpent)} sats spent
+                  <Zap size={11} aria-hidden="true" style={{ marginRight: 3, verticalAlign: "middle" }} /> {String(demoResult.totalSatsSpent)} sats spent
                 </span>
               )}
             </div>
@@ -1561,14 +1506,14 @@ export default function Dashboard() {
 function StatCard({
   label,
   value,
-  icon,
+  IconComponent,
   suffix,
   color,
   subtitle,
 }: {
   label: string;
   value: number;
-  icon: string;
+  IconComponent: LucideIcon;
   suffix?: string;
   color?: string;
   subtitle?: string;
@@ -1593,7 +1538,7 @@ function StatCard({
         <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 500 }}>
           {label}
         </span>
-        <span style={{ fontSize: "16px" }}>{icon}</span>
+        <IconComponent size={16} aria-hidden="true" style={{ color: color || "var(--text-muted)" }} />
       </div>
       <div
         className="font-mono"
@@ -1615,3 +1560,4 @@ function StatCard({
     </div>
   );
 }
+
