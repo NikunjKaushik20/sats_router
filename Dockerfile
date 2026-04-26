@@ -67,19 +67,16 @@ COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 # ── package.json + lock (so npm install can resolve versions) ──
 COPY package.json package-lock.json ./
 
-# Install runtime-only tools as root (before USER switch):
-#   prisma   → run migrations at startup
-#   tsx      → execute seed.ts
-#   dotenv   → load .env in seed script
-#   @prisma/client + adapter + better-sqlite3 → database access
-RUN npm install --ignore-scripts \
+# Install runtime-only tools as root (before USER switch).
+# prisma/ is already copied above so postinstall (prisma generate) can find the schema.
+# Do NOT use --ignore-scripts: @prisma/client's postinstall generates required WASM files.
+RUN npm install \
     prisma \
     tsx \
     dotenv \
     @prisma/client \
     @prisma/adapter-better-sqlite3 \
-    better-sqlite3 \
-    && npx prisma generate --schema=prisma/schema.prisma
+    better-sqlite3
 
 # ── Entrypoint script ──
 COPY docker-entrypoint.sh ./docker-entrypoint.sh
