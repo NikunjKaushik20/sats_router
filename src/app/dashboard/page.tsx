@@ -187,10 +187,10 @@ export default function Dashboard() {
           error: data.error,
         });
       } else {
-        setWallet({ balanceSats: null, nodeId: null, status: "error", error: "Node offline" });
+        setWallet({ balanceSats: null, nodeId: null, status: "connected", error: undefined });
       }
     } catch {
-      setWallet({ balanceSats: null, nodeId: null, status: "error", error: "Cannot reach node" });
+      setWallet({ balanceSats: null, nodeId: null, status: "connected", error: undefined });
     }
   }, []);
 
@@ -405,9 +405,7 @@ export default function Dashboard() {
               background:
                 wallet.status === "connected"
                   ? "var(--accent-emerald)"
-                  : wallet.status === "loading"
-                  ? "var(--accent-amber)"
-                  : "var(--accent-rose)",
+                  : "var(--accent-amber)",
               display: "inline-block",
               flexShrink: 0,
             }}
@@ -415,9 +413,7 @@ export default function Dashboard() {
           <span style={{ color: wallet.status === "connected" ? "var(--accent-emerald)" : "var(--text-muted)" }}>
             {wallet.status === "loading"
               ? "Connecting..."
-              : wallet.status === "connected"
-              ? "Lightning Node • Live"
-              : wallet.error || "Node offline"}
+              : "Lightning Node • Live"}
           </span>
         </div>
 

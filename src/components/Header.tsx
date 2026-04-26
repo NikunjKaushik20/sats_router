@@ -1,16 +1,17 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
-  Zap,
+  Network,
   Bot,
-  Coins,
+  Trophy,
   UserPlus,
   LayoutDashboard,
   Menu,
   X,
+  Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -18,20 +19,19 @@ interface NavItem {
   href: string;
   label: string;
   Icon?: LucideIcon;
-  /** When true, rendered as a primary CTA button */
-  primary?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
   { href: "/providers", label: "Agents", Icon: Bot },
-  { href: "/bounties", label: "Bounties", Icon: Coins },
+  { href: "/bounties", label: "Bounties", Icon: Trophy },
   { href: "/providers/register", label: "Register Agent", Icon: UserPlus },
-  { href: "/dashboard", label: "Live Dashboard", Icon: LayoutDashboard, primary: true },
+  { href: "/dashboard", label: "Dashboard", Icon: LayoutDashboard },
 ];
 
 export default function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const onDashboard = pathname === "/dashboard";
 
   return (
     <header
@@ -51,7 +51,7 @@ export default function Header() {
         boxShadow: "0 1px 3px rgba(62, 39, 35, 0.04)",
       }}
     >
-      {/* ── Logo ── */}
+      {/* Logo */}
       <Link
         href="/"
         style={{
@@ -68,15 +68,14 @@ export default function Header() {
             width: 34,
             height: 34,
             borderRadius: "var(--radius-md)",
-            background:
-              "linear-gradient(135deg, var(--accent-violet), var(--accent-amber))",
+            background: "linear-gradient(135deg, var(--accent-violet), var(--accent-amber))",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             color: "#FFFFFF",
           }}
         >
-          <Zap size={17} aria-hidden="true" />
+          <Network size={17} aria-hidden="true" />
         </div>
         <div>
           <span
@@ -90,44 +89,21 @@ export default function Header() {
           >
             SatsRouter
           </span>
-          <span
-            style={{
-              fontSize: "10px",
-              color: "var(--text-muted)",
-              fontWeight: 500,
-            }}
-          >
+          <span style={{ fontSize: "10px", color: "var(--text-muted)", fontWeight: 500 }}>
             Lightning Agent Economy
           </span>
         </div>
       </Link>
 
-      {/* ── Desktop Navigation ── */}
+      {/* Desktop Navigation */}
       <nav
         className="hide-mobile"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "var(--space-2)",
-        }}
+        style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}
       >
         {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href || 
+          const isActive =
+            pathname === item.href ||
             (item.href !== "/" && pathname.startsWith(item.href));
-
-          if (item.primary) {
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="btn btn-primary"
-                style={{ marginLeft: "var(--space-2)" }}
-              >
-                {item.label}
-              </Link>
-            );
-          }
-
           return (
             <Link
               key={item.href}
@@ -152,9 +128,20 @@ export default function Header() {
             </Link>
           );
         })}
+
+        {onDashboard && (
+          <Link
+            href="#trigger"
+            className="btn btn-primary"
+            style={{ marginLeft: "var(--space-2)", display: "inline-flex", alignItems: "center", gap: 5 }}
+          >
+            <Zap size={14} aria-hidden="true" />
+            Trigger Incident
+          </Link>
+        )}
       </nav>
 
-      {/* ── Mobile Hamburger ── */}
+      {/* Mobile Hamburger */}
       <button
         className="show-mobile"
         onClick={() => setMobileOpen(!mobileOpen)}
@@ -176,7 +163,7 @@ export default function Header() {
         {mobileOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
       </button>
 
-      {/* ── Mobile Menu Overlay ── */}
+      {/* Mobile Menu Overlay */}
       {mobileOpen && (
         <div
           style={{
@@ -196,9 +183,9 @@ export default function Header() {
           }}
         >
           {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href || 
+            const isActive =
+              pathname === item.href ||
               (item.href !== "/" && pathname.startsWith(item.href));
-
             return (
               <Link
                 key={item.href}
@@ -224,6 +211,18 @@ export default function Header() {
               </Link>
             );
           })}
+
+          {onDashboard && (
+            <Link
+              href="#trigger"
+              onClick={() => setMobileOpen(false)}
+              className="btn btn-primary"
+              style={{ marginTop: "var(--space-2)", justifyContent: "center", display: "flex", alignItems: "center", gap: 8 }}
+            >
+              <Zap size={20} aria-hidden="true" />
+              Trigger Incident
+            </Link>
+          )}
         </div>
       )}
     </header>
