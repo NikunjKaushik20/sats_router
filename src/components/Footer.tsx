@@ -23,8 +23,7 @@ const FOOTER_LINKS = {
     { href: "https://lightning.network", label: "Lightning Network", external: true },
   ],
   hackathon: [
-    { href: "https://github.com", label: "Source Code", external: true },
-    { href: "#", label: "Spiral Challenge 02" },
+    { href: "https://github.com/nikunjkaushik20/sats_router", label: "Source Code", external: true },
   ],
 };
 
@@ -260,7 +259,6 @@ export default function Footer() {
             ))}
           </ul>
 
-          {/* Spiral Challenge Badge */}
           <div
             style={{
               marginTop: "var(--space-5)",
@@ -279,9 +277,10 @@ export default function Footer() {
                 fontSize: "10px",
                 fontWeight: 700,
                 color: "var(--accent-amber)",
+                lineHeight: 1.4,
               }}
             >
-              Spiral Challenge 02
+              Hack Nation Global AI Hackathon<br />Spiral Challenge 02
             </span>
           </div>
         </div>
@@ -306,7 +305,7 @@ export default function Footer() {
             fontWeight: 500,
           }}
         >
-          &copy; {currentYear} SatsRouter. Built for Spiral Challenge 02.
+          &copy; {currentYear} SatsRouter. Built for Hack Nation Global AI Hackathon &mdash; Spiral Challenge 02.
         </span>
         <span
           style={{
