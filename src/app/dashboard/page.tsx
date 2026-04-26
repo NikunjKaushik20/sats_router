@@ -367,91 +367,7 @@ export default function Dashboard() {
         />
       ))}
 
-      {/* Dashboard Toolbar — page-specific controls */}
-      <div
-        style={{
-          padding: "var(--space-3) var(--space-8)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          gap: "var(--space-2)",
-          borderBottom: "1px solid var(--border-subtle)",
-          background: "var(--bg-secondary)",
-          flexWrap: "wrap",
-        }}
-      >
-        {/* Lightning node status pill */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-2)",
-            padding: "5px var(--space-3)",
-            borderRadius: "var(--radius-full)",
-            border: `1px solid ${wallet.status === "connected" ? "rgba(22,101,52,0.3)" : "var(--border)"}`,
-            background:
-              wallet.status === "connected"
-                ? "rgba(22,101,52,0.07)"
-                : "rgba(62, 39, 35, 0.03)",
-            fontSize: "var(--text-xs)",
-            fontWeight: 600,
-          }}
-        >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background:
-                wallet.status === "connected"
-                  ? "var(--accent-emerald)"
-                  : "var(--accent-amber)",
-              display: "inline-block",
-              flexShrink: 0,
-            }}
-          />
-          <span style={{ color: wallet.status === "connected" ? "var(--accent-emerald)" : "var(--text-muted)" }}>
-            {wallet.status === "loading"
-              ? "Connecting..."
-              : "Lightning Node • Live"}
-          </span>
-        </div>
 
-        {/* Divider */}
-        <div style={{ width: 1, height: 20, background: "var(--border)" }} />
-
-        {/* Bounty Board */}
-        <Link
-          href="/bounties"
-          style={{
-            padding: "var(--space-2) var(--space-4)",
-            borderRadius: "var(--radius-md)",
-            border: "1px solid rgba(180,83,9,0.3)",
-            background: "rgba(180,83,9,0.07)",
-            color: "var(--accent-amber)",
-            fontWeight: 600,
-            fontSize: "var(--text-sm)",
-            textDecoration: "none",
-            transition: "all var(--transition-base)",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <Coins size={14} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Bounty Board
-        </Link>
-
-        {/* Trigger Incident */}
-        <button
-          onClick={handleTriggerDemo}
-          disabled={isOrchestratingDemo}
-          className="btn btn-primary"
-          style={{
-            opacity: isOrchestratingDemo ? 0.7 : 1,
-            cursor: isOrchestratingDemo ? "not-allowed" : "pointer",
-          }}
-        >
-          {isOrchestratingDemo ? <><Loader2 size={14} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} className="animate-spin" /> Working...</> : <><Zap size={14} aria-hidden="true" style={{ marginRight: 4, verticalAlign: "middle" }} /> Trigger Incident</>}
-        </button>
-      </div>
 
       {/* Budget Burn-Down Bar */}
       {budget && (
@@ -763,8 +679,6 @@ export default function Dashboard() {
           style={{
             borderRadius: "16px",
             padding: "18px",
-            display: "flex",
-            flexDirection: "column",
           }}
         >
           <h2
@@ -782,12 +696,11 @@ export default function Dashboard() {
           <div
             ref={eventFeedRef}
             style={{
-              flex: 1,
               overflowY: "auto",
               display: "flex",
               flexDirection: "column",
               gap: "5px",
-              maxHeight: "65vh",
+              maxHeight: "55vh",
             }}
           >
             {events.length === 0 ? (
@@ -907,8 +820,6 @@ export default function Dashboard() {
           style={{
             borderRadius: "16px",
             padding: "18px",
-            display: "flex",
-            flexDirection: "column",
           }}
         >
           <h2
@@ -926,12 +837,11 @@ export default function Dashboard() {
           <div
             ref={thoughtLogRef}
             style={{
-              flex: 1,
               overflowY: "auto",
               display: "flex",
               flexDirection: "column",
               gap: "5px",
-              maxHeight: "65vh",
+              maxHeight: "55vh",
             }}
           >
             {orchestratorEvents.length === 0 ? (
