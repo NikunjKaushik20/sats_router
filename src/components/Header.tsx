@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -130,14 +130,14 @@ export default function Header() {
         })}
 
         {onDashboard && (
-          <Link
-            href="#trigger"
+          <button
+            onClick={() => window.dispatchEvent(new Event("triggerDemo"))}
             className="btn btn-primary"
-            style={{ marginLeft: "var(--space-2)", display: "inline-flex", alignItems: "center", gap: 5 }}
+            style={{ marginLeft: "var(--space-2)", display: "inline-flex", alignItems: "center", gap: 5, border: "none", cursor: "pointer" }}
           >
             <Zap size={14} aria-hidden="true" />
             Trigger Incident
-          </Link>
+          </button>
         )}
       </nav>
 
@@ -213,15 +213,17 @@ export default function Header() {
           })}
 
           {onDashboard && (
-            <Link
-              href="#trigger"
-              onClick={() => setMobileOpen(false)}
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                window.dispatchEvent(new Event("triggerDemo"));
+              }}
               className="btn btn-primary"
-              style={{ marginTop: "var(--space-2)", justifyContent: "center", display: "flex", alignItems: "center", gap: 8 }}
+              style={{ marginTop: "var(--space-2)", justifyContent: "center", display: "flex", alignItems: "center", gap: 8, border: "none", cursor: "pointer" }}
             >
               <Zap size={20} aria-hidden="true" />
               Trigger Incident
-            </Link>
+            </button>
           )}
         </div>
       )}

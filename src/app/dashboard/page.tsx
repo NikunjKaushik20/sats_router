@@ -299,6 +299,17 @@ export default function Dashboard() {
     }
   };
 
+  // Listen for the custom event dispatched from the Header's "Trigger Incident" button
+  useEffect(() => {
+    const handleTrigger = () => {
+      handleTriggerDemo();
+    };
+
+    window.addEventListener("triggerDemo", handleTrigger);
+    return () => window.removeEventListener("triggerDemo", handleTrigger);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleHumanAction = async (taskId: string, action: "approve" | "reject") => {
     setHumanInflight((prev) => ({ ...prev, [taskId]: true }));
     const rewardInvoice = humanInvoices[taskId]?.trim() || undefined;
