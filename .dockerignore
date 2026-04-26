@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Next.js
+.next
+out
+
+# Build
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database (will be created at runtime)
+dev.db
+dev.db-journal
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Vercel (not needed for DO)
+.vercel
+vercel.json
+
+# Docs / misc
+docs
+README.md
+LICENSE
+*.md
+!prisma/migrations/**/*.sql

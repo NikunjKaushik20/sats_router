@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  satsrouter:
+    build: .
+    container_name: satsrouter
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      # Persist SQLite database across container restarts/redeployments
+      - satsrouter-data:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - DATABASE_URL=file:/app/data/satsrouter.db
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      # ── Secrets (set these in .env or via DigitalOcean App Platform) ──
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - MDK_ACCESS_TOKEN=${MDK_ACCESS_TOKEN}
+      - MDK_MNEMONIC=${MDK_MNEMONIC}
+      - MDK_WEBHOOK_SECRET=${MDK_WEBHOOK_SECRET}
+      - AGENT_WALLET_URL=${AGENT_WALLET_URL:-}
+      # ── Optional provider payout addresses ──
+      - PAYOUT_QUICK_SCANNER=${PAYOUT_QUICK_SCANNER:-}
+      - PAYOUT_DEEP_DIAGNOSER=${PAYOUT_DEEP_DIAGNOSER:-}
+      - PAYOUT_STORYTELLER=${PAYOUT_STORYTELLER:-}
+      - PAYOUT_HUMAN_VERIFIER=${PAYOUT_HUMAN_VERIFIER:-}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  satsrouter-data:
+    driver: local
