@@ -4,7 +4,6 @@
 
 Built for [Spiral Challenge 02](https://hacknation.com) — *Earn in the Agent Economy*
 
-In collaboration with MIT Club of Northern California and MIT Club of Germany
 
 ---
 
