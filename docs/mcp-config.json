@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "satsrouter": {
+      "command": "npx",
+      "args": ["tsx", "src/mcp/server.ts"],
+      "cwd": ".",
+      "env": {
+        "SATSROUTER_URL": "http://localhost:3000"
+      }
+    }
+  }
+}

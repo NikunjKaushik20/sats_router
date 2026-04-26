@@ -1,7 +1,5 @@
-import type { NextConfig } from "next";
+import withMdkCheckout from "@moneydevkit/nextjs/next-plugin";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-
-export default nextConfig;
+export default withMdkCheckout({
+  /* additional Next.js config options here */
+});
