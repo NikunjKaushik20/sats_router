@@ -53,6 +53,9 @@ RUN addgroup --system --gid 1001 nodejs && \
 # ── Next.js standalone output ──
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# public/ may be empty — create first so COPY never fails on a missing dir
+RUN mkdir -p ./public
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # ── Prisma schema + migrations (for migrate deploy at runtime) ──
