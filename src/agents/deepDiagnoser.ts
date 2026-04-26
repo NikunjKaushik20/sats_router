@@ -1,17 +1,16 @@
 import OpenAI from "openai";
 import type { DeepDiagnosis } from "@/types";
 
-const client = new OpenAI();
-
 /**
  * Agent C — Deep Diagnoser
- * Thorough root-cause analysis. Uses gpt-4o for depth.
+ * Thorough root-cause analysis. Uses gpt-4o-mini for depth.
  * Cost: 20 sats per request.
  */
 export async function runDeepDiagnoser(
   logs: string[],
   context?: string
 ): Promise<DeepDiagnosis> {
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const response = await client.chat.completions.create({
     model: "gpt-4o-mini",
     max_tokens: 600,

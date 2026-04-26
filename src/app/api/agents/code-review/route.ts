@@ -1,8 +1,6 @@
 import { withPayment } from "@moneydevkit/nextjs/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI();
-
 /**
  * L402-protected Code Reviewer endpoint — 8 sats per request.
  *
@@ -13,6 +11,7 @@ const openai = new OpenAI();
  * Returns: { issues: string[], score: number, suggestions: string[] }
  */
 const handler = async (req: Request) => {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const { code, language } = await req.json();
 
   if (!code) {

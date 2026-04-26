@@ -1,8 +1,6 @@
 import OpenAI from "openai";
 import type { DeepDiagnosis } from "@/types";
 
-const client = new OpenAI();
-
 /**
  * Agent D — Storyteller
  * Converts structured diagnosis into human-friendly incident summary.
@@ -10,6 +8,7 @@ const client = new OpenAI();
  * Cost: 10 sats per request.
  */
 export async function runStoryteller(diagnosis: DeepDiagnosis): Promise<string> {
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const response = await client.chat.completions.create({
     model: "gpt-4o-mini",
     max_tokens: 400,

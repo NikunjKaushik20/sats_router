@@ -12,7 +12,6 @@ import type { OrchestrationPlan } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
-const client = new OpenAI();
 
 /**
  * The Orchestrator — Riya's brain.
@@ -309,6 +308,7 @@ async function createPlan(
   ).join("\n");
 
   try {
+    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const response = await client.chat.completions.create({
       model: "gpt-4o-mini",
       max_tokens: 500,
