@@ -5,29 +5,29 @@ echo "╔═══════════════════════�
 echo "║     SatsRouter — Starting up...        ║"
 echo "╚════════════════════════════════════════╝"
 
+# ── Ensure data directory exists ────────────────────────────────────────
+mkdir -p /app/data
+
 # ── 1. Run Prisma migrations ────────────────────────────────────────────
 echo "→ Running database migrations..."
-npx prisma migrate deploy 2>&1 || {
-  echo "⚠ Migration failed — attempting to create fresh database..."
-  npx prisma migrate deploy --create-only 2>&1 || true
-  npx prisma migrate deploy 2>&1
-}
+npx prisma migrate deploy --schema=prisma/schema.prisma
 echo "✓ Migrations applied"
 
-# ── 2. Seed database if empty ───────────────────────────────────────────
-# Only seed if the Provider table has 0 rows (first boot)
+# ── 2. Seed database if empty (first boot) ──────────────────────────────
 PROVIDER_COUNT=$(node -e "
 const { PrismaClient } = require('@prisma/client');
 const p = new PrismaClient();
-p.provider.count().then(c => { console.log(c); p.\$disconnect(); }).catch(() => { console.log(0); p.\$disconnect(); });
+p.provider.count()
+  .then(c => { console.log(c); return p.\$disconnect(); })
+  .catch(() => { console.log(0); return p.\$disconnect(); });
 " 2>/dev/null || echo "0")
 
 if [ "$PROVIDER_COUNT" = "0" ]; then
-  echo "→ First boot detected — seeding demo data..."
-  npx tsx scripts/seed.ts 2>&1 || echo "⚠ Seeding failed (non-fatal, app will still start)"
+  echo "→ First boot — seeding demo data..."
+  npx tsx scripts/seed.ts 2>&1 || echo "⚠ Seeding failed (non-fatal)"
   echo "✓ Seed complete"
 else
-  echo "→ Database already seeded ($PROVIDER_COUNT providers found)"
+  echo "→ Database already has $PROVIDER_COUNT providers, skipping seed"
 fi
 
 # ── 3. Start Next.js ────────────────────────────────────────────────────

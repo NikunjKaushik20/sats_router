@@ -58,8 +58,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 RUN mkdir -p ./public
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# ── Prisma schema + migrations (for migrate deploy at runtime) ──
+# ── Prisma schema + migrations + config (all required for migrate deploy) ──
+# Prisma 7.x reads DATABASE_URL from prisma.config.ts, not schema.prisma
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.ts
 
 # ── Seed script ──
 COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
