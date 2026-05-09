@@ -1,0 +1,157 @@
+{
+  "version": "v2.3",
+  "traceWeights": {
+    "w1_completionRate": 0.25,
+    "w2_repaymentRate": 0.2,
+    "w3_networkTrust": 0.1,
+    "w4_stakeRatio": 0.1,
+    "w5_successfulEscrowRate": 0.15,
+    "w6_defaultProbability": 0.3,
+    "w7_sybilRisk": 0.25,
+    "w8_disputeRate": 0.1
+  },
+  "riskTiers": {
+    "A": {
+      "min": 850,
+      "max": 1000,
+      "label": "A — Prime"
+    },
+    "B": {
+      "min": 700,
+      "max": 849,
+      "label": "B — Standard"
+    },
+    "C": {
+      "min": 550,
+      "max": 699,
+      "label": "C — Elevated Risk"
+    },
+    "D": {
+      "min": 0,
+      "max": 549,
+      "label": "D — High Risk"
+    }
+  },
+  "defaultProbWeights": {
+    "repaymentFailureWeight": 0.3,
+    "disputeWeight": 0.2,
+    "recentInstabilityWeight": 0.25,
+    "stakePenaltyWeight": 0.1,
+    "historyWeight": 0.15
+  },
+  "recentFailure": {
+    "windowRounds": 5,
+    "amplificationMultiplier": 2.5,
+    "decayPerRound": 0.3
+  },
+  "routingUtility": {
+    "alpha_traceScore": 0.4,
+    "beta_defaultRisk": 0.3,
+    "gamma_cost": 0.15,
+    "delta_networkTrust": 0.1,
+    "epsilon_capability": 0.1,
+    "lambda_sybilPenalty": 0.2,
+    "mu_cliquePenalty": 0.15
+  },
+  "routingConstraints": {
+    "minTraceScore": 300,
+    "maxDefaultProbability": 0.6,
+    "maxSybilRisk": 0.6,
+    "maxActiveDisputes": 3
+  },
+  "coldStart": {
+    "maxJobsForBonus": 5,
+    "explorationBonus": 30,
+    "maxExposureSats": 30
+  },
+  "progressiveTrust": {
+    "minJobsForFullAccess": 10,
+    "accessScalePerJob": 0.1,
+    "stakeBoostMultiplier": 1.5
+  },
+  "scoreDeltas": {
+    "JOB_SUCCESS": 30,
+    "JOB_FAILURE": -50,
+    "ESCROW_RELEASED": 20,
+    "ESCROW_REFUNDED": -30,
+    "DISPUTE": -60,
+    "DEFAULT": -100,
+    "STAKE_ADDED": 15,
+    "STAKE_SLASHED": -80,
+    "PAYMENT_SETTLED": 10,
+    "HUMAN_VERIFIED": 5
+  },
+  "trustGraphValidation": {
+    "maxNetworkTrust": 0.8,
+    "minDiverseEdges": 3,
+    "clusterInteractionPenalty": 0.5,
+    "circularPenaltyPerCycle": 0.15,
+    "maxCircularPenalty": 0.6,
+    "edgeWeightCap": 5
+  },
+  "counterpartyDiversity": {
+    "minEntropyForFullTrust": 1.5,
+    "entropyPenaltyWeight": 0.3
+  },
+  "repeatedPair": {
+    "decayConstant": 3,
+    "maxSinglePairContribution": 0.15
+  },
+  "economicVolumeWeighting": {
+    "minVolumeForFullWeight": 20
+  },
+  "eventValidation": {
+    "requireJobForTrustUpdate": true,
+    "deduplicationWindowMs": 5000,
+    "weightByPaymentSize": true,
+    "weightByDiversity": true,
+    "maxEventsPerProviderPerRound": 10
+  },
+  "trustDecay": {
+    "halfLifeMs": 432000000,
+    "inactivityPenaltyMs": 259200000,
+    "inactivityPenaltyRate": 0.1
+  },
+  "volatility": {
+    "maxAcceptableVolatility": 80,
+    "volatilityPenaltyWeight": 0.15
+  },
+  "adaptiveScaling": {
+    "targetScale": 100,
+    "minPenaltyScale": 0.3,
+    "entropyConfidenceK": 15,
+    "decayMaturityK": 10,
+    "enabled": true
+  },
+  "causalConfig": {
+    "minInitiationsForFlag": 2,
+    "initiationWeight": 0.4,
+    "centralityWeight": 0.3,
+    "damageWeight": 0.3,
+    "collateralRatioThreshold": 3,
+    "cascadeWindowRounds": 3,
+    "collateralPenaltyReduction": 0.5,
+    "rootCauseAmplification": 1.5,
+    "maxSuspicion": 1,
+    "enabled": true
+  },
+  "temporalConfig": {
+    "minHistoryRounds": 8,
+    "velocityFlagPercentile": 0.85,
+    "velocityWeight": 0.25,
+    "entropySlopeWindow": 10,
+    "entropyBurstThreshold": 0.15,
+    "lowEntropyPhaseMinRounds": 5,
+    "lowEntropyThreshold": 0.5,
+    "diversityMaturityWeight": 0.2,
+    "minPairInteractions": 3,
+    "symmetryFlagThreshold": 0.85,
+    "reciprocalWeight": 0.25,
+    "fullDepthSats": 500,
+    "economicDepthWeight": 0.15,
+    "inertiaMultiplier": 0.5,
+    "accelerationWeight": 0.15,
+    "enabled": true
+  },
+  "snapshotAt": "2026-05-09T11:12:01.946Z"
+}

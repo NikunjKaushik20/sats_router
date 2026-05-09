@@ -1,0 +1,29 @@
+{
+  "title": "Figure 6: Honest Routing Share by Version",
+  "yLabel": "Honest Routing Share (%)",
+  "xLabel": "TRACE Version",
+  "data": [
+    {
+      "version": "v2.1",
+      "mean": 82,
+      "std": 12,
+      "label": "v2.1 (baseline)"
+    },
+    {
+      "version": "v2.2",
+      "mean": 79,
+      "std": 13,
+      "label": "v2.2 (+adaptive+causal)"
+    },
+    {
+      "version": "v2.3",
+      "mean": 79,
+      "std": 12,
+      "label": "v2.3 (+temporal)"
+    }
+  ],
+  "annotations": [
+    "v2.2/v2.3: −3pp honest routing vs v2.1"
+  ],
+  "note": "Honest routing share = 1 − malicious routing rate (proxy for false suppression)"
+}

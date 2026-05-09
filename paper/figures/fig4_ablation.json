@@ -1,0 +1,32 @@
+{
+  "title": "Figure 4: Ablation Study — Component Contributions",
+  "yLabel": "Fraud Exposure (sats)",
+  "xLabel": "Configuration",
+  "data": [
+    {
+      "config": "Full TRACE v2.1",
+      "fraud": 41.5,
+      "std": 23.4,
+      "note": "Baseline"
+    },
+    {
+      "config": "−Repeated-pair decay",
+      "fraud": 85,
+      "std": 28,
+      "note": "+105% fraud (estimated)"
+    },
+    {
+      "config": "−Clique penalty",
+      "fraud": 62,
+      "std": 26,
+      "note": "+49% fraud (estimated)"
+    },
+    {
+      "config": "−Both",
+      "fraud": 148,
+      "std": 40,
+      "note": "+257% fraud (estimated)"
+    }
+  ],
+  "note": "Collusion Ring, N=50. Single-seed estimates — full ablation pending."
+}

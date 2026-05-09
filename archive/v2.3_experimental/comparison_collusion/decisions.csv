@@ -1,0 +1,3 @@
+attack,scale,criterion,best_version,values
+collusion-ring,50,fraud_mean,v2.1,36.85|39|44.95
+collusion-ring,50,fraud_variance,v2.1,22.84|24.21|30.82

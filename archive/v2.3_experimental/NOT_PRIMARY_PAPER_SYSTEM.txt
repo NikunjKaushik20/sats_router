@@ -1,0 +1,3 @@
+NOT PRIMARY PAPER SYSTEM
+These are exploratory extensions validated and rejected 2026-05-09.
+See results/VALIDATION_RESULTS.md for evidence.

@@ -1,0 +1,33 @@
+{
+  "title": "Figure 2: Threat Model Overview",
+  "attacks": [
+    {
+      "name": "Collusion Ring",
+      "behavior": "Mutual endorsement among colluders",
+      "target": "Routing share via inflated scores",
+      "indicator": "Low counterparty entropy",
+      "color": "#e74c3c"
+    },
+    {
+      "name": "Strategic Default",
+      "behavior": "Build history, then selectively default",
+      "target": "Payment extraction",
+      "indicator": "High repayment then sudden drops",
+      "color": "#e67e22"
+    },
+    {
+      "name": "Sybil Cluster",
+      "behavior": "Multiple fake identities",
+      "target": "Routing share via volume",
+      "indicator": "Concentrated new-agent routing",
+      "color": "#9b59b6"
+    },
+    {
+      "name": "Whitewashing",
+      "behavior": "Reset identity when penalized",
+      "target": "Escape trust penalties",
+      "indicator": "Recurring new-agent anomalies",
+      "color": "#3498db"
+    }
+  ]
+}

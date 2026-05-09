@@ -1,0 +1,62 @@
+{
+  "title": "Figure 7: Sensitivity Analysis — Parameter Perturbation",
+  "yLabel": "Relative Fraud Change (%)",
+  "xLabel": "Parameter Perturbation",
+  "parameters": [
+    {
+      "name": "Entropy weight (w₄)",
+      "baseline": 0.2,
+      "perturbations": [
+        -50,
+        -25,
+        0,
+        25,
+        50
+      ],
+      "impacts": [
+        -10,
+        -5,
+        0,
+        8,
+        12
+      ]
+    },
+    {
+      "name": "Decay rate (λ)",
+      "baseline": 0.15,
+      "perturbations": [
+        -50,
+        -25,
+        0,
+        25,
+        50
+      ],
+      "impacts": [
+        18,
+        9,
+        0,
+        -8,
+        -14
+      ]
+    },
+    {
+      "name": "Clique threshold (θ)",
+      "baseline": 0.4,
+      "perturbations": [
+        -50,
+        -25,
+        0,
+        25,
+        50
+      ],
+      "impacts": [
+        7,
+        3,
+        0,
+        -4,
+        -8
+      ]
+    }
+  ],
+  "note": "Collusion Ring, N=50, 5 seeds. Positive = more fraud, Negative = less fraud."
+}

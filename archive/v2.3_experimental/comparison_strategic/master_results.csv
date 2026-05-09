@@ -1,0 +1,16 @@
+version,attack,scale,metric,mean,std,median,q1,q3,min,max,n
+v2.1,strategic-default,50,Success Rate,0.95,0.01,0.95,0.94,0.96,0.93,0.97,20
+v2.2,strategic-default,50,Success Rate,0.95,0.01,0.95,0.94,0.96,0.93,0.97,20
+v2.3,strategic-default,50,Success Rate,0.95,0.01,0.95,0.94,0.96,0.92,0.97,20
+v2.1,strategic-default,50,Fraud (sats),12.95,14.09,7,0,21.75,0,40,20
+v2.2,strategic-default,50,Fraud (sats),12.65,14.37,10.5,0,18,0,54,20
+v2.3,strategic-default,50,Fraud (sats),16.7,12.41,12.5,8.75,28.75,0,40,20
+v2.1,strategic-default,50,Mal. Routing,0.26,0.14,0.26,0.15,0.35,0.05,0.52,20
+v2.2,strategic-default,50,Mal. Routing,0.22,0.12,0.25,0.11,0.29,0.05,0.49,20
+v2.3,strategic-default,50,Mal. Routing,0.26,0.15,0.27,0.14,0.38,0.04,0.52,20
+v2.1,strategic-default,50,Recovery (rds),1.85,1.5,2,0.75,3,0,5,20
+v2.2,strategic-default,50,Recovery (rds),2.15,1.57,3,0.75,3,0,4,20
+v2.3,strategic-default,50,Recovery (rds),2.1,1.29,2.5,1,3,0,4,20
+v2.1,strategic-default,50,Concentration,0.14,0.01,0.14,0.14,0.15,0.13,0.16,20
+v2.2,strategic-default,50,Concentration,0.14,0.01,0.14,0.14,0.15,0.13,0.16,20
+v2.3,strategic-default,50,Concentration,0.14,0.01,0.14,0.14,0.15,0.13,0.16,20

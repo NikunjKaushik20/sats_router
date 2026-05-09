@@ -1,0 +1,22 @@
+{
+  "title": "Figure 1: TRACE System Architecture",
+  "note": "See paper/diagrams/architecture.md for diagram description — requires manual rendering",
+  "components": [
+    "Orchestrator: receives task requests, selects provider",
+    "Provider Registry: list of available agents with current TRACE scores",
+    "TRACE Scorer: computes 6-factor composite trust score",
+    "Routing Utility: balances quality/price/risk/diversity",
+    "Economic Ledger: records interactions and outcomes",
+    "Trust Updater: updates scores after each settled invoice",
+    "Lightning Settlement: cryptographic payment on task completion"
+  ],
+  "dataFlow": [
+    "Task Request → Orchestrator",
+    "Orchestrator → Provider Registry (query)",
+    "Provider Registry → TRACE Scorer (scores)",
+    "TRACE Scorer → Routing Utility (compute U(a))",
+    "Routing Utility → Provider Selection",
+    "Provider → Task Execution → Lightning Settlement",
+    "Settlement → Economic Ledger → Trust Updater → TRACE Scorer"
+  ]
+}

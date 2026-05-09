@@ -1,0 +1,41 @@
+attack,scale,comparison,metric,mean_a,mean_b,delta,p_value,cliffs_delta,interpretation,significant
+collusion-ring,50,Success Rate,2,0,1,0,0,negligible,false
+collusion-ring,50,Fraud (sats),0,1.5492,0.1213,1,1,large,false
+collusion-ring,50,Mal. Routing,1.5,-0.3873,0.6985,0.25,-0.25,small,false
+collusion-ring,50,Recovery (rds),2,0,1,0,0,negligible,false
+collusion-ring,50,Concentration,1.5,-0.3873,0.6985,0.25,-0.25,small,false
+collusion-ring,50,Success Rate,178.5,0.5816,0.5609,0.1075,0.1075,negligible,false
+collusion-ring,50,Fraud (sats),186.5,-0.3652,0.715,0.0675,-0.0675,negligible,false
+collusion-ring,50,Mal. Routing,155.5,-1.2037,0.2287,0.2225,-0.2225,small,false
+collusion-ring,50,Recovery (rds),170,0.8115,0.4171,0.15,0.15,small,false
+collusion-ring,50,Concentration,145.5,1.4742,0.1404,0.2725,0.2725,small,false
+collusion-ring,50,v2.1_vs_v2.2,Success Rate,184.5,-0.4193,0.675,0.0775,-0.0775,negligible,false
+collusion-ring,50,v2.1_vs_v2.2,Fraud (sats),194.5,-0.1488,0.8817,0.0275,-0.0275,negligible,false
+collusion-ring,50,v2.1_vs_v2.2,Mal. Routing,183,-0.4599,0.6456,0.085,-0.085,negligible,false
+collusion-ring,50,v2.1_vs_v2.2,Recovery (rds),179.5,-0.5545,0.5792,0.1025,-0.1025,negligible,false
+collusion-ring,50,v2.1_vs_v2.2,Concentration,182.5,-0.4734,0.6359,0.0875,-0.0875,negligible,false
+collusion-ring,50,v2.1_vs_v2.3,Success Rate,181.5,0.5004,0.6168,0.0925,0.0925,negligible,false
+collusion-ring,50,v2.1_vs_v2.3,Fraud (sats),169.5,-0.825,0.4094,0.1525,-0.1525,small,false
+collusion-ring,50,v2.1_vs_v2.3,Mal. Routing,177.5,-0.6086,0.5428,0.1125,-0.1125,negligible,false
+collusion-ring,50,v2.1_vs_v2.3,Recovery (rds),190,-0.2705,0.7868,0.05,-0.05,negligible,false
+collusion-ring,50,v2.1_vs_v2.3,Concentration,136,-1.7312,0.0834,0.32,-0.32,small,false
+collusion-ring,50,v2.2_vs_v2.3,Success Rate,168,0.8656,0.3867,0.16,0.16,small,false
+collusion-ring,50,v2.2_vs_v2.3,Fraud (sats),185.5,-0.3922,0.6949,0.0725,-0.0725,negligible,false
+collusion-ring,50,v2.2_vs_v2.3,Mal. Routing,198.5,-0.0406,0.9676,0.0075,-0.0075,negligible,false
+collusion-ring,50,v2.2_vs_v2.3,Recovery (rds),189,0.2976,0.766,0.055,0.055,negligible,false
+collusion-ring,50,v2.2_vs_v2.3,Concentration,159.5,-1.0955,0.2733,0.2025,-0.2025,small,false
+strategic-default,50,v2.1_vs_v2.2,Success Rate,194,0.1623,0.8711,0.03,0.03,negligible,false
+strategic-default,50,v2.1_vs_v2.2,Fraud (sats),194.5,0.1488,0.8817,0.0275,0.0275,negligible,false
+strategic-default,50,v2.1_vs_v2.2,Mal. Routing,169.5,0.825,0.4094,0.1525,0.1525,small,false
+strategic-default,50,v2.1_vs_v2.2,Recovery (rds),172.5,-0.7439,0.457,0.1375,-0.1375,negligible,false
+strategic-default,50,v2.1_vs_v2.2,Concentration,175,0.6763,0.4989,0.125,0.125,negligible,false
+strategic-default,50,v2.1_vs_v2.3,Success Rate,180,0.541,0.5885,0.1,0.1,negligible,false
+strategic-default,50,v2.1_vs_v2.3,Fraud (sats),158,-1.1361,0.2559,0.21,-0.21,small,false
+strategic-default,50,v2.1_vs_v2.3,Mal. Routing,195.5,-0.1217,0.9031,0.0225,-0.0225,negligible,false
+strategic-default,50,v2.1_vs_v2.3,Recovery (rds),176,-0.6492,0.5162,0.12,-0.12,negligible,false
+strategic-default,50,v2.1_vs_v2.3,Concentration,173,0.7304,0.4652,0.135,0.135,negligible,false
+strategic-default,50,v2.2_vs_v2.3,Success Rate,185.5,0.3922,0.6949,0.0725,0.0725,negligible,false
+strategic-default,50,v2.2_vs_v2.3,Fraud (sats),160,-1.082,0.2793,0.2,-0.2,small,false
+strategic-default,50,v2.2_vs_v2.3,Mal. Routing,168.5,-0.8521,0.3942,0.1575,-0.1575,small,false
+strategic-default,50,v2.2_vs_v2.3,Recovery (rds),189.5,0.284,0.7764,0.0525,0.0525,negligible,false
+strategic-default,50,v2.2_vs_v2.3,Concentration,195.5,-0.1217,0.9031,0.0225,-0.0225,negligible,false

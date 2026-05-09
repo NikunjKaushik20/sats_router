@@ -1,0 +1,32 @@
+{
+  "title": "Figure 5: Complexity vs Stability (Collusion Ring, N=50, 20 seeds)",
+  "yLabel": "Value",
+  "versions": [
+    "v2.1",
+    "v2.2",
+    "v2.3"
+  ],
+  "data": {
+    "fraudMean": [
+      36.9,
+      39,
+      45
+    ],
+    "fraudSigma": [
+      22.84,
+      24.21,
+      30.82
+    ],
+    "honestRouting": [
+      82,
+      79,
+      79
+    ],
+    "catastrophicSeeds": [
+      1,
+      1,
+      2
+    ]
+  },
+  "note": "Data from 120-experiment validation matrix (3 versions × 2 attacks × 20 seeds)"
+}
