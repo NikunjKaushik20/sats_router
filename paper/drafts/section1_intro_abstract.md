@@ -1,32 +1,75 @@
 # TRACE Paper — Introduction + Abstract
-# Draft v1 — 2026-05-09
-# NOTE: Written AFTER results section. Revised to match evidence precisely.
+# Draft v2 — 2026-05-09 (Polish pass: claim-calibrated, hype-removed)
 
 ---
 
 ## Abstract
 
-Autonomous AI agent marketplaces — where software agents discover, contract, and settle payments with each other without human intervention — face a fundamental trust problem: providers have economic incentives to misrepresent their reliability, and no centralized authority governs their behavior. We present TRACE (Trust-Routed Agent Coordination Engine), a lightweight composite trust scoring system for adversarial AI agent marketplaces operating over the Bitcoin Lightning Network. TRACE integrates completion history, counterparty entropy diversity, repeated-pair interaction decay, and Sybil-resistance mechanisms into a unified routing utility. We evaluate TRACE against reputation-only and price-only baselines under four adversarial attack types across network scales of N ∈ {30, 50, 100} agents using 20-seed multi-seed experiments with Mann-Whitney statistical testing. TRACE reduces fraud exposure by 73% versus price-based routing under collusion attacks and uniquely maintains robustness under strategic-default attacks where reputation-only systems suffer catastrophic failure (18× higher fraud exposure). We additionally report a complexity-instability finding: two proposed architectural extensions (adaptive scaling and temporal trust dynamics) increase fraud variance by up to 35% and reduce honest agent routing share by 3 percentage points versus the baseline system, without statistically significant improvement in central fraud tendency. These results suggest that adversarial trust systems require careful calibration of detection sophistication against false-positive stability.
+Autonomous agent marketplaces — where software agents discover, contract, and settle payments
+without human oversight — face a fundamental trust problem: providers have economic incentives to
+misrepresent their reliability, and no centralized authority governs their behavior. We present
+TRACE (Trust-Routed Agent Coordination Engine), a lightweight composite trust scoring system for
+adversarial agent marketplaces settling payments over the Bitcoin Lightning Network. TRACE
+integrates completion history, counterparty entropy diversity, repeated-pair interaction decay, and
+Sybil-resistance mechanisms into a routing utility that balances service quality, price, and
+behavioral risk. We evaluate TRACE against reputation-only and price-only baselines under four
+adversarial attack types across network scales N ∈ {30, 50, 100}, using 20-seed experiments with
+Mann-Whitney U statistical testing and Cliff's Delta effect-size measurement. Under collusion ring
+attack, TRACE reduces malicious routing share by 74.7 percentage points versus price-based routing
+(p < 0.01, Cliff's δ = 0.71). Under strategic-default attack, reputation-only routing exposes
+approximately 18× more fraud than TRACE, which is the only evaluated baseline that constrains
+strategic-default effectively. We additionally evaluate two architectural extensions — adaptive
+scale-aware penalties (v2.2) and temporal trust dynamics (v2.3) — and find that neither produces
+statistically significant improvement over the baseline system. Fraud variance increases
+monotonically with extension complexity (σ: 22.8 → 24.2 → 30.8 sats), and honest-agent routing
+share decreases by 3 percentage points under both extensions. These results suggest that, under
+medium-scale adversarial conditions, additional detection sophistication can introduce false-positive
+instability that harms overall routing robustness.
 
 ---
 
 ## 1. Introduction
 
-### Paragraph 1 — Problem
+Decentralized agent marketplaces — in which software providers autonomously accept jobs, negotiate
+prices, and settle Lightning Network payments — require trust mechanisms that function without
+centralized authority or persistent identity. Unlike traditional service markets, entries are
+permissionless: any entity can register as a provider, creating strong adversarial incentives.
+Malicious providers may misrepresent reliability to extract payment, coordinate synthetically to
+manipulate reputation signals, or exploit accumulated trust to selectively default on high-value
+jobs. Routing decisions made under these conditions carry direct economic consequences, making
+adversarial robustness a system requirement rather than a secondary consideration.
 
-The emergence of large language model (LLM) agents capable of autonomously executing multi-step tasks has enabled a new class of economic actor: software providers that accept jobs, negotiate prices, and receive payments without human intervention. In Lightning Network-enabled agent marketplaces, these interactions are settled via cryptographic payment channels at sub-second latency, enabling micro-transaction-scale coordination at scale. However, the permissionless nature of such marketplaces — where any entity can register as a provider — creates a fundamental adversarial trust problem. Malicious providers have strong economic incentives to misrepresent their reliability, coordinate with other malicious actors to manipulate reputation signals, or exploit established trust to extract payments without delivering service.
+Two natural routing strategies fail systematically under adversarial conditions. Price-only routing
+selects the cheapest available provider without consulting history, offering no defense against
+reputation-based attacks: under collusion ring attack (N=50, 30% malicious, 20 seeds), price-only
+routing routes 77% of jobs to malicious agents. Reputation-only routing, which selects the
+highest-cumulative-success-rate provider, reduces collusion exposure effectively (9.7% malicious
+routing) but is structurally blind to strategic default: agents that build legitimate histories
+before selectively defaulting produce more than 18× the fraud exposure of TRACE under identical
+conditions. Neither baseline provides robustness across the full attack landscape.
 
-### Paragraph 2 — Limitations of Existing Approaches
+We present TRACE, a composite trust-based routing system designed to address both structural
+(collusion, Sybil) and behavioral (strategic default, whitewashing) adversarial patterns
+simultaneously. TRACE computes a provider trust score from six observable factors — completion
+history, repayment rate, estimated default probability, counterparty entropy, Sybil risk, and
+repeated-pair interaction concentration — and combines them into a routing utility that balances
+quality, price, and behavioral risk. The system is local to the orchestrator, requiring no external
+oracle, no cross-orchestrator state, and no modification to provider internals. It is fully
+interpretable: every routing decision decomposes into its four contributing utility terms.
 
-Two simple routing strategies fail systematically under adversarial conditions. **Price-only routing** selects the cheapest available provider regardless of history — offering zero defense against any reputation-based attack (77% malicious routing rate under collusion, N=50). **Reputation-only routing** accumulates success rate history and selects the highest-rated provider — effective against collusion (9.7% malicious routing) but catastrophically vulnerable to strategic default, where agents build legitimate reputation before selectively defaulting on high-value jobs (>380 sats fraud per 300 jobs versus 13 sats for TRACE). Neither baseline provides the combination of structural pattern detection and per-transaction risk modeling required for robustness across the attack landscape.
-
-### Paragraph 3 — TRACE Overview
-
-We propose TRACE, a composite trust-based routing system that addresses both structural and behavioral adversarial patterns. TRACE computes a provider trust score integrating six factors: completion history, repayment rate, estimated default probability, counterparty diversity (Shannon entropy), Sybil risk, and repeated-pair interaction concentration. These are combined into a routing utility that balances service quality, price, risk, and network diversity. Crucially, TRACE applies decreasing marginal trust credit to repeated interactions between the same pair of agents — penalizing the collusion-characteristic pattern of mutual endorsement — and requires minimum diversity thresholds before agents can reach high trust tiers. The system requires no external oracle, no cross-orchestrator coordination, and no modification to provider agent internals.
-
-### Paragraph 4 — Contributions and Findings
-
-This paper makes three principal contributions. First, we provide the first empirical evaluation of composite trust routing in an adversarial LLM agent marketplace, demonstrating statistically significant improvement over both price-only and reputation-only baselines across four attack types and three network scales. Second, we quantify the scaling properties of trust-based routing: TRACE fraud exposure decreases monotonically with network size (84→38→22 sats as N grows from 30 to 100), a structural property of diversity-weighted routing in larger honest-agent populations. Third, and perhaps most importantly, we report a complexity-instability finding: more sophisticated architectural extensions (adaptive scale-aware penalties and temporal trust dynamics) increase system variance and reduce honest agent utilization without statistically significant fraud reduction, suggesting a fundamental false-positive tax on heuristic detection under constrained network conditions. This finding motivates careful empirical validation before deploying trust mechanism extensions, even when they are theoretically well-motivated.
+This paper makes three contributions. First, we present an empirical evaluation of composite trust
+routing in an adversarial agent marketplace, establishing statistically significant improvement
+over price-only and reputation-only baselines under collusion and strategic-default attacks across
+three network scales. Second, we characterize a scaling property of diversity-weighted routing:
+TRACE fraud exposure under collusion decreases consistently with network size, reflecting the
+structural cost imposed on colluders by increasingly diverse honest-agent populations. Third, we
+report a complexity-instability finding with broader methodological implications: two architectural
+extensions that are well-motivated in theory — adaptive scale-aware penalties and temporal trust
+dynamics — increase fraud variance by up to 35% and reduce honest-agent routing share by
+3 percentage points, without statistically significant improvement in central fraud tendency (0/30
+tests, p < 0.05). This finding suggests that heuristic detection mechanisms incur a false-positive
+tax at medium network scales, and that trust system extensions require rigorous empirical validation
+before adoption.
 
 ---
 
@@ -34,12 +77,25 @@ This paper makes three principal contributions. First, we provide the first empi
 
 ### 2.1 Agent Marketplace Model
 
-We model an autonomous agent marketplace as a tuple (O, P, J, T) where O is an orchestrator agent, P = {p₁, ..., pₙ} is a set of provider agents, J is a stream of task requests with associated value vⱼ sats, and T is a trust state updated after each interaction. The orchestrator selects a provider π(j) ∈ P for each job j to maximize expected net value across the horizon.
+We model an agent marketplace as a tuple (O, P, J, T) where O is an orchestrator, P = {p₁, …, pₙ}
+is a set of provider agents, J is a stream of task requests with per-job value vⱼ (in sats), and
+T is a trust state updated after each interaction outcome. The orchestrator selects a provider
+π(j) ∈ P for each job j to maximize expected net value over the experiment horizon.
 
-Each provider pᵢ has a private type θᵢ ∈ {honest, malicious}. Honest providers complete assigned jobs with probability c̃ᵢ ∈ (0,1] drawn from their model capabilities. Malicious providers may deviate from the contract — defaulting on payment, routing jobs to co-conspirators, or generating fake identities — to maximize private extraction at the cost of platform welfare.
+Each provider pᵢ has a private type θᵢ ∈ {honest, malicious}. Honest providers complete assigned
+jobs with probability c̃ᵢ ∈ (0,1] drawn from their model type. Malicious providers may deviate
+from the contract — defaulting on payment, routing jobs to co-conspirators, or registering
+additional identities — to maximize private extraction. The orchestrator observes only outcomes
+(completed / defaulted, invoice settled / not), not types directly.
 
 ### 2.2 Trust Problem
 
-The orchestrator observes only outcomes (job completed / defaulted, invoice settled / not), not types. The trust problem is to maintain a belief state B(t) = {bᵢ(t)} over provider types such that routing decisions π(j) under B(t) minimize fraud exposure and maximize successful job completion in the presence of adversarially behaving agents.
-
-This formulation admits four attack surfaces: (1) direct fraud (strategic default), (2) reputation manipulation (collusion), (3) identity farming (Sybil attacks), and (4) reputation reset (whitewashing). A robust trust system must handle all four simultaneously.
+The trust problem is to maintain a belief state B(t) = {bᵢ(t)} over provider types such that
+routing decisions π(j) under B(t) limit fraud exposure and maximize task completion in the
+presence of adversarially behaving agents. We identify four attack surfaces:
+(1) direct per-transaction fraud (strategic default),
+(2) reputation signal manipulation (collusion rings),
+(3) identity farming for routing share (Sybil clusters),
+(4) reputation escape via identity reset (whitewashing).
+A robust routing system must provide meaningful resistance to all four without requiring
+information beyond observable transaction outcomes.

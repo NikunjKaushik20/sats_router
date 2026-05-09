@@ -1,92 +1,195 @@
 # TRACE Paper — Section 4: Evaluation
-# Draft v1 — 2026-05-09
+# Draft v2 — 2026-05-09 (Polish pass: key takeaways, metric focus, calibrated language)
 
 ---
 
 ## 4.1 Threat Models
 
-We evaluate TRACE under four adversarial attack profiles that represent the principal economic threats in autonomous AI agent marketplaces.
+We evaluate TRACE under four adversarial attack profiles representing the principal economic
+threats in permissionless agent marketplaces.
 
-**Collusion Ring.** A subset of malicious agents form a coordinated coalition that mutually endorses each other's service quality through synthetic successful transactions. The goal is to inflate TRACE scores artificially, enabling the ring to attract legitimate job routing despite low true reliability. Colluders accept jobs assigned to coalition members and report success even when service is not genuinely rendered. At N=50 with 30% malicious agents, 15 colluders execute up to 16 coordinated endorsement actions per round.
+**Collusion Ring.** A subset of malicious agents form a coordinated coalition, mutually endorsing
+each other through synthetic successful transactions to inflate trust scores. The goal is to reach
+trust tiers sufficient for sustained legitimate job routing, then either extract payment without
+full delivery or route work to coalition members. At N=50 with 30% malicious agents, 15 colluders
+execute up to 16 coordinated endorsement actions per round.
 
-**Strategic Default.** Malicious agents build legitimate trust histories across multiple rounds, then selectively default on high-value jobs — accepting payment via Lightning invoice but failing to deliver the contracted service. Unlike collusion, strategic defaulters do not coordinate; each acts individually to maximize per-transaction extraction. This attack exploits systems that rely exclusively on cumulative reputation without per-transaction risk modeling.
+**Strategic Default.** Malicious agents build legitimate trust histories across multiple rounds,
+then selectively default on high-value jobs — accepting Lightning payment but failing to deliver
+contracted service. Strategic defaulters do not coordinate; each acts to maximize individual
+per-transaction extraction. This attack is structurally invisible to reputation-only systems
+because it exploits accumulated legitimate history rather than manipulating it.
 
-**Sybil Cluster.** A single adversarial entity creates multiple distinct provider identities that collectively build trust through shared interactions. The cluster exploits identity permissiveness to dominate routing share through volume rather than merit. Individual Sybil nodes appear legitimate in isolation; only the cluster-level routing concentration reveals the attack.
+**Sybil Cluster.** A single adversarial entity registers multiple provider identities that
+collectively build trust through shared interactions. Individual Sybil nodes appear legitimate in
+isolation; the attack is detectable only through routing concentration patterns at the cluster
+level.
 
-**Whitewashing.** Malicious agents periodically reset their provider identity when TRACE scores fall below viability thresholds, escaping accumulated trust penalties. This attack is particularly effective against systems that cannot detect identity continuity across re-registration events.
+**Whitewashing.** Malicious agents periodically abandon and re-register provider identities when
+accumulated penalties reduce routing probability below a threshold, escaping trust penalties
+without improving underlying service quality.
 
 ---
 
 ## 4.2 Experimental Setup
 
-We simulate an autonomous AI agent marketplace with N ∈ {30, 50, 100} provider agents drawn from three LLM archetypes: GPT-4o Mini (8–18 sats/job), Sarvam AI (5–12 sats/job), and Llama 3.2 3B (3–8 sats/job), distributed approximately equally. Each experiment runs 60 rounds of 5 jobs each (300 total), with 30% of agents designated as malicious from initialization. Malicious agents execute attack-specific behaviors each round.
+We simulate an agent marketplace with N ∈ {30, 50, 100} providers drawn from three LLM-inspired
+archetypes: GPT-4o Mini (8–18 sats/job), Sarvam AI (5–12 sats/job), and Llama 3.2 3B
+(3–8 sats/job), distributed approximately equally. Each experiment runs 60 rounds of 5 jobs
+(300 jobs total), with 30% of agents malicious from initialization.
 
-We evaluate three routing policies:
-- **TRACE** — our composite trust-based router (v2.1, feature flags disabled for adaptive/causal/temporal extensions)
-- **REPUTATION** — routes to the highest cumulative success rate agent
-- **PRICE** — routes to the lowest-cost available agent
+**Routing policies evaluated:**
+- **TRACE** — composite trust-based routing (v2.1; adaptive, causal, and temporal extensions
+  disabled per validation results)
+- **Reputation** — selects provider with highest cumulative success rate
+- **Price** — selects lowest-cost available provider
 
-All multi-seed experiments use 20 independent random seeds (1–20), providing sufficient statistical power for Mann-Whitney U tests (α = 0.05). Results are reported as mean ± standard deviation across seeds. Effect sizes are measured using Cliff's Delta, a non-parametric estimator robust to non-normal distributions.
+All multi-seed experiments use 20 independent random seeds (1–20). Results are reported as
+mean ± standard deviation across seeds. Statistical comparisons use Mann-Whitney U (two-tailed,
+α = 0.05) with Cliff's Delta for effect size estimation [Romano et al., 2006].
 
-Primary metrics:
-- **Fraud exposure** (sats): total economic loss from successful fraudulent transactions
+**Primary metrics:**
+- **Fraud exposure** (sats): cumulative economic loss from successful fraudulent transactions
 - **Malicious routing rate**: fraction of jobs routed to malicious agents
-- **Success rate**: fraction of jobs completing successfully
-- **Recovery time**: rounds until post-attack success rate recovers to pre-attack level
+- **Honest routing share**: complement of malicious routing rate; proxy for false suppression
+- **Recovery time**: rounds to restore post-attack success rate to pre-attack level
 
 ---
 
 ## 4.3 Core Routing Results
 
-Table 4 presents the primary results under collusion ring attack. TRACE reduces malicious routing to 18.3% (N=50) compared to 77.0% for PRICE-only routing — a 74.7 percentage-point reduction (p < 0.01, Cliff's δ = 0.71, large). Against REPUTATION, TRACE achieves comparable fraud reduction while providing substantially stronger defense against strategic default (Table 4b).
+**Collusion resistance.** Table 4 presents results under collusion ring attack at N=50. TRACE
+reduces malicious routing to 18.3% compared to 77.0% for Price-only — a 74.7 percentage-point
+reduction (Mann-Whitney U, p < 0.01, Cliff's δ = 0.71, large effect). Reputation routing also
+performs well under collusion (9.7% malicious routing), as cumulative success rates naturally
+penalize colluders over time. However, this comes at a cost examined below.
 
-The REPUTATION baseline performs well under collusion (9.7% malicious routing, N=50) because cumulative success rates naturally penalize colluders over time. However, REPUTATION offers no structural defense against strategic default: agents build legitimate histories and selectively default, resulting in over 380 sats fraud exposure per 300 jobs — more than 18× TRACE's exposure (13.0 ± 14.1 sats, p < 0.001). PRICE routing, which ignores history entirely, is catastrophically vulnerable to both attack types.
+**Strategic-default robustness.** Table 4b compares policies under strategic-default attack —
+the condition that most sharply differentiates the systems. Reputation routing provides no
+structural defense: agents build legitimate histories, then default, producing substantially higher
+fraud exposure than TRACE (13.0 ± 14.1 sats). Price routing is similarly exposed. TRACE, which
+models per-transaction default risk explicitly, maintains fraud exposure comparable to its
+collusion-condition performance.
 
-**Scaling behavior.** TRACE fraud exposure decreases monotonically with network scale: 84 sats (N=30) → 38 sats (N=50) → 22 sats (N=100) under collusion (Figure 3). This reflects TRACE's counterparty diversity requirement — larger networks provide more honest alternatives, making it increasingly costly for colluders to sustain inflated routing share. The scaling behavior is a structural property of the diversity-weighted routing mechanism.
+> **Key takeaway:** No single baseline is robust across both attack types. Price routing fails
+> under collusion; Reputation routing fails under strategic default. TRACE provides consistent
+> resistance across both conditions within the evaluated setting.
+
+**Scaling behavior.** Under collusion ring attack, TRACE fraud exposure decreases consistently
+with network scale across the evaluated range (Fig. 3). This pattern is consistent with the
+diversity-weighted routing mechanism: larger honest-agent populations provide more routing
+alternatives, increasing the structural cost for colluders to sustain inflated routing share.
+Whether this scaling generalizes beyond N=100 is left for future work.
 
 ---
 
 ## 4.4 Ablation Analysis
 
-We evaluate the contribution of individual TRACE v2.1 components through targeted removal experiments (Table 6). All ablations use collusion ring attack at N=50 over 20 seeds.
+To characterize the contribution of individual TRACE v2.1 mechanisms, we evaluate targeted
+removal conditions. These results are estimated from limited seeds and should be interpreted as
+directional rather than definitive; a full multi-seed ablation study is identified as future work.
 
-**Repeated-pair decay** is the strongest individual component. Its removal increases fraud exposure by approximately 105% (41.5 → ~85 sats) and malicious routing rate from 20% to ~38%. The mechanism penalizes routing pairs that appear repeatedly — a pattern structurally characteristic of collusion rings — forcing exploration of new providers even when a coalition has inflated their TRACE scores.
+**Repeated-pair decay** is the largest individual contributor. Its removal increases fraud
+exposure by approximately 105% (41.5 → ~85 sats) and malicious routing from 20% to ~38%
+(Fig. 4). The mechanism directly penalizes the collusion-characteristic pattern of concentrated
+mutual endorsement, forcing routing exploration even when a coalition has successfully inflated
+trust scores.
 
-**Clique penalty** contributes substantially but less critically, increasing fraud by ~49% when removed. It targets the low-diversity pattern at the network level rather than the pairwise level, catching colluders who spread synthetic endorsements across a closed subset of agents rather than a specific pair.
+**Clique penalty** contributes at the network level: its removal increases fraud by approximately
+49%. It targets agents whose entire interaction graph is low-diversity — catching colluders who
+spread endorsements across a closed subset rather than a single pair.
 
-**Component synergy.** Removing both mechanisms simultaneously produces a 257% increase in fraud exposure — significantly more than the sum of individual effects. This superadditive interaction occurs because repeated-pair decay and clique penalty operate at different structural scales (pairwise vs. network-level), and sophisticated colluders exploit whichever dimension is unguarded. The synergy justifies retaining both components despite the modest individual complexity each adds.
+**Component interaction.** Removing both mechanisms simultaneously produces a larger increase
+(~257%) than either individually, consistent with the two mechanisms addressing different
+structural dimensions of the same attack — pairwise concentration and network-level diversity
+respectively. Sophisticated colluders can exploit whichever dimension is unguarded.
+
+> **Key takeaway:** Both repeated-pair decay and clique penalty make meaningful independent
+> contributions, and their combination provides defense at complementary structural levels.
+> The ablation estimates motivate retaining both mechanisms in v2.1.
 
 ---
 
 ## 4.5 Complexity-Induced Instability
 
-This section presents a negative result with positive implications: increasing TRACE's architectural sophistication beyond the v2.1 baseline does not improve, and measurably harms, system robustness.
+This section presents a negative result: increasing TRACE's architectural sophistication beyond
+the v2.1 baseline does not improve robustness under the evaluated conditions, and measurably
+increases variance and false suppression.
 
-We evaluated two extensions:
-- **v2.2**: Adaptive scale-aware penalties + causal graph failure tracking
-- **v2.3**: v2.2 + temporal trust dynamics (velocity, reciprocal amplification, economic depth)
+We evaluated two extensions designed to improve collusion resistance:
+- **v2.2**: Adaptive scale-aware penalty scaling + causal graph failure tracking
+- **v2.3**: All v2.2 features + temporal trust dynamics (trust velocity, reciprocal amplification
+  detection, economic depth maturation)
 
-Table 8 summarizes the comparison across 120 experiments (3 versions × 2 attacks × 20 seeds). Under collusion ring attack, fraud variance increases monotonically with version complexity: v2.1 σ=22.84 → v2.2 σ=24.21 → v2.3 σ=30.82 — a 35% variance increase from baseline to maximum complexity. Honest routing share simultaneously decreases: 82% (v2.1) → 79% (v2.2/v2.3). v2.3 introduces two catastrophic outlier seeds (>98 sats fraud) versus one for v2.1.
+**Results.** Table 8 and Fig. 5 summarize the comparison across 120 experiments (3 versions ×
+2 attacks × 20 seeds). Under collusion ring attack, fraud variance increases monotonically with
+extension complexity: v2.1 σ = 22.84 → v2.2 σ = 24.21 → v2.3 σ = 30.82 sats, a 35% increase
+from baseline to maximum complexity. Honest-agent routing share decreases by 3 percentage points
+under both extensions (82% → 79%, Fig. 6). v2.3 produces two catastrophic outlier seeds
+(fraud > 98 sats) versus one for v2.1 (fraud > 74 sats). Across 30 pairwise statistical tests,
+zero reach significance (p < 0.05); the three versions are statistically indistinguishable in
+central fraud tendency.
 
-Zero of thirty pairwise statistical tests reached significance (p < 0.05), confirming that all three versions are statistically indistinguishable in central tendency while differing meaningfully in tail behavior.
+**Mechanism.** We attribute this pattern to a false-positive tax effect: at N=50 with 30%
+malicious agents, the network is dense enough that heuristic penalties — scale-aware suppression
+at factor 0.5, causal root-cause attribution, and temporal velocity flagging — affect honest
+agents with non-negligible frequency. Each mechanism adds a marginal honest-agent penalty that
+cumulatively exceeds the marginal improvement in malicious detection. This interpretation is
+consistent with the precision-recall tradeoff in adversarial detection settings [cite], though
+we do not directly measure the false-positive rate on individual agents.
 
-We attribute this pattern to a *false-positive tax* intrinsic to heuristic detection under constrained network conditions. At N=50 with 30% malicious agents, the network is dense enough that:
-1. Adaptive scale-aware penalties at factor 0.5 aggressively penalize both malicious and honest agents
-2. Causal graph failure tracking occasionally misidentifies honest agents adjacent to malicious ones as root-cause nodes
-3. Temporal velocity analysis flags honest agents who grow quickly during the early learning phase
+**Scope.** These findings are specific to N ∈ {30, 50} with 30% malicious agents. The evaluated
+extensions may prove beneficial at larger scales (N > 200) where the signal-to-noise ratio of
+behavioral heuristics improves and honest-agent penalties are amortized across a larger population.
+We leave this as future work.
 
-Each mechanism adds a marginal false-positive penalty on honest agents that cumulatively exceeds the marginal improvement in malicious detection. This finding aligns with theoretical results in adversarial detection [cite: precision-recall tradeoff literature] and motivates our selection of v2.1 as the paper system.
-
-We note that these extensions may prove beneficial at significantly larger scales (N > 200) where the signal-to-noise ratio improves and heuristic penalties are amortized across a larger honest agent population. We leave this investigation to future work.
+> **Key takeaway:** More detection sophistication is not uniformly beneficial. At medium scale,
+> v2.2 and v2.3 extensions increase outcome variance and reduce honest-agent routing without
+> statistically significant fraud reduction. This motivates careful empirical validation of trust
+> mechanism extensions before deployment, even when theoretically well-motivated.
 
 ---
 
 ## 4.6 Sensitivity Analysis
 
-TRACE v2.1 demonstrates graceful degradation under parameter perturbation (Table 7). We perturb each hyperparameter independently by ±25% and ±50% from its default value, measuring the resulting change in fraud exposure under collusion ring attack at N=50 (5 seeds).
+TRACE v2.1 degrades gracefully under parameter perturbation (Table 7, Fig. 7). We independently
+perturb each hyperparameter by ±25% and ±50% from its default, measuring fraud exposure change
+under collusion ring attack at N=50 (5 seeds).
 
-No parameter perturbation causes catastrophic collapse. The counterparty entropy weight (w₄ = 0.20) shows the lowest sensitivity: ±25% perturbation produces <12% change in fraud exposure. The repeated-pair decay rate shows moderate sensitivity (±18% at ±50% perturbation), consistent with its status as the strongest ablation component. The clique penalty threshold shows low sensitivity (±8%), suggesting the mechanism is robust to threshold tuning.
+No perturbation produces catastrophic failure. The counterparty entropy weight (w₄ = 0.20) shows
+the lowest sensitivity: ±25% perturbation changes fraud exposure by less than 12%. The
+repeated-pair decay rate shows moderate sensitivity (±18% fraud change at ±50% perturbation),
+consistent with its role as the strongest ablation component. The clique penalty threshold shows
+low sensitivity (±8%).
 
-Notably, malicious ratio sensitivity follows the expected pattern: reducing malicious agents to 20% cuts fraud by ~50%, while increasing to 40% increases fraud ~131%. This confirms the simulation is correctly modeling the attack intensity rather than an implementation artifact.
+Sensitivity to the malicious agent ratio follows the expected pattern: 20% malicious → lower
+fraud; 40% malicious → higher fraud. This confirms the experimental setup correctly models
+attack intensity scaling.
 
-These results support the claim that TRACE v2.1's behavior is not contingent on precise parameter tuning — a necessary property for deployment in adversarial environments where system parameters may drift.
+> **Key takeaway:** TRACE v2.1's behavior is not contingent on precise parameter calibration —
+> a practical requirement for deployment where system parameters cannot be tuned adversarially.
+
+---
+
+## 4.7 Limitations
+
+This evaluation has several limitations that constrain the scope of its conclusions.
+
+**Simulation fidelity.** Results are obtained from a simulation of an agent marketplace rather
+than a live deployed system. Provider behavior is parameterized from LLM pricing distributions
+but does not involve actual LLM inference. Real-world adversarial behavior may differ from the
+simulated attack models.
+
+**Attack model coverage.** We evaluate four attack types. Combinations of attacks, adaptive
+adversaries that respond to TRACE's detection mechanisms, or novel attack types not modeled here
+may produce different results.
+
+**Scale range.** All experiments use N ∈ {30, 50, 100}. Behavior at larger scales (N > 200) or
+with higher malicious ratios (> 40%) is not characterized.
+
+**Ablation completeness.** Ablation results in §4.4 are estimated from limited seeds and should
+be treated as directional. A full 20-seed ablation study is identified as future work.
+
+**Single-orchestrator model.** TRACE is evaluated in a single-orchestrator setting. Multi-
+orchestrator coordination, information sharing, and trust federation are outside the scope of
+this paper.
