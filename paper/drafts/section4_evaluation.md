@@ -59,27 +59,35 @@ mean ± standard deviation across seeds. Statistical comparisons use Mann-Whitne
 ## 4.3 Core Routing Results
 
 **Collusion resistance.** Table 4 presents results under collusion ring attack at N=50. TRACE
-reduces malicious routing to 18.3% compared to 77.0% for Price-only — a 74.7 percentage-point
-reduction (Mann-Whitney U, p < 0.01, Cliff's δ = 0.71, large effect). Reputation routing also
-performs well under collusion (9.7% malicious routing), as cumulative success rates naturally
-penalize colluders over time. However, this comes at a cost examined below.
+reduces mean fraud exposure to 43.8 ± 23.8 sats compared to 116.0 ± 20.8 sats for Price-only
+routing (Mann-Whitney U, p < 0.001, Cliff's |δ| = 0.976, large effect [Romano et al., 2006]).
+Malicious routing rate under TRACE (21.4%) is also substantially lower than Price-only (57.4%)
+at N=50. Reputation routing exhibits lower mean fraud than TRACE at N=50 (62.8 vs 43.8 sats)
+but the difference is not statistically significant (p = 0.052, Cliff's |δ| = 0.467, medium);
+this reflects Reputation's strong collusion resistance via cumulative success-rate tracking.
 
 **Strategic-default robustness.** Table 4b compares policies under strategic-default attack —
-the condition that most sharply differentiates the systems. Reputation routing provides no
-structural defense: agents build legitimate histories, then default, producing substantially higher
-fraud exposure than TRACE (13.0 ± 14.1 sats). Price routing is similarly exposed. TRACE, which
-models per-transaction default risk explicitly, maintains fraud exposure comparable to its
-collusion-condition performance.
+the condition that most sharply differentiates the systems. Under strategic default at N=50,
+TRACE mean fraud exposure is 14.1 ± 13.4 sats. Reputation routing, which accumulates success
+rates over full history, provides no structural protection against agents that exploit accumulated
+history to default selectively: Reputation mean fraud is 21.2 sats (malicious routing rate
+51.4%), compared to TRACE's 25.2%. Price routing exposes 45.2 sats (malicious routing 63.9%).
+TRACE is the only evaluated baseline that constrains both collusion and strategic default
+meaningfully under the evaluated conditions.
 
-> **Key takeaway:** No single baseline is robust across both attack types. Price routing fails
-> under collusion; Reputation routing fails under strategic default. TRACE provides consistent
-> resistance across both conditions within the evaluated setting.
+> **Key takeaway:** Price-only routing fails under collusion (Cliff's |δ| = 0.976 vs TRACE,
+> large effect, p < 0.001). Reputation-only fails under strategic default (51.4% vs 25.2%
+> malicious routing). TRACE provides consistent resistance across both conditions. Note that
+> the TRACE vs Reputation difference under collusion does not reach conventional significance
+> at N=50 (p = 0.052); larger samples or stronger attacks may widen this gap.
 
-**Scaling behavior.** Under collusion ring attack, TRACE fraud exposure decreases consistently
-with network scale across the evaluated range (Fig. 3). This pattern is consistent with the
-diversity-weighted routing mechanism: larger honest-agent populations provide more routing
-alternatives, increasing the structural cost for colluders to sustain inflated routing share.
-Whether this scaling generalizes beyond N=100 is left for future work.
+**Scaling behavior.** Under collusion ring attack, TRACE mean fraud decreases consistently
+across the evaluated scale range: 56.0 sats (N=30) → 43.8 sats (N=50) → 9.0 sats (N=100),
+with a statistically significant difference between N=50 and N=100 (p < 0.001,
+Cliff's |δ| = 1.00, Fig. 3). This pattern is consistent with the diversity-weighted routing
+mechanism: larger honest-agent populations provide more routing alternatives, increasing the
+structural cost for colluders to sustain inflated routing share. Whether this scaling generalizes
+beyond N=100 is left for future work.
 
 ---
 

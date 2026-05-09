@@ -15,16 +15,17 @@ Sybil-resistance mechanisms into a routing utility that balances service quality
 behavioral risk. We evaluate TRACE against reputation-only and price-only baselines under four
 adversarial attack types across network scales N ∈ {30, 50, 100}, using 20-seed experiments with
 Mann-Whitney U statistical testing and Cliff's Delta effect-size measurement. Under collusion ring
-attack, TRACE reduces malicious routing share by 74.7 percentage points versus price-based routing
-(p < 0.01, Cliff's δ = 0.71). Under strategic-default attack, reputation-only routing exposes
-approximately 18× more fraud than TRACE, which is the only evaluated baseline that constrains
-strategic-default effectively. We additionally evaluate two architectural extensions — adaptive
-scale-aware penalties (v2.2) and temporal trust dynamics (v2.3) — and find that neither produces
-statistically significant improvement over the baseline system. Fraud variance increases
-monotonically with extension complexity (σ: 22.8 → 24.2 → 30.8 sats), and honest-agent routing
-share decreases by 3 percentage points under both extensions. These results suggest that, under
-medium-scale adversarial conditions, additional detection sophistication can introduce false-positive
-instability that harms overall routing robustness.
+attack at N=50, TRACE reduces mean fraud exposure by 62% versus price-based routing (43.8 vs
+116.0 sats; p < 0.001, Cliff's |δ| = 0.976, large). TRACE is the only evaluated baseline that
+meaningfully constrains both collusion and strategic-default attacks simultaneously; price-only
+and reputation-only routing each fail under one of the two attack types. We additionally evaluate
+two architectural extensions — adaptive scale-aware penalties (v2.2) and temporal trust dynamics
+(v2.3) — and find that neither produces statistically significant improvement over the baseline
+system (0/30 pairwise tests, p < 0.05). Fraud variance increases monotonically with extension
+complexity (σ: 22.8 → 24.2 → 30.8 sats), and honest-agent routing share decreases by 3
+percentage points under both extensions. These results suggest that, under medium-scale adversarial
+conditions, additional detection sophistication can introduce false-positive instability that
+harms overall routing robustness.
 
 ---
 

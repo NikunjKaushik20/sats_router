@@ -83,13 +83,43 @@ async function main() {
 
   for (const p of providers) {
     const payoutLightningAddress = providerPayouts[p.id] || "";
+    const stakeSats = (p as Record<string, unknown>).stakeSats as number || 0;
+    const stakeStatus = (p as Record<string, unknown>).stakeStatus as string || "none";
+    const stakePaymentHash = (p as Record<string, unknown>).stakePaymentHash as string || "";
+    const bidMultiplier = (p as Record<string, unknown>).bidMultiplier as number || 1.0;
+
+    // TRACE initial scores — based on provider profile
+    // Staked + high-rep providers start with higher TRACE scores
+    const baseTrace = 500;
+    const repBonus = (p.reputationScore - 3.0) * 50; // ±100 range
+    const stakeBonus = stakeSats > 0 ? 50 : 0;
+    const traceScore = Math.min(1000, Math.max(0, baseTrace + repBonus + stakeBonus));
+    const riskTier = traceScore >= 850 ? "A" : traceScore >= 700 ? "B" : traceScore >= 550 ? "C" : "D";
+
     const data = {
       ...p,
       payoutLightningAddress,
-      stakeSats: (p as Record<string, unknown>).stakeSats as number || 0,
-      stakeStatus: (p as Record<string, unknown>).stakeStatus as string || "none",
-      stakePaymentHash: (p as Record<string, unknown>).stakePaymentHash as string || "",
-      bidMultiplier: (p as Record<string, unknown>).bidMultiplier as number || 1.0,
+      stakeSats,
+      stakeStatus,
+      stakePaymentHash,
+      bidMultiplier,
+      // TRACE fields
+      traceScore,
+      riskTier,
+      defaultProbability: 0.05,
+      completionRate: 1.0,
+      repaymentRate: 1.0,
+      successfulEscrowRate: 1.0,
+      disputeRate: 0.0,
+      networkTrust: 0.0,
+      sybilRisk: 0.0,
+      stakeRatio: 0.0,
+      scoreVolatility: 0.0,
+      totalEconomicVolume: 0,
+      successfulJobs: 0,
+      failedJobs: 0,
+      defaultedJobs: 0,
+      disputedJobs: 0,
     };
     await prisma.provider.upsert({
       where: { id: p.id },
@@ -100,8 +130,9 @@ async function main() {
       ? `→ ${payoutLightningAddress}`
       : "(no payout address — set PAYOUT_* in .env to enable real payouts)";
     const extras: string[] = [];
-    if (data.stakeSats > 0) extras.push(`🔒 staked ${data.stakeSats} sats`);
-    if (data.bidMultiplier < 1.0) extras.push(`bid ${Math.round((1 - data.bidMultiplier) * 100)}% discount`);
+    if (stakeSats > 0) extras.push(`🔒 staked ${stakeSats} sats`);
+    if (bidMultiplier < 1.0) extras.push(`bid ${Math.round((1 - bidMultiplier) * 100)}% discount`);
+    extras.push(`TRACE: ${traceScore} (${riskTier})`);
     console.log(`  ✓ ${p.name} (${p.priceSats} sats, rep ${p.reputationScore}) ${payoutNote}${extras.length ? " | " + extras.join(", ") : ""}`);
   }
 
