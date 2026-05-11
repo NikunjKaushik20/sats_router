@@ -10,17 +10,18 @@
  *
  * Options:
  *   --policy       trace | reputation | price          [default: trace]
- *   --attack       strategic-default | whitewashing | sybil-cluster | collusion-ring | none  [default: strategic-default]
+ *   --attack       strategic-default | whitewashing | sybil-cluster | collusion-ring | combined-collusion-whitewash | none  [default: strategic-default]
  *   --agents       Number of simulated agents          [default: 20]
  *   --malicious    Malicious ratio (0–1)                [default: 0.2]
  *   --rounds       Simulation rounds                    [default: 50]
  *   --jobs         Jobs per round                       [default: 3]
  *   --seed         Random seed                          [default: 42]
  *   --compare      Run all 3 policies and compare
+ *   --trace-config baseline | guard_mid | guard_cost    [default: baseline]
  */
 
 import { runExperiment, DEFAULT_CONFIG, MODEL_PRESETS, type ExperimentConfig, type AgentModelSpec } from "../src/lib/trace/experiments";
-import type { RoutingPolicy } from "../src/lib/trace";
+import { TRACE_ROUTING_PRESETS, type RoutingPolicy, type TraceRoutingPreset } from "../src/lib/trace";
 import type { AttackType } from "../src/lib/trace/attacks";
 import * as fs from "fs";
 import * as path from "path";
@@ -40,6 +41,8 @@ function parseArgs(): {
   seed: number;
   compare: boolean;
   agentMix?: AgentModelSpec[];
+  traceRoutingPreset: TraceRoutingPreset;
+  maliciousPriceStrategy?: string;
 } {
   const args = process.argv.slice(2);
   const get = (flag: string, def: string): string => {
@@ -47,7 +50,7 @@ function parseArgs(): {
     return idx >= 0 && idx + 1 < args.length ? args[idx + 1] : def;
   };
 
-  // Parse --mix flag: format is "10:gpt-4o-mini,10:sarvam,10:llama-3.2-3b"
+  // Parse --mix flag: preset ids from MODEL_PRESETS (OpenAI slot = OPENAI_CHAT_MODEL, see src/lib/openaiModel.ts)
   let agentMix: AgentModelSpec[] | undefined;
   const mixStr = get("mix", "");
   if (mixStr) {
@@ -62,8 +65,26 @@ function parseArgs(): {
     });
   }
 
+  const normalizePolicy = (value: string): RoutingPolicy => {
+    const policy = value.toUpperCase() as RoutingPolicy;
+    if (!["TRACE", "REPUTATION", "PRICE", "STAKE_WEIGHTED"].includes(policy)) {
+      console.error(`Unknown policy: ${value}. Available: TRACE, REPUTATION, PRICE, STAKE_WEIGHTED`);
+      process.exit(1);
+    }
+    return policy;
+  };
+
+  const normalizeTracePreset = (value: string): TraceRoutingPreset => {
+    const preset = value as TraceRoutingPreset;
+    if (!(preset in TRACE_ROUTING_PRESETS)) {
+      console.error(`Unknown TRACE config: ${value}. Available: ${Object.keys(TRACE_ROUTING_PRESETS).join(", ")}`);
+      process.exit(1);
+    }
+    return preset;
+  };
+
   return {
-    policy: get("policy", "trace") as RoutingPolicy,
+    policy: normalizePolicy(get("policy", "trace")),
     attack: get("attack", "strategic-default") as AttackType,
     agents: parseInt(get("agents", "20")),
     malicious: parseFloat(get("malicious", "0.2")),
@@ -72,6 +93,15 @@ function parseArgs(): {
     seed: parseInt(get("seed", "42")),
     compare: args.includes("--compare"),
     agentMix,
+    traceRoutingPreset: normalizeTracePreset(get("trace-config", "baseline")),
+    // --cheap-attack: malicious agents undercut honest by 20% (stress-tests PRICE)
+    // --expensive-attack: malicious agents overprice (legacy/broken default)
+    // default (no flag): uniform random price distribution
+    maliciousPriceStrategy: args.includes("--cheap-attack")
+      ? "cheap"
+      : args.includes("--expensive-attack")
+        ? "expensive"
+        : get("malicious-price-strategy", ""),
   };
 }
 
@@ -100,6 +130,8 @@ async function main() {
         rounds: opts.rounds,
         jobsPerRound: opts.jobs,
         seed: opts.seed,
+        traceRoutingPreset: opts.traceRoutingPreset,
+        attackParams: opts.maliciousPriceStrategy ? { maliciousPriceStrategy: opts.maliciousPriceStrategy } : {},
       };
 
       const dir = await runExperiment(config);
@@ -120,6 +152,8 @@ async function main() {
       rounds: opts.rounds,
       jobsPerRound: opts.jobs,
       seed: opts.seed,
+      traceRoutingPreset: opts.traceRoutingPreset,
+      attackParams: opts.maliciousPriceStrategy ? { maliciousPriceStrategy: opts.maliciousPriceStrategy } : {},
     };
 
     await runExperiment(config);
@@ -138,6 +172,10 @@ function generateComparisonReport(
 
   const reportDir = path.join(process.cwd(), "results", `comparison_${opts.attack}_${opts.seed}_${Date.now()}`);
   fs.mkdirSync(reportDir, { recursive: true });
+
+  const priceStrategyLabel = opts.maliciousPriceStrategy
+    ? ` | Malicious price: ${opts.maliciousPriceStrategy}`
+    : " | Malicious price: uniform (random)";
 
   // Comparison table
   const table = [
@@ -163,7 +201,7 @@ function generateComparisonReport(
     `═══════════════════════════════════════════════════════════════════════`,
     `  COMPARISON REPORT: ${opts.attack} attack`,
     `  Agents: ${opts.agents} (${Math.round(opts.malicious * 100)}% malicious)`,
-    `  Rounds: ${opts.rounds} | Seed: ${opts.seed}`,
+    `  Rounds: ${opts.rounds} | Seed: ${opts.seed}${priceStrategyLabel}`,
     `═══════════════════════════════════════════════════════════════════════`,
     ``,
     `  ${"Metric".padEnd(30)} ${"TRACE".padStart(12)} ${"REPUTATION".padStart(12)} ${"PRICE".padStart(12)}`,

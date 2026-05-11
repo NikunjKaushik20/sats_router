@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, type ReactNode } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
-  CAPABILITY_ICON_MAP,
-  TRUST_ICON_MAP,
   Bot,
   Zap,
   Lock,
@@ -94,8 +92,12 @@ export default function ProviderDirectoryPage() {
   }, []);
 
   useEffect(() => {
-    fetchProviders();
-    const interval = setInterval(fetchProviders, 10000);
+    queueMicrotask(() => {
+      void fetchProviders();
+    });
+    const interval = setInterval(() => {
+      void fetchProviders();
+    }, 10000);
     return () => clearInterval(interval);
   }, [fetchProviders]);
 

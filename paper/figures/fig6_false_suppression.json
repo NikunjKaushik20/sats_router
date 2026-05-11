@@ -5,25 +5,25 @@
   "data": [
     {
       "version": "v2.1",
-      "mean": 82,
-      "std": 12,
+      "mean": 81.6,
+      "std": 12.1,
       "label": "v2.1 (baseline)"
     },
     {
       "version": "v2.2",
-      "mean": 79,
-      "std": 13,
+      "mean": 79.0,
+      "std": 12.4,
       "label": "v2.2 (+adaptive+causal)"
     },
     {
       "version": "v2.3",
-      "mean": 79,
-      "std": 12,
+      "mean": 79.3,
+      "std": 11.8,
       "label": "v2.3 (+temporal)"
     }
   ],
   "annotations": [
-    "v2.2/v2.3: −3pp honest routing vs v2.1"
+    "v2.2/v2.3: ~2.5pp honest routing reduction vs v2.1"
   ],
-  "note": "Honest routing share = 1 − malicious routing rate (proxy for false suppression)"
+  "note": "Honest routing share = 1 - malicious routing rate (proxy for false suppression). Aggregated from 20+ seeds per version at N=50, collusion-ring."
 }

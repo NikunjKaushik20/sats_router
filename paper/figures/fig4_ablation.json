@@ -1,32 +1,45 @@
 {
-  "title": "Figure 4: Ablation Study — Component Contributions",
+  "title": "Figure 4: Ablation Study -- Component Contributions",
   "yLabel": "Fraud Exposure (sats)",
   "xLabel": "Configuration",
+  "n_seeds": 20,
   "data": [
     {
       "config": "Full TRACE v2.1",
-      "fraud": 41.5,
-      "std": 23.4,
+      "fraud": 38.25,
+      "std": 26.31,
+      "pct_change": 0.0,
+      "cliffs_delta": 0.0,
+      "p_value": 1.0,
       "note": "Baseline"
     },
     {
-      "config": "−Repeated-pair decay",
-      "fraud": 85,
-      "std": 28,
-      "note": "+105% fraud (estimated)"
+      "config": "-Repeated-pair decay",
+      "fraud": 42.50,
+      "std": 21.65,
+      "pct_change": 11.1,
+      "cliffs_delta": 0.128,
+      "p_value": 0.490,
+      "note": "+11.1% (n.s.)"
     },
     {
-      "config": "−Clique penalty",
-      "fraud": 62,
-      "std": 26,
-      "note": "+49% fraud (estimated)"
+      "config": "-Clique penalty",
+      "fraud": 49.05,
+      "std": 24.35,
+      "pct_change": 28.2,
+      "cliffs_delta": 0.275,
+      "p_value": 0.137,
+      "note": "+28.2% (n.s.)"
     },
     {
-      "config": "−Both",
-      "fraud": 148,
-      "std": 40,
-      "note": "+257% fraud (estimated)"
+      "config": "-All v2.1 features",
+      "fraud": 47.70,
+      "std": 21.26,
+      "pct_change": 24.7,
+      "cliffs_delta": 0.253,
+      "p_value": 0.172,
+      "note": "+24.7% (n.s.)"
     }
   ],
-  "note": "Collusion Ring, N=50. Single-seed estimates — full ablation pending."
+  "note": "Collusion Ring, N=50, 20 seeds; n.s. = not significant at p<0.05 (Mann-Whitney U)."
 }

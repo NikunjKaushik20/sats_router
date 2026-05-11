@@ -42,8 +42,6 @@ export default function RegisterProviderPage() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ success: boolean; message: string; provider?: Record<string, unknown> } | null>(null);
-  const [validatingAddr, setValidatingAddr] = useState(false);
-
   const effectiveCap = form.capability === "custom" ? form.customCapability : form.capability;
 
   const handleSubmit = async () => {
@@ -389,7 +387,6 @@ export default function RegisterProviderPage() {
               value={form.payoutLightningAddress}
               onChange={(e) => {
                 setForm((p) => ({ ...p, payoutLightningAddress: e.target.value }));
-                setValidatingAddr(false);
               }}
               style={{
                 width: "100%",

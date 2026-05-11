@@ -11,7 +11,7 @@
  * confidence  = min(1, interactionCount / K)
  */
 
-import { ROUTING_UTILITY, COUNTERPARTY_DIVERSITY, REPEATED_PAIR } from "./config";
+import { ROUTING_UTILITY, REPEATED_PAIR } from "./config";
 
 // ─── Adaptive Scaling Constants ───────────────────────────────────────────────
 
@@ -59,7 +59,7 @@ export function computeScaleFactor(networkSize: number): number {
  */
 export function effectiveCliquePenalty(networkSize: number): number {
   const scaleFactor = computeScaleFactor(networkSize);
-  return (ROUTING_UTILITY as any).mu_cliquePenalty * scaleFactor;
+  return ROUTING_UTILITY.mu_cliquePenalty * scaleFactor;
 }
 
 /**
@@ -69,7 +69,7 @@ export function effectiveCliquePenalty(networkSize: number): number {
  */
 export function effectiveSybilPenalty(networkSize: number): number {
   const scaleFactor = computeScaleFactor(networkSize);
-  return (ROUTING_UTILITY as any).lambda_sybilPenalty * scaleFactor;
+  return ROUTING_UTILITY.lambda_sybilPenalty * scaleFactor;
 }
 
 // ─── Confidence-Gated Entropy ─────────────────────────────────────────────────

@@ -9,7 +9,16 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx scripts/seed.ts",
-    "mcp": "tsx src/mcp/server.ts"
+    "mcp": "tsx src/mcp/server.ts",
+    "experiment": "tsx scripts/runExperiment.ts",
+    "parallel-seeds": "tsx scripts/runParallelSeeds.ts",
+    "scale:smoke": "tsx scripts/runN10k.ts --n 10000 --attack collusion-ring --seed 42",
+    "scale:n10k": "tsx scripts/runN10k.ts --n 10000 --seeds 1-20 --attack collusion-ring --malicious 0.3",
+    "scale:curve": "tsx scripts/runN10k.ts --scaling-curve --seeds 1-20",
+    "scale:full": "tsx scripts/runN10k.ts --full-matrix --seeds 1-20",
+    "scale:memcheck": "tsx scripts/runN10k.ts --n 10000 --seed 1 --attack collusion-ring --mem-check",
+    "deploy:extract": "tsx scripts/extractLiveData.ts",
+    "deploy:replay": "tsx scripts/extractLiveData.ts --replay"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
@@ -18,6 +27,7 @@
     "@prisma/client": "^7.8.0",
     "crypto-js": "^4.2.0",
     "lucide-react": "^1.11.0",
+    "md-to-pdf": "^5.2.5",
     "next": "16.2.4",
     "openai": "^6.34.0",
     "prisma": "^7.8.0",

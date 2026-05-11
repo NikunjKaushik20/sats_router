@@ -1,5 +1,6 @@
 import { withPayment } from "@moneydevkit/nextjs/server";
 import OpenAI from "openai";
+import { OPENAI_CHAT_MODEL } from "@/lib/openaiModel";
 
 /**
  * L402-protected Code Reviewer endpoint — 8 sats per request.
@@ -19,7 +20,7 @@ const handler = async (req: Request) => {
   }
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: OPENAI_CHAT_MODEL,
     max_tokens: 500,
     messages: [
       {

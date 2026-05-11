@@ -1,6 +1,7 @@
 import OpenAI from "openai";
+import { OPENAI_CHAT_MODEL } from "@/lib/openaiModel";
 import { prisma } from "@/lib/db";
-import { selectProvider, calcFee } from "@/lib/router";
+import { calcFee } from "@/lib/router";
 import { checkBudget, deductBudget } from "@/lib/budget";
 import { hashInput, isDuplicateLoop, recordCall } from "@/lib/safety";
 import { updateReputation } from "@/lib/reputation";
@@ -8,6 +9,7 @@ import { logEvent } from "@/lib/events";
 import { callL402Endpoint } from "@/lib/lightning";
 import { settleProviderPayout } from "@/lib/payouts";
 import { createHumanVerificationTask, pollHumanTask } from "./humanVerifier";
+import { selectProviderTRACE, updateScoreAfterEvent, updateTrustEdge } from "@/lib/trace";
 import type { OrchestrationPlan } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -79,12 +81,13 @@ export async function orchestrate(
       capability: step.capability,
     });
 
-    // Find provider
-    const provider = await selectProvider(step.capability);
-    if (!provider) {
+    // Find provider using TRACE utility scoring
+    const traceResult = await selectProviderTRACE(step.capability);
+    if (!traceResult) {
       await logEvent("error", `No provider found for ${step.capability}`, {});
       continue;
     }
+    const provider = traceResult.provider;
 
     // Budget check
     const budget = await checkBudget(buyerId, provider.priceSats);
@@ -265,8 +268,41 @@ export async function orchestrate(
       },
     });
 
-    // Update reputation
+    // Update reputation (legacy)
     await updateReputation(provider.id, success);
+
+    // ─── TRACE: Economic Event Logging ──────────────────────────────────
+    try {
+      if (success) {
+        await updateScoreAfterEvent(provider.id, "JOB_SUCCESS", job.id, provider.priceSats);
+        await updateScoreAfterEvent(provider.id, "PAYMENT_SETTLED", job.id, provider.priceSats);
+      } else {
+        await updateScoreAfterEvent(provider.id, "JOB_FAILURE", job.id, provider.priceSats);
+      }
+    } catch (traceErr) {
+      // TRACE scoring failures must not break orchestration
+      console.error(`TRACE score update failed for ${provider.id}:`, traceErr);
+    }
+
+    // ─── TRACE: Trust Graph — update edges between co-participating providers ───
+    if (success && results.length > 0) {
+      try {
+        const prevStep = results[results.length - 1];
+        const prevProvider = await prisma.provider.findFirst({
+          where: { name: prevStep.providerName, isActive: true },
+        });
+        if (prevProvider && prevProvider.id !== provider.id) {
+          await updateTrustEdge(
+            prevProvider.id,
+            provider.id,
+            provider.priceSats,
+            true // escrow success
+          );
+        }
+      } catch (graphErr) {
+        console.error(`Trust graph update failed:`, graphErr);
+      }
+    }
 
     const duration = Date.now() - startTime;
     totalSatsSpent += provider.priceSats;
@@ -310,7 +346,7 @@ async function createPlan(
   try {
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: OPENAI_CHAT_MODEL,
       max_tokens: 500,
       temperature: 0.3,
       messages: [

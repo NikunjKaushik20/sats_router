@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="610.128pt" height="124.87875pt" viewBox="0 0 610.128 124.87875" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="610.128pt" height="124.56pt" viewBox="0 0 610.128 124.56" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-05-09T18:48:04.686686</dc:date>
+    <dc:date>2026-05-09T23:30:11.833804</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -21,8 +21,8 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 124.87875 
-L 610.128 124.87875 
+   <path d="M 0 124.56 
+L 610.128 124.56 
 L 610.128 0 
 L 0 0 
 z
@@ -31,16 +31,16 @@ z
   <g id="axes_1">
    <g id="table_1">
     <g id="patch_2">
-     <path d="M 3.6 51.775401 
-L 87.297 51.775401 
-L 87.297 39.973168 
-L 3.6 39.973168 
+     <path d="M 3.6 42.225318 
+L 87.297 42.225318 
+L 87.297 28.85553 
+L 3.6 28.85553 
 z
 " style="fill: #f0f0f0; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_1">
      <!-- Attack -->
-     <g transform="translate(30.921 48.081784) scale(0.08 -0.08)">
+     <g transform="translate(30.921 37.747924) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-Bold-41" d="M -50 0 
 L -50 378 
@@ -186,16 +186,16 @@ z
      </g>
     </g>
     <g id="patch_3">
-     <path d="M 87.297 51.775401 
-L 272.868 51.775401 
-L 272.868 39.973168 
-L 87.297 39.973168 
+     <path d="M 87.297 42.225318 
+L 272.868 42.225318 
+L 272.868 28.85553 
+L 87.297 28.85553 
 z
 " style="fill: #f0f0f0; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_2">
      <!-- Adversarial Behavior -->
-     <g transform="translate(133.185625 48.081784) scale(0.08 -0.08)">
+     <g transform="translate(133.185625 37.747924) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-Bold-64" d="M 2747 1497 
 L 2747 1825 
@@ -476,16 +476,16 @@ z
      </g>
     </g>
     <g id="patch_4">
-     <path d="M 272.868 51.775401 
-L 433.407 51.775401 
-L 433.407 39.973168 
-L 272.868 39.973168 
+     <path d="M 272.868 42.225318 
+L 433.407 42.225318 
+L 433.407 28.85553 
+L 272.868 28.85553 
 z
 " style="fill: #f0f0f0; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_3">
      <!-- Economic Goal -->
-     <g transform="translate(319.633125 48.081784) scale(0.08 -0.08)">
+     <g transform="translate(319.633125 37.747924) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-Bold-45" d="M 300 0 
 L 300 378 
@@ -630,16 +630,16 @@ z
      </g>
     </g>
     <g id="patch_5">
-     <path d="M 433.407 51.775401 
-L 606.528 51.775401 
-L 606.528 39.973168 
-L 433.407 39.973168 
+     <path d="M 433.407 42.225318 
+L 606.528 42.225318 
+L 606.528 28.85553 
+L 433.407 28.85553 
 z
 " style="fill: #f0f0f0; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_4">
      <!-- Detection Signal -->
-     <g transform="translate(482.565625 48.024909) scale(0.08 -0.08)">
+     <g transform="translate(482.565625 37.691049) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-Bold-44" d="M 2100 378 
 L 2534 378 
@@ -755,16 +755,16 @@ z
      </g>
     </g>
     <g id="patch_6">
-     <path d="M 3.6 63.577634 
-L 87.297 63.577634 
-L 87.297 51.775401 
-L 3.6 51.775401 
+     <path d="M 3.6 55.595106 
+L 87.297 55.595106 
+L 87.297 42.225318 
+L 3.6 42.225318 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_5">
      <!-- Collusion Ring -->
-     <g transform="translate(11.9697 59.827142) scale(0.08 -0.08)">
+     <g transform="translate(11.9697 51.060837) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-43" d="M 4513 1234 
 Q 4306 581 3820 245 
@@ -1027,16 +1027,16 @@ z
      </g>
     </g>
     <g id="patch_7">
-     <path d="M 87.297 63.577634 
-L 272.868 63.577634 
-L 272.868 51.775401 
-L 87.297 51.775401 
+     <path d="M 87.297 55.595106 
+L 272.868 55.595106 
+L 272.868 42.225318 
+L 87.297 42.225318 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_6">
      <!-- Mutual endorsement among colluders -->
-     <g transform="translate(105.8541 59.827142) scale(0.08 -0.08)">
+     <g transform="translate(105.8541 51.060837) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-4d" d="M 353 0 
 L 353 331 
@@ -1309,16 +1309,16 @@ z
      </g>
     </g>
     <g id="patch_8">
-     <path d="M 272.868 63.577634 
-L 433.407 63.577634 
-L 433.407 51.775401 
-L 272.868 51.775401 
+     <path d="M 272.868 55.595106 
+L 433.407 55.595106 
+L 433.407 42.225318 
+L 272.868 42.225318 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_7">
      <!-- Routing share via inflated scores -->
-     <g transform="translate(288.9219 59.827142) scale(0.08 -0.08)">
+     <g transform="translate(288.9219 51.060837) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-68" d="M 263 0 
 L 263 331 
@@ -1432,16 +1432,16 @@ z
      </g>
     </g>
     <g id="patch_9">
-     <path d="M 433.407 63.577634 
-L 606.528 63.577634 
-L 606.528 51.775401 
-L 433.407 51.775401 
+     <path d="M 433.407 55.595106 
+L 606.528 55.595106 
+L 606.528 42.225318 
+L 433.407 42.225318 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_8">
      <!-- Low counterparty entropy -->
-     <g transform="translate(450.7191 59.770267) scale(0.08 -0.08)">
+     <g transform="translate(450.7191 51.003962) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-4c" d="M 353 0 
 L 353 331 
@@ -1573,16 +1573,16 @@ z
      </g>
     </g>
     <g id="patch_10">
-     <path d="M 3.6 75.379866 
-L 87.297 75.379866 
-L 87.297 63.577634 
-L 3.6 63.577634 
+     <path d="M 3.6 68.964894 
+L 87.297 68.964894 
+L 87.297 55.595106 
+L 3.6 55.595106 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_9">
      <!-- Strategic Default -->
-     <g transform="translate(11.9697 71.629375) scale(0.08 -0.08)">
+     <g transform="translate(11.9697 64.430625) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-53" d="M 594 225 
 L 594 1288 
@@ -1661,16 +1661,16 @@ z
      </g>
     </g>
     <g id="patch_11">
-     <path d="M 87.297 75.379866 
-L 272.868 75.379866 
-L 272.868 63.577634 
-L 87.297 63.577634 
+     <path d="M 87.297 68.964894 
+L 272.868 68.964894 
+L 272.868 55.595106 
+L 87.297 55.595106 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_10">
      <!-- Build history, then selectively default -->
-     <g transform="translate(105.8541 71.629375) scale(0.08 -0.08)">
+     <g transform="translate(105.8541 64.430625) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-42" d="M 1581 331 
 L 2516 331 
@@ -1761,16 +1761,16 @@ z
      </g>
     </g>
     <g id="patch_12">
-     <path d="M 272.868 75.379866 
-L 433.407 75.379866 
-L 433.407 63.577634 
-L 272.868 63.577634 
+     <path d="M 272.868 68.964894 
+L 433.407 68.964894 
+L 433.407 55.595106 
+L 272.868 55.595106 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_11">
      <!-- Payment extraction -->
-     <g transform="translate(288.9219 71.5725) scale(0.08 -0.08)">
+     <g transform="translate(288.9219 64.37375) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-50" d="M 1581 2375 
 L 2406 2375 
@@ -1852,16 +1852,16 @@ z
      </g>
     </g>
     <g id="patch_13">
-     <path d="M 433.407 75.379866 
-L 606.528 75.379866 
-L 606.528 63.577634 
-L 433.407 63.577634 
+     <path d="M 433.407 68.964894 
+L 606.528 68.964894 
+L 606.528 55.595106 
+L 433.407 55.595106 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_12">
      <!-- High repayment then sudden drops -->
-     <g transform="translate(450.7191 71.629375) scale(0.08 -0.08)">
+     <g transform="translate(450.7191 64.430625) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-48" d="M 353 0 
 L 353 331 
@@ -1930,16 +1930,16 @@ z
      </g>
     </g>
     <g id="patch_14">
-     <path d="M 3.6 87.182099 
-L 87.297 87.182099 
-L 87.297 75.379866 
-L 3.6 75.379866 
+     <path d="M 3.6 82.334682 
+L 87.297 82.334682 
+L 87.297 68.964894 
+L 3.6 68.964894 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_13">
      <!-- Sybil Cluster -->
-     <g transform="translate(11.9697 83.431608) scale(0.08 -0.08)">
+     <g transform="translate(11.9697 77.800413) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-62" d="M 738 331 
 L 738 4531 
@@ -1989,16 +1989,16 @@ z
      </g>
     </g>
     <g id="patch_15">
-     <path d="M 87.297 87.182099 
-L 272.868 87.182099 
-L 272.868 75.379866 
-L 87.297 75.379866 
+     <path d="M 87.297 82.334682 
+L 272.868 82.334682 
+L 272.868 68.964894 
+L 87.297 68.964894 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_14">
      <!-- Multiple fake identities -->
-     <g transform="translate(105.8541 83.488483) scale(0.08 -0.08)">
+     <g transform="translate(105.8541 77.857288) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-6b" d="M 1831 0 
 L 219 0 
@@ -2057,16 +2057,16 @@ z
      </g>
     </g>
     <g id="patch_16">
-     <path d="M 272.868 87.182099 
-L 433.407 87.182099 
-L 433.407 75.379866 
-L 272.868 75.379866 
+     <path d="M 272.868 82.334682 
+L 433.407 82.334682 
+L 433.407 68.964894 
+L 272.868 68.964894 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_15">
      <!-- Routing share via volume -->
-     <g transform="translate(288.9219 83.431608) scale(0.08 -0.08)">
+     <g transform="translate(288.9219 77.800413) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSerif-52"/>
       <use xlink:href="#DejaVuSerif-6f" transform="translate(75.292969 0)"/>
       <use xlink:href="#DejaVuSerif-75" transform="translate(135.498047 0)"/>
@@ -2094,16 +2094,16 @@ z
      </g>
     </g>
     <g id="patch_17">
-     <path d="M 433.407 87.182099 
-L 606.528 87.182099 
-L 606.528 75.379866 
-L 433.407 75.379866 
+     <path d="M 433.407 82.334682 
+L 606.528 82.334682 
+L 606.528 68.964894 
+L 433.407 68.964894 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_16">
      <!-- Concentrated new-agent routing -->
-     <g transform="translate(450.7191 83.431608) scale(0.08 -0.08)">
+     <g transform="translate(450.7191 77.800413) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-2d" d="M 281 1959 
 L 1881 1959 
@@ -2146,16 +2146,16 @@ z
      </g>
     </g>
     <g id="patch_18">
-     <path d="M 3.6 98.984332 
-L 87.297 98.984332 
-L 87.297 87.182099 
-L 3.6 87.182099 
+     <path d="M 3.6 95.70447 
+L 87.297 95.70447 
+L 87.297 82.334682 
+L 3.6 82.334682 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_17">
      <!-- Whitewashing -->
-     <g transform="translate(11.9697 95.233841) scale(0.08 -0.08)">
+     <g transform="translate(11.9697 91.170201) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-57" d="M 4878 0 
 L 4366 0 
@@ -2197,16 +2197,16 @@ z
      </g>
     </g>
     <g id="patch_19">
-     <path d="M 87.297 98.984332 
-L 272.868 98.984332 
-L 272.868 87.182099 
-L 87.297 87.182099 
+     <path d="M 87.297 95.70447 
+L 272.868 95.70447 
+L 272.868 82.334682 
+L 87.297 82.334682 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_18">
      <!-- Reset identity when penalized -->
-     <g transform="translate(105.8541 95.233841) scale(0.08 -0.08)">
+     <g transform="translate(105.8541 91.170201) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-7a" d="M 256 0 
 L 256 269 
@@ -2258,16 +2258,16 @@ z
      </g>
     </g>
     <g id="patch_20">
-     <path d="M 272.868 98.984332 
-L 433.407 98.984332 
-L 433.407 87.182099 
-L 272.868 87.182099 
+     <path d="M 272.868 95.70447 
+L 433.407 95.70447 
+L 433.407 82.334682 
+L 272.868 82.334682 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_19">
      <!-- Escape trust penalties -->
-     <g transform="translate(288.9219 95.290716) scale(0.08 -0.08)">
+     <g transform="translate(288.9219 91.227076) scale(0.08 -0.08)">
       <defs>
        <path id="DejaVuSerif-45" d="M 353 0 
 L 353 331 
@@ -2322,16 +2322,16 @@ z
      </g>
     </g>
     <g id="patch_21">
-     <path d="M 433.407 98.984332 
-L 606.528 98.984332 
-L 606.528 87.182099 
-L 433.407 87.182099 
+     <path d="M 433.407 95.70447 
+L 606.528 95.70447 
+L 606.528 82.334682 
+L 433.407 82.334682 
 z
 " style="fill: #ffffff; stroke: #cccccc; stroke-width: 0.5; stroke-linejoin: miter"/>
     </g>
     <g id="text_20">
      <!-- Recurring new-agent anomalies -->
-     <g transform="translate(450.7191 95.233841) scale(0.08 -0.08)">
+     <g transform="translate(450.7191 91.170201) scale(0.08 -0.08)">
       <use xlink:href="#DejaVuSerif-52"/>
       <use xlink:href="#DejaVuSerif-65" transform="translate(75.292969 0)"/>
       <use xlink:href="#DejaVuSerif-63" transform="translate(134.472656 0)"/>
@@ -2362,158 +2362,6 @@ z
       <use xlink:href="#DejaVuSerif-65" transform="translate(1507.470703 0)"/>
       <use xlink:href="#DejaVuSerif-73" transform="translate(1566.650391 0)"/>
      </g>
-    </g>
-   </g>
-   <g id="text_21">
-    <!-- Fig. 2 — Adversarial Threat Models -->
-    <g transform="translate(232.714 9.67875) scale(0.08 -0.08)">
-     <defs>
-      <path id="DejaVuSerif-46" d="M 353 0 
-L 353 331 
-L 947 331 
-L 947 4331 
-L 353 4331 
-L 353 4666 
-L 4172 4666 
-L 4172 3628 
-L 3788 3628 
-L 3788 4281 
-L 1581 4281 
-L 1581 2719 
-L 3175 2719 
-L 3175 3303 
-L 3559 3303 
-L 3559 1753 
-L 3175 1753 
-L 3175 2338 
-L 1581 2338 
-L 1581 331 
-L 2328 331 
-L 2328 0 
-L 353 0 
-z
-" transform="scale(0.015625)"/>
-      <path id="DejaVuSerif-2e" d="M 603 325 
-Q 603 500 722 622 
-Q 841 744 1019 744 
-Q 1191 744 1312 622 
-Q 1434 500 1434 325 
-Q 1434 153 1312 31 
-Q 1191 -91 1019 -91 
-Q 841 -91 722 29 
-Q 603 150 603 325 
-z
-" transform="scale(0.015625)"/>
-      <path id="DejaVuSerif-32" d="M 819 3553 
-L 469 3553 
-L 469 4384 
-Q 803 4563 1142 4656 
-Q 1481 4750 1806 4750 
-Q 2534 4750 2956 4397 
-Q 3378 4044 3378 3438 
-Q 3378 2753 2422 1800 
-Q 2347 1728 2309 1691 
-L 1131 513 
-L 3078 513 
-L 3078 1088 
-L 3444 1088 
-L 3444 0 
-L 434 0 
-L 434 341 
-L 1850 1753 
-Q 2319 2222 2519 2614 
-Q 2719 3006 2719 3438 
-Q 2719 3909 2473 4175 
-Q 2228 4441 1797 4441 
-Q 1350 4441 1106 4219 
-Q 863 3997 819 3553 
-z
-" transform="scale(0.015625)"/>
-      <path id="DejaVuSerif-2014" d="M 281 1906 
-L 6119 1906 
-L 6119 1491 
-L 281 1491 
-L 281 1906 
-z
-" transform="scale(0.015625)"/>
-      <path id="DejaVuSerif-41" d="M 1281 1691 
-L 2994 1691 
-L 2138 3909 
-L 1281 1691 
-z
-M -38 0 
-L -38 331 
-L 372 331 
-L 2034 4666 
-L 2559 4666 
-L 4225 331 
-L 4684 331 
-L 4684 0 
-L 2988 0 
-L 2988 331 
-L 3506 331 
-L 3116 1356 
-L 1153 1356 
-L 763 331 
-L 1275 331 
-L 1275 0 
-L -38 0 
-z
-" transform="scale(0.015625)"/>
-      <path id="DejaVuSerif-54" d="M 1222 0 
-L 1222 331 
-L 1819 331 
-L 1819 4294 
-L 447 4294 
-L 447 3566 
-L 63 3566 
-L 63 4666 
-L 4206 4666 
-L 4206 3566 
-L 3822 3566 
-L 3822 4294 
-L 2450 4294 
-L 2450 331 
-L 3047 331 
-L 3047 0 
-L 1222 0 
-z
-" transform="scale(0.015625)"/>
-     </defs>
-     <use xlink:href="#DejaVuSerif-46"/>
-     <use xlink:href="#DejaVuSerif-69" transform="translate(69.384766 0)"/>
-     <use xlink:href="#DejaVuSerif-67" transform="translate(101.367188 0)"/>
-     <use xlink:href="#DejaVuSerif-2e" transform="translate(165.380859 0)"/>
-     <use xlink:href="#DejaVuSerif-20" transform="translate(197.167969 0)"/>
-     <use xlink:href="#DejaVuSerif-32" transform="translate(228.955078 0)"/>
-     <use xlink:href="#DejaVuSerif-20" transform="translate(292.578125 0)"/>
-     <use xlink:href="#DejaVuSerif-2014" transform="translate(324.365234 0)"/>
-     <use xlink:href="#DejaVuSerif-20" transform="translate(424.365234 0)"/>
-     <use xlink:href="#DejaVuSerif-41" transform="translate(456.152344 0)"/>
-     <use xlink:href="#DejaVuSerif-64" transform="translate(528.369141 0)"/>
-     <use xlink:href="#DejaVuSerif-76" transform="translate(592.382812 0)"/>
-     <use xlink:href="#DejaVuSerif-65" transform="translate(648.876953 0)"/>
-     <use xlink:href="#DejaVuSerif-72" transform="translate(708.056641 0)"/>
-     <use xlink:href="#DejaVuSerif-73" transform="translate(755.859375 0)"/>
-     <use xlink:href="#DejaVuSerif-61" transform="translate(807.177734 0)"/>
-     <use xlink:href="#DejaVuSerif-72" transform="translate(866.796875 0)"/>
-     <use xlink:href="#DejaVuSerif-69" transform="translate(914.599609 0)"/>
-     <use xlink:href="#DejaVuSerif-61" transform="translate(946.582031 0)"/>
-     <use xlink:href="#DejaVuSerif-6c" transform="translate(1006.201172 0)"/>
-     <use xlink:href="#DejaVuSerif-20" transform="translate(1038.183594 0)"/>
-     <use xlink:href="#DejaVuSerif-54" transform="translate(1069.970703 0)"/>
-     <use xlink:href="#DejaVuSerif-68" transform="translate(1136.669922 0)"/>
-     <use xlink:href="#DejaVuSerif-72" transform="translate(1201.074219 0)"/>
-     <use xlink:href="#DejaVuSerif-65" transform="translate(1248.876953 0)"/>
-     <use xlink:href="#DejaVuSerif-61" transform="translate(1308.056641 0)"/>
-     <use xlink:href="#DejaVuSerif-74" transform="translate(1367.675781 0)"/>
-     <use xlink:href="#DejaVuSerif-20" transform="translate(1407.861328 0)"/>
-     <use xlink:href="#DejaVuSerif-4d" transform="translate(1439.648438 0)"/>
-     <use xlink:href="#DejaVuSerif-6f" transform="translate(1542.041016 0)"/>
-     <use xlink:href="#DejaVuSerif-64" transform="translate(1602.246094 0)"/>
-     <use xlink:href="#DejaVuSerif-65" transform="translate(1666.259766 0)"/>
-     <use xlink:href="#DejaVuSerif-6c" transform="translate(1725.439453 0)"/>
-     <use xlink:href="#DejaVuSerif-73" transform="translate(1757.421875 0)"/>
     </g>
    </g>
   </g>

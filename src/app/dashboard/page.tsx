@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
-import Link from "next/link";
+import { useState, useEffect, useCallback, useRef } from "react";
 import AgentNetworkGraph, { NetworkPulse } from "./AgentNetworkGraph";
 import {
   CAPABILITY_ICON_MAP,
@@ -16,7 +15,6 @@ import {
   User,
   Star,
   Brain,
-  RefreshCw,
   CheckCircle,
   CircleX,
   Loader2,
@@ -124,11 +122,11 @@ export default function Dashboard() {
   const [humanTasks, setHumanTasks] = useState<HumanTask[]>([]);
   const [wallet, setWallet] = useState<WalletState>({ balanceSats: null, nodeId: null, status: "loading" });
   const [budget, setBudget] = useState<BudgetState | null>(null);
-  const [isOrchestratingDemo, setIsOrchestratingDemo] = useState(false);
   const [demoResult, setDemoResult] = useState<Record<string, unknown> | null>(null);
   const [lightningFlashes, setLightningFlashes] = useState<{ id: number; x: number; y: number }[]>([]);
   const [networkPulses, setNetworkPulses] = useState<NetworkPulse[]>([]);
   const seenEventIdsRef = useRef<Set<string>>(new Set());
+  const orchestrateInFlightRef = useRef(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [humanInvoices, setHumanInvoices] = useState<Record<string, string>>({});
   const [humanFeedback, setHumanFeedback] = useState<Record<string, string>>({});
@@ -275,7 +273,8 @@ export default function Dashboard() {
   };
 
   const handleTriggerDemo = async () => {
-    setIsOrchestratingDemo(true);
+    if (orchestrateInFlightRef.current) return;
+    orchestrateInFlightRef.current = true;
     setDemoResult(null);
     triggerLightning();
 
@@ -293,7 +292,7 @@ export default function Dashboard() {
     } catch (err) {
       setDemoResult({ error: String(err) });
     } finally {
-      setIsOrchestratingDemo(false);
+      orchestrateInFlightRef.current = false;
       fetchData();
       fetchWallet();
     }

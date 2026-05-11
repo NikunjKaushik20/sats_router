@@ -1,0 +1,153 @@
+{
+  "generated_at": "2026-05-10T13:49:58.736Z",
+  "config": {
+    "attack": "collusion-ring",
+    "malicious_ratio": 0.3,
+    "rounds": 60,
+    "jobs_per_round": 5,
+    "interaction_window_rounds": 100
+  },
+  "results": [
+    {
+      "N": 5000,
+      "attack": "collusion-ring",
+      "seeds": 20,
+      "fraud": {
+        "mean": 38.65,
+        "std": 73.93,
+        "min": 0,
+        "max": 351
+      },
+      "maliciousRate": {
+        "mean": 0.0577,
+        "std": 0.0825
+      },
+      "successRate": {
+        "mean": 0.9415,
+        "std": 0.0246
+      },
+      "rawSeeds": [
+        {
+          "seed": 1,
+          "fraud": 36,
+          "maliciousRate": 0.04,
+          "successRate": 0.9567
+        },
+        {
+          "seed": 2,
+          "fraud": 46,
+          "maliciousRate": 0.0233,
+          "successRate": 0.9567
+        },
+        {
+          "seed": 3,
+          "fraud": 351,
+          "maliciousRate": 0.2667,
+          "successRate": 0.8533
+        },
+        {
+          "seed": 4,
+          "fraud": 19,
+          "maliciousRate": 0.0233,
+          "successRate": 0.9567
+        },
+        {
+          "seed": 5,
+          "fraud": 18,
+          "maliciousRate": 0.0167,
+          "successRate": 0.9467
+        },
+        {
+          "seed": 6,
+          "fraud": 16,
+          "maliciousRate": 0.0333,
+          "successRate": 0.94
+        },
+        {
+          "seed": 7,
+          "fraud": 18,
+          "maliciousRate": 0.01,
+          "successRate": 0.9433
+        },
+        {
+          "seed": 8,
+          "fraud": 6,
+          "maliciousRate": 0.0233,
+          "successRate": 0.9467
+        },
+        {
+          "seed": 9,
+          "fraud": 8,
+          "maliciousRate": 0.05,
+          "successRate": 0.96
+        },
+        {
+          "seed": 10,
+          "fraud": 22,
+          "maliciousRate": 0.0133,
+          "successRate": 0.9467
+        },
+        {
+          "seed": 11,
+          "fraud": 23,
+          "maliciousRate": 0.0633,
+          "successRate": 0.9333
+        },
+        {
+          "seed": 12,
+          "fraud": 0,
+          "maliciousRate": 0.0067,
+          "successRate": 0.96
+        },
+        {
+          "seed": 13,
+          "fraud": 0,
+          "maliciousRate": 0.0267,
+          "successRate": 0.9333
+        },
+        {
+          "seed": 14,
+          "fraud": 0,
+          "maliciousRate": 0.0133,
+          "successRate": 0.9567
+        },
+        {
+          "seed": 15,
+          "fraud": 32,
+          "maliciousRate": 0.0167,
+          "successRate": 0.9367
+        },
+        {
+          "seed": 16,
+          "fraud": 28,
+          "maliciousRate": 0.1067,
+          "successRate": 0.9367
+        },
+        {
+          "seed": 17,
+          "fraud": 14,
+          "maliciousRate": 0.0067,
+          "successRate": 0.9667
+        },
+        {
+          "seed": 18,
+          "fraud": 82,
+          "maliciousRate": 0.3133,
+          "successRate": 0.9033
+        },
+        {
+          "seed": 19,
+          "fraud": 30,
+          "maliciousRate": 0.0967,
+          "successRate": 0.96
+        },
+        {
+          "seed": 20,
+          "fraud": 24,
+          "maliciousRate": 0.0033,
+          "successRate": 0.9367
+        }
+      ]
+    }
+  ]
+}

@@ -4,20 +4,17 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   Zap,
-  Coins,
   Bot,
   User,
   KeyRound,
   Clock,
   Loader2,
-  CheckCircle,
   CircleCheck,
   Star,
   Tag,
   Pencil,
   FlagTriangleRight,
   ClipboardList,
-  AlertTriangle,
   Hand,
 } from "@/lib/icons";
 import type { LucideIcon } from "lucide-react";
@@ -42,6 +39,13 @@ interface BountyStats {
   totalOpen: number;
   totalCompleted: number;
   totalSatsPaid: number;
+}
+
+interface ConfettiParticleStyle {
+  left: string;
+  fontSize: string;
+  animationDuration: string;
+  animationDelay: string;
 }
 
 const TYPE_CONFIG: Record<string, { Icon: LucideIcon; label: string; color: string }> = {
@@ -72,8 +76,9 @@ export default function BountiesPage() {
   const [loading, setLoading] = useState<Record<string, boolean>>({});
   const [feedback, setFeedback] = useState<Record<string, { type: "success" | "error"; msg: string }>>({});
   const [satsEarned, setSatsEarned] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [confettiStyles, setConfettiStyles] = useState<ConfettiParticleStyle[]>([]);
   const [flagProvider, setFlagProvider] = useState(false);
+  const [clock, setClock] = useState(() => Date.now());
 
   const fetchBounties = useCallback(async () => {
     try {
@@ -81,14 +86,19 @@ export default function BountiesPage() {
       const data = await res.json();
       setBounties(data.bounties || []);
       setStats(data.stats || { totalOpen: 0, totalCompleted: 0, totalSatsPaid: 0 });
+      setClock(Date.now());
     } catch (err) {
       console.error("Fetch bounties error:", err);
     }
   }, [filter]);
 
   useEffect(() => {
-    fetchBounties();
-    const interval = setInterval(fetchBounties, 5000);
+    queueMicrotask(() => {
+      void fetchBounties();
+    });
+    const interval = setInterval(() => {
+      void fetchBounties();
+    }, 5000);
     return () => clearInterval(interval);
   }, [fetchBounties]);
 
@@ -132,8 +142,15 @@ export default function BountiesPage() {
       const data = await res.json();
       if (data.paymentProof) {
         setSatsEarned((p) => p + rewardSats);
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
+        setConfettiStyles(
+          Array.from({ length: 20 }, () => ({
+            left: `${Math.random() * 100}%`,
+            fontSize: `${14 + Math.random() * 12}px`,
+            animationDuration: `${1.5 + Math.random() * 1.5}s`,
+            animationDelay: `${Math.random() * 0.5}s`,
+          })),
+        );
+        setTimeout(() => setConfettiStyles([]), 3000);
         setFeedback((p) => ({
           ...p,
           [bountyId]: {
@@ -156,9 +173,9 @@ export default function BountiesPage() {
     }
   };
 
-  const timeLeft = (expiresAt: string | null) => {
+  const timeLeft = (expiresAt: string | null, now: number) => {
     if (!expiresAt) return null;
-    const ms = new Date(expiresAt).getTime() - Date.now();
+    const ms = new Date(expiresAt).getTime() - now;
     if (ms <= 0) return "Expired";
     const min = Math.floor(ms / 60_000);
     if (min < 1) return "<1 min";
@@ -175,18 +192,18 @@ export default function BountiesPage() {
       }}
     >
       {/* Confetti-like sats animation */}
-      {showConfetti && (
+      {confettiStyles.length > 0 && (
         <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 200 }}>
-          {Array.from({ length: 20 }).map((_, i) => (
+          {confettiStyles.map((style, i) => (
             <div
               key={i}
               style={{
                 position: "absolute",
-                left: `${Math.random() * 100}%`,
+                left: style.left,
                 top: "-20px",
-                fontSize: `${14 + Math.random() * 12}px`,
-                animation: `satsFall ${1.5 + Math.random() * 1.5}s ease-in forwards`,
-                animationDelay: `${Math.random() * 0.5}s`,
+                fontSize: style.fontSize,
+                animation: `satsFall ${style.animationDuration} ease-in forwards`,
+                animationDelay: style.animationDelay,
               }}
             >
               <Zap size={16} aria-hidden="true" style={{ color: "var(--accent-amber)" }} />
@@ -353,7 +370,7 @@ export default function BountiesPage() {
             const isActive = activeBounty === b.id;
             const fb = feedback[b.id];
             const busy = loading[b.id];
-            const remaining = timeLeft(b.expiresAt);
+            const remaining = timeLeft(b.expiresAt, clock);
             const isExpired = remaining === "Expired" && b.status === "open";
 
             return (

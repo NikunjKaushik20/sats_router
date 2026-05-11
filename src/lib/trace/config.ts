@@ -87,12 +87,102 @@ export const ROUTING_UTILITY = {
   mu_cliquePenalty:     0.15,  // v2.1: NEW — penalizes low-diversity economic patterns
 } as const;
 
+export type TraceRoutingPreset = "baseline" | "guard_mid" | "guard_cost" | "guard_safe" | "guard_whitewash";
+export type RoutingUtilityConfig = Record<keyof typeof ROUTING_UTILITY, number> & {
+  minJobsForFullAccess?: number;
+  volatilityPenaltyWeight?: number;
+};
+
+export const TRACE_ROUTING_PRESETS: Record<TraceRoutingPreset, RoutingUtilityConfig> = {
+  baseline: {
+    alpha_traceScore:     0.40,
+    beta_defaultRisk:     0.30,
+    gamma_cost:           0.15,
+    delta_networkTrust:   0.10,
+    epsilon_capability:   0.10,
+    lambda_sybilPenalty:  0.20,
+    mu_cliquePenalty:     0.15,
+  },
+  guard_mid: {
+    alpha_traceScore:     0.46,   // v2.4: +0.02 to compensate for delta reduction
+    beta_defaultRisk:     0.42,
+    gamma_cost:           0.10,
+    delta_networkTrust:   0.04,   // v2.4: 0.10→0.04 — limits collusion-ring's fake-trust routing boost
+    epsilon_capability:   0.10,
+    lambda_sybilPenalty:  0.38,
+    mu_cliquePenalty:     0.20,
+    minJobsForFullAccess: 15,
+  },
+  guard_cost: {
+    alpha_traceScore:     0.42,
+    beta_defaultRisk:     0.44,
+    gamma_cost:           0.07,
+    delta_networkTrust:   0.10,
+    epsilon_capability:   0.10,
+    lambda_sybilPenalty:  0.40,
+    mu_cliquePenalty:     0.20,
+    minJobsForFullAccess: 15,
+  },
+  guard_safe: {
+    alpha_traceScore:     0.36,
+    beta_defaultRisk:     0.60,
+    gamma_cost:           0.18,
+    delta_networkTrust:   0.06,
+    epsilon_capability:   0.08,
+    lambda_sybilPenalty:  0.70,
+    mu_cliquePenalty:     0.30,
+  },
+  guard_whitewash: {
+    alpha_traceScore:     0.46,
+    beta_defaultRisk:     0.50,
+    gamma_cost:           0.08,
+    delta_networkTrust:   0.08,
+    epsilon_capability:   0.08,
+    lambda_sybilPenalty:  0.42,
+    mu_cliquePenalty:     0.25,
+    minJobsForFullAccess: 15,
+    volatilityPenaltyWeight: 0.25,
+  },
+};
+
+export function applyTraceRoutingPreset(preset: TraceRoutingPreset = "baseline"): void {
+  const p = TRACE_ROUTING_PRESETS[preset];
+  const utilityKeys = ["alpha_traceScore", "beta_defaultRisk", "gamma_cost", "delta_networkTrust", "epsilon_capability", "lambda_sybilPenalty", "mu_cliquePenalty"];
+  const utilConfig: any = {};
+  for (const k of utilityKeys) utilConfig[k] = (p as any)[k];
+  Object.assign(ROUTING_UTILITY as Record<string, number>, utilConfig);
+
+  // Apply optional guard overrides
+  if (p.minJobsForFullAccess !== undefined) {
+    (PROGRESSIVE_TRUST as any).minJobsForFullAccess = p.minJobsForFullAccess;
+  } else {
+    (PROGRESSIVE_TRUST as any).minJobsForFullAccess = 10; // reset to default
+  }
+  
+  if (p.volatilityPenaltyWeight !== undefined) {
+    (VOLATILITY as any).volatilityPenaltyWeight = p.volatilityPenaltyWeight;
+  } else {
+    (VOLATILITY as any).volatilityPenaltyWeight = 0.15; // reset to default
+  }
+}
+
 // ─── Routing Constraints ──────────────────────────────────────────────────────
 export const ROUTING_CONSTRAINTS = {
   minTraceScore:        300,
   maxDefaultProbability: 0.6,  // v2: tightened from 0.7
   maxSybilRisk:         0.6,   // v2: tightened from 0.8 — CRITICAL for sybil hardening
   maxActiveDisputes:    3,
+} as const;
+
+// Controlled exploration for experiments: lets low-exposure providers receive
+// occasional routed jobs so adversarial adaptivity is actually exercised.
+// v2.4: Halved epsilon (0.08→0.04, 0.02→0.01) — reduces random re-routing to
+//       already-penalised malicious agents after TRACE detects the attack.
+export const EXPLORATION_CONFIG = {
+  epsilonStart: 0.04,
+  epsilonEnd: 0.01,
+  decayRounds: 60,
+  minExplorationCandidates: 10,
 } as const;
 
 // ─── Cold Start / Progressive Trust ──────────────────────────────────────────
@@ -155,6 +245,11 @@ export const COUNTERPARTY_DIVERSITY = {
   // AdjustedTrust = networkTrust × diversityScore
 } as const;
 
+/** Simulation: retain only the last N rounds of co-job interactions for entropy (scales to large N). */
+export const INTERACTION_HISTORY_WINDOW = {
+  maxRounds: 200,
+} as const;
+
 // ─── v2.1: Repeated-Pair Suppression ──────────────────────────────────────────
 export const REPEATED_PAIR = {
   // Trust gain decays exponentially with repeated interactions:
@@ -205,25 +300,28 @@ export const VOLATILITY = {
 } as const;
 
 // ─── Experiment Registry ──────────────────────────────────────────────────────
-export type RoutingPolicy = "TRACE" | "REPUTATION" | "PRICE";
+export type RoutingPolicy = "TRACE" | "REPUTATION" | "PRICE" | "STAKE_WEIGHTED";
 
 /**
  * Snapshot the entire v2 config for experiment reproducibility.
  */
 export function snapshotConfig() {
-  // Lazy import to avoid circular dependency
+  /* eslint-disable @typescript-eslint/no-require-imports -- runtime require breaks import cycle (adaptiveConfig → config). */
   const { ADAPTIVE_SCALING } = require("./adaptiveConfig");
   const { CAUSAL_CONFIG } = require("./causalGraph");
   const { TEMPORAL_CONFIG } = require("./temporalTrust");
+  /* eslint-enable @typescript-eslint/no-require-imports */
 
   return {
-    version: "v2.3",
+    version: "v2.1",
     traceWeights: { ...TRACE_WEIGHTS },
     riskTiers: { ...RISK_TIERS },
     defaultProbWeights: { ...DEFAULT_PROB_WEIGHTS },
     recentFailure: { ...RECENT_FAILURE },
     routingUtility: { ...ROUTING_UTILITY },
+    traceRoutingPresets: { ...TRACE_ROUTING_PRESETS },
     routingConstraints: { ...ROUTING_CONSTRAINTS },
+    explorationConfig: { ...EXPLORATION_CONFIG },
     coldStart: { ...COLD_START },
     progressiveTrust: { ...PROGRESSIVE_TRUST },
     scoreDeltas: { ...SCORE_DELTAS },

@@ -1,16 +1,17 @@
 import OpenAI from "openai";
+import { OPENAI_CHAT_MODEL } from "@/lib/openaiModel";
 import type { DeepDiagnosis } from "@/types";
 
 /**
  * Agent D — Storyteller
  * Converts structured diagnosis into human-friendly incident summary.
- * Uses gpt-4o-mini for speed and cost efficiency.
+ * Uses OPENAI_CHAT_MODEL for speed and cost efficiency.
  * Cost: 10 sats per request.
  */
 export async function runStoryteller(diagnosis: DeepDiagnosis): Promise<string> {
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const response = await client.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: OPENAI_CHAT_MODEL,
     max_tokens: 400,
     temperature: 0.7,
     messages: [

@@ -132,8 +132,6 @@ def fig3_scaling():
 
     ax.set_xlabel("Network Size ($N$)")
     ax.set_ylabel("Fraud Exposure (sats)")
-    ax.set_title("Fig. 3 — Fraud vs. Network Scale\n(Collusion Ring, 30% malicious, 20 seeds)",
-                 fontsize=8)
     ax.set_xticks([30, 50, 100])
     ax.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=5))
     ax.legend(loc="upper right", framealpha=1)
@@ -196,9 +194,6 @@ def fig5_complexity():
     ax.set_title("(c) Honest Routing", fontsize=8)
     ax.set_ylim(70, 90)
 
-    # Shared title
-    fig.suptitle("Fig. 5 — Complexity vs. Stability (Collusion Ring, $N$=50, 20 seeds)",
-                 fontsize=8, y=1.01)
     fig.tight_layout()
     save(fig, "fig5_complexity_stability")
 
@@ -231,8 +226,6 @@ def fig6_suppression():
     ax.set_xticks(x)
     ax.set_xticklabels(["v2.1", "v2.2", "v2.3"])
     ax.set_ylabel("Honest Routing Share (%)")
-    ax.set_title("Fig. 6 — Honest Routing by Version\n(Collusion Ring, $N$=50, 20 seeds)",
-                 fontsize=8)
     ax.set_ylim(60, 100)
     ax.yaxis.set_major_locator(MaxNLocator(nbins=5))
 
@@ -265,7 +258,6 @@ def fig4_ablation():
     ax.set_xticks(x)
     ax.set_xticklabels(short, fontsize=7.5)
     ax.set_ylabel("Fraud Exposure (sats)")
-    ax.set_title("Fig. 4 — Ablation Study\n(Collusion Ring, $N$=50)", fontsize=8)
     ax.set_ylim(bottom=0)
 
     # % increase labels
@@ -304,7 +296,6 @@ def fig7_sensitivity():
     ax.axvline(0, color="#cccccc", linewidth=0.5, zorder=1)
     ax.set_xlabel("Parameter Perturbation (%)")
     ax.set_ylabel("Relative Fraud Change (%)")
-    ax.set_title("Fig. 7 — Sensitivity Analysis\n(Collusion Ring, $N$=50, 5 seeds)", fontsize=8)
     ax.legend(loc="upper left", fontsize=7)
     ax.set_xticks([-50, -25, 0, 25, 50])
 
@@ -346,7 +337,6 @@ def fig2_threat_models():
             cell.set_facecolor("white")
         cell.set_linewidth(0.5)
 
-    ax.set_title("Fig. 2 — Adversarial Threat Models", fontsize=8, pad=8)
     fig.tight_layout()
     save(fig, "fig2_threat_models")
 
@@ -407,7 +397,6 @@ def fig1_architecture():
     arrow(8.0, 2.05, 5.0, 2.05)
     arrow(5.0, 2.05, 5.0, 3.05,  "update")
 
-    ax.set_title("Fig. 1 — TRACE System Architecture", fontsize=8, pad=4)
     fig.tight_layout()
     save(fig, "fig1_architecture")
 

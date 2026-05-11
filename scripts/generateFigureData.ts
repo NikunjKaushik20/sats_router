@@ -40,15 +40,6 @@ function std(arr: number[]) {
   const m = mean(arr);
   return arr.length > 1 ? Math.sqrt(arr.reduce((s,v) => s + (v-m)**2, 0) / (arr.length-1)) : 0;
 }
-function groupBy<T>(arr: T[], key: (t: T) => string): Map<string, T[]> {
-  const m = new Map<string, T[]>();
-  for (const item of arr) {
-    const k = key(item);
-    if (!m.has(k)) m.set(k, []);
-    m.get(k)!.push(item);
-  }
-  return m;
-}
 
 const rows = parseCSV();
 console.log(`Loaded ${rows.length} experiment rows`);
@@ -77,9 +68,8 @@ console.log("✓ fig3_scaling_fraud.json");
 
 // ─── Figure 5: Complexity vs Stability ───────────────────────────────────────
 // v2.1/v2.2/v2.3 — fraud variance, honest routing, catastrophic seeds
-// Data from version_comparison CSVs directly
+// Data from version_comparison CSVs directly (path reserved for future CSV-driven fig5).
 
-const versionCompCSV = path.join(process.cwd(), "paper/results/version_comparison.csv");
 const fig5 = {
   title: "Figure 5: Complexity vs Stability (Collusion Ring, N=50, 20 seeds)",
   yLabel: "Value",

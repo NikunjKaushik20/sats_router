@@ -17,7 +17,6 @@
  *   npx tsx scripts/runAblation.ts --seed 42 --agents 50
  */
 
-import { prisma } from "../src/lib/db";
 import {
   runExperiment,
   DEFAULT_CONFIG,
@@ -25,6 +24,7 @@ import {
   type ExperimentConfig,
   type AgentModelSpec,
 } from "../src/lib/trace/experiments";
+import { OPENAI_CHAT_MODEL } from "../src/lib/openaiModel";
 import * as fs from "fs";
 import * as path from "path";
 import dotenv from "dotenv";
@@ -51,7 +51,6 @@ const ORIGINAL_MU = (traceConfig.ROUTING_UTILITY as any).mu_cliquePenalty;
 const ORIGINAL_DECAY = (traceConfig.REPEATED_PAIR as any).decayConstant;
 const ORIGINAL_MIN_VOL = (traceConfig.ECONOMIC_VOLUME_WEIGHTING as any).minVolumeForFullWeight;
 const ORIGINAL_MIN_ENTROPY = (traceConfig.COUNTERPARTY_DIVERSITY as any).minEntropyForFullTrust;
-const ORIGINAL_ENTROPY_WEIGHT = (traceConfig.COUNTERPARTY_DIVERSITY as any).entropyPenaltyWeight;
 
 // ─── Ablation Variants ────────────────────────────────────────────────────────
 
@@ -156,7 +155,7 @@ interface AblationResult {
 }
 
 function buildMix(agents: number): AgentModelSpec[] {
-  const gpt = MODEL_PRESETS["gpt-4o-mini"];
+  const gpt = MODEL_PRESETS[OPENAI_CHAT_MODEL];
   const sarvam = MODEL_PRESETS["sarvam"];
   const llama = MODEL_PRESETS["llama-3.2-3b"];
   const third = Math.floor(agents / 3);
@@ -243,7 +242,6 @@ async function main() {
 
   for (const r of allResults) {
     const fraudDelta = r.fraudExposure - baseline.fraudExposure;
-    const routeDelta = ((r.maliciousRouting - baseline.maliciousRouting) * 100);
     const deltaStr = r.variant === "full-v2.1" ? "" : ` (Δfraud: ${fraudDelta >= 0 ? "+" : ""}${fraudDelta})`;
 
     console.log(

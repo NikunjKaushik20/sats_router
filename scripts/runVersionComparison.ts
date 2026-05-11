@@ -7,7 +7,7 @@ import {
   type ExperimentConfig,
   type AgentModelSpec,
 } from "../src/lib/trace/experiments";
-import type { RoutingPolicy } from "../src/lib/trace";
+import { OPENAI_CHAT_MODEL } from "../src/lib/openaiModel";
 import type { AttackType } from "../src/lib/trace/attacks";
 import { ADAPTIVE_SCALING } from "../src/lib/trace/adaptiveConfig";
 import { CAUSAL_CONFIG } from "../src/lib/trace/causalGraph";
@@ -71,7 +71,7 @@ function setVersion(version: TraceVersion): void {
 // ─── Agent Mix Builder ────────────────────────────────────────────────────────
 
 function buildMix(n: number): AgentModelSpec[] {
-  const gpt = MODEL_PRESETS["gpt-4o-mini"];
+  const gpt = MODEL_PRESETS[OPENAI_CHAT_MODEL];
   const sarvam = MODEL_PRESETS["sarvam"];
   const llama = MODEL_PRESETS["llama-3.2-3b"];
   const third = Math.floor(n / 3);

@@ -1,15 +1,16 @@
 import OpenAI from "openai";
+import { OPENAI_CHAT_MODEL } from "@/lib/openaiModel";
 import type { QuickScanResult } from "@/types";
 
 /**
  * Agent B — Quick Scanner
- * Fast, cheap log analysis. Uses gpt-4o-mini for speed.
+ * Fast, cheap log analysis. Uses OPENAI_CHAT_MODEL for speed.
  * Cost: 5 sats per request.
  */
 export async function runQuickScanner(logs: string[]): Promise<QuickScanResult> {
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const response = await client.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: OPENAI_CHAT_MODEL,
     max_tokens: 300,
     temperature: 0.3,
     messages: [

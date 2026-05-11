@@ -21,6 +21,7 @@ import {
   type ExperimentConfig,
   type AgentModelSpec,
 } from "../src/lib/trace/experiments";
+import { OPENAI_CHAT_MODEL } from "../src/lib/openaiModel";
 import type { AttackType } from "../src/lib/trace/attacks";
 import * as fs from "fs";
 import * as path from "path";
@@ -33,7 +34,7 @@ dotenv.config();
 function buildAgentMix(scale: number): AgentModelSpec[] {
   // Proportional distribution across 3 model types
   // Rule: roughly 1/3 each, rounded to nearest integer
-  const gpt = MODEL_PRESETS["gpt-4o-mini"];
+  const gpt = MODEL_PRESETS[OPENAI_CHAT_MODEL];
   const sarvam = MODEL_PRESETS["sarvam"];
   const llama = MODEL_PRESETS["llama-3.2-3b"];
 
@@ -103,7 +104,7 @@ interface ScaleResult {
 async function main() {
   const opts = parseArgs();
   const scales = [30, 50, 100];
-  const policies = ["TRACE", "REPUTATION", "PRICE"] as const;
+  const policies = ["TRACE", "REPUTATION", "PRICE", "STAKE_WEIGHTED"] as const;
   const allResults: ScaleResult[] = [];
 
   console.log("\n╔══════════════════════════════════════════════════════════════════════╗");

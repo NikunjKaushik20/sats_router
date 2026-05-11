@@ -1,0 +1,217 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{poon2016lightning}
+\citation{kamvar2003eigentrust}
+\citation{yu2006sybilguard}
+\citation{yu2008sybillimit}
+\citation{dellarocas2003digitization}
+\providecommand \oddpage@label [2]{}
+\@writefile{toc}{\contentsline {section}{Abstract}{1}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background and Threat Model}{2}{section.2}\protected@file@percent }
+\newlabel{sec:background}{{2}{2}{Background and Threat Model}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Setting}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Economic Model}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Threat Model}{2}{subsection.2.3}\protected@file@percent }
+\newlabel{sec:threat}{{2.3}{2}{Threat Model}{subsection.2.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Adversarial threat model definitions. Each attack type exploits a distinct structural vulnerability: collusion rings inflate trust via synthetic mutual endorsements, strategic defaulters exploit accumulated history, Sybil clusters dominate routing share via identity volume, and whitewashers escape penalties via identity reset. TRACE addresses all four through complementary scoring dimensions.}}{3}{figure.caption.4}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:threats}{{1}{3}{Adversarial threat model definitions. Each attack type exploits a distinct structural vulnerability: collusion rings inflate trust via synthetic mutual endorsements, strategic defaulters exploit accumulated history, Sybil clusters dominate routing share via identity volume, and whitewashers escape penalties via identity reset. TRACE addresses all four through complementary scoring dimensions}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Attacker Capabilities and Constraints}{3}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}TRACE System Design}{3}{section.3}\protected@file@percent }
+\newlabel{sec:design}{{3}{3}{TRACE System Design}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Overview}{3}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Composite Trust Score}{3}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:composite}{{3.2}{3}{Composite Trust Score}{subsection.3.2}{}}
+\newlabel{eq:composite}{{1}{3}{Composite Trust Score}{equation.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces TRACE\nonbreakingspace v2.1 architecture. The orchestrator queries the Provider Registry, the Trust Scorer computes composite scores from interaction history, and the Routing Engine selects a provider via the trust-aware utility function. Payment settles over the Lightning Network upon confirmed delivery, and outcomes are recorded in the Economic Ledger for subsequent score updates. All computation is local to the orchestrator; no cross-orchestrator coordination is required.}}{4}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:architecture}{{2}{4}{TRACE~v2.1 architecture. The orchestrator queries the Provider Registry, the Trust Scorer computes composite scores from interaction history, and the Routing Engine selects a provider via the trust-aware utility function. Payment settles over the Lightning Network upon confirmed delivery, and outcomes are recorded in the Economic Ledger for subsequent score updates. All computation is local to the orchestrator; no cross-orchestrator coordination is required}{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Repeated-Pair Decay}{4}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:decay}{{3.3}{4}{Repeated-Pair Decay}{subsection.3.3}{}}
+\newlabel{eq:decay}{{2}{4}{Repeated-Pair Decay}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Clique Penalty}{4}{subsection.3.4}\protected@file@percent }
+\newlabel{eq:clique}{{3}{4}{Clique Penalty}{equation.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Progressive Trust Unlock}{4}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Routing Utility Function}{4}{subsection.3.6}\protected@file@percent }
+\newlabel{sec:utility}{{3.6}{4}{Routing Utility Function}{subsection.3.6}{}}
+\newlabel{eq:routing}{{4}{4}{Routing Utility Function}{equation.4}{}}
+\newlabel{eq:utility}{{5}{4}{Routing Utility Function}{equation.5}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces TRACE per-job routing loop.}}{5}{algocf.1}\protected@file@percent }
+\newlabel{alg:trace}{{1}{5}{Trust Update}{algocf.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Trust Update}{5}{subsection.3.7}\protected@file@percent }
+\newlabel{eq:ema}{{6}{5}{Trust Update}{equation.6}{}}
+\newlabel{eq:default}{{7}{5}{Trust Update}{equation.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.8}Bayesian Trust Extension}{5}{subsection.3.8}\protected@file@percent }
+\newlabel{sec:bayesian}{{3.8}{5}{Bayesian Trust Extension}{subsection.3.8}{}}
+\newlabel{eq:bayesian_posterior}{{8}{5}{Bayesian Trust Extension}{equation.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces TRACE\nonbreakingspace v2.1 parameter configuration.}}{5}{table.caption.7}\protected@file@percent }
+\newlabel{tab:params}{{1}{5}{TRACE~v2.1 parameter configuration}{table.caption.7}{}}
+\newlabel{eq:bayesian_completion}{{9}{5}{Bayesian Trust Extension}{equation.9}{}}
+\newlabel{eq:bayesian_ci}{{10}{5}{Bayesian Trust Extension}{equation.10}{}}
+\citation{kamvar2003eigentrust}
+\citation{xiong2004peertrust}
+\citation{rao2021bittensor}
+\citation{filecoinSpec}
+\citation{oceanDocs}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.9}Structural Cost Bounds}{6}{subsection.3.9}\protected@file@percent }
+\newlabel{sec:bounds}{{3.9}{6}{Structural Cost Bounds}{subsection.3.9}{}}
+\newlabel{eq:synthetic-cost}{{11}{6}{Structural Cost Bounds}{equation.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.10}Worked Example}{6}{subsection.3.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.11}Computational Complexity}{6}{subsection.3.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Related Work}{6}{section.4}\protected@file@percent }
+\newlabel{sec:related}{{4}{6}{Related Work}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Distributed Trust and Reputation Systems}{6}{subsection.4.1}\protected@file@percent }
+\citation{yu2006sybilguard}
+\citation{yu2008sybillimit}
+\citation{nisan2007algorithmic}
+\citation{malkhi1997byzantine}
+\citation{dellarocas2003digitization}
+\citation{myerson1979ic}
+\citation{anthropic2024mcp}
+\citation{perez2022ignore}
+\citation{sivaraman2020high}
+\citation{kamvar2003eigentrust}
+\citation{xiong2004peertrust}
+\citation{rao2021bittensor}
+\citation{filecoinSpec}
+\citation{yu2006sybilguard}
+\citation{yu2008sybillimit}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Sybil Attack Defences}{7}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Adversarial Routing and Strategic Behaviour}{7}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Trust in Agent Coordination Infrastructure}{7}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Trust in Lightning Network Systems}{7}{subsection.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Positioning}{7}{subsection.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Methodology}{7}{section.5}\protected@file@percent }
+\newlabel{sec:methodology}{{5}{7}{Experimental Methodology}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Simulation Environment}{7}{subsection.5.1}\protected@file@percent }
+\citation{mann1947test}
+\citation{romano2006appropriate}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces TRACE\nonbreakingspace v2.1 versus prior trust systems across key dimensions. ``Trust prop.'' = trust propagation style; ``Econ.'' = economic-aware routing; ``F.S.'' = explicit false-suppression evaluation; ``Cplx.'' = empirical complexity validation.}}{8}{table.caption.8}\protected@file@percent }
+\newlabel{tab:related}{{2}{8}{TRACE~v2.1 versus prior trust systems across key dimensions. ``Trust prop.'' = trust propagation style; ``Econ.'' = economic-aware routing; ``F.S.'' = explicit false-suppression evaluation; ``Cplx.'' = empirical complexity validation}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Routing Policies}{8}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Attack Configurations}{8}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Statistical Methods}{8}{subsection.5.4}\protected@file@percent }
+\newlabel{sec:stats}{{5.4}{8}{Statistical Methods}{subsection.5.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Catastrophic Seed Analysis}{8}{subsection.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}Metrics}{9}{subsection.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Evaluation}{9}{section.6}\protected@file@percent }
+\newlabel{sec:eval}{{6}{9}{Evaluation}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Core Routing Results: Collusion Ring}{9}{subsection.6.1}\protected@file@percent }
+\newlabel{sec:eval:collusion}{{6.1}{9}{Core Routing Results: Collusion Ring}{subsection.6.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Core Routing Results: Strategic Default}{9}{subsection.6.2}\protected@file@percent }
+\newlabel{sec:eval:strategic}{{6.2}{9}{Core Routing Results: Strategic Default}{subsection.6.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Routing policy comparison under static and adaptive collusion ring attacks, 20\nonbreakingspace seeds. For static collusion at $N{=}50$, TRACE vs.\nonbreakingspace Price: $p \approx 0.000$, Cliff's $|\delta |=0.976$; TRACE vs.\nonbreakingspace Reputation: $p=0.052$, Cliff's $|\delta |=0.467$ (not significant). The adaptive collusion ring incorporates dynamic fake-endorsement modulation; TRACE maintains functional resilience at both $N{=}50$ and $N{=}100$ under adaptive adversarial pressure.}}{9}{table.caption.9}\protected@file@percent }
+\newlabel{tab:collusion}{{3}{9}{Routing policy comparison under static and adaptive collusion ring attacks, 20~seeds. For static collusion at $N{=}50$, TRACE vs.~Price: $p \approx 0.000$, Cliff's $|\delta |=0.976$; TRACE vs.~Reputation: $p=0.052$, Cliff's $|\delta |=0.467$ (not significant). The adaptive collusion ring incorporates dynamic fake-endorsement modulation; TRACE maintains functional resilience at both $N{=}50$ and $N{=}100$ under adaptive adversarial pressure}{table.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Routing policy comparison under strategic-default attack, $N{=}50$, 20\nonbreakingspace seeds. TRACE provides the lowest fraud exposure and malicious routing rate across both attack types. TRACE vs.\nonbreakingspace Price: $p = 0.001$, Cliff's $|\delta |=0.879$, large. TRACE vs.\nonbreakingspace Reputation: $p = 0.147$, Cliff's $|\delta | = 0.391$, medium (directional only).}}{9}{table.caption.10}\protected@file@percent }
+\newlabel{tab:strategic}{{4}{9}{Routing policy comparison under strategic-default attack, $N{=}50$, 20~seeds. TRACE provides the lowest fraud exposure and malicious routing rate across both attack types. TRACE vs.~Price: $p = 0.001$, Cliff's $|\delta |=0.879$, large. TRACE vs.~Reputation: $p = 0.147$, Cliff's $|\delta | = 0.391$, medium (directional only)}{table.caption.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Sybil cluster and whitewashing results, $N{=}100$, 20\nonbreakingspace seeds. Sybil clusters do not default by definition, so fraud is identically zero across all policies; the operational metric is malicious-routing rate, where TRACE and Reputation reduce Sybil routing share by an order of magnitude relative to Price. Under whitewashing, TRACE and Reputation converge to low fraud because both penalise fresh-registrant routing, while Price routes to fresh identities indiscriminately and incurs catastrophic loss.}}{10}{table.caption.11}\protected@file@percent }
+\newlabel{tab:other_attacks}{{5}{10}{Sybil cluster and whitewashing results, $N{=}100$, 20~seeds. Sybil clusters do not default by definition, so fraud is identically zero across all policies; the operational metric is malicious-routing rate, where TRACE and Reputation reduce Sybil routing share by an order of magnitude relative to Price. Under whitewashing, TRACE and Reputation converge to low fraud because both penalise fresh-registrant routing, while Price routes to fresh identities indiscriminately and incurs catastrophic loss}{table.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Sybil Cluster and Whitewashing}{10}{subsection.6.3}\protected@file@percent }
+\newlabel{sec:eval:other}{{6.3}{10}{Sybil Cluster and Whitewashing}{subsection.6.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Fraud exposure versus network scale under collusion ring attack (30\% malicious agents, 20\nonbreakingspace seeds). TRACE fraud exposure decreases consistently as $N$ increases, consistent with the diversity-weighted routing mechanism that raises the structural cost of collusion in larger honest-agent populations. Price-only routing remains substantially higher across all scales. Shaded bands denote $\pm 1\sigma $ across 20\nonbreakingspace seeds.}}{10}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:scaling}{{3}{10}{Fraud exposure versus network scale under collusion ring attack (30\% malicious agents, 20~seeds). TRACE fraud exposure decreases consistently as $N$ increases, consistent with the diversity-weighted routing mechanism that raises the structural cost of collusion in larger honest-agent populations. Price-only routing remains substantially higher across all scales. Shaded bands denote $\pm 1\sigma $ across 20~seeds}{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Scaling Analysis}{10}{subsection.6.4}\protected@file@percent }
+\newlabel{sec:eval:scaling}{{6.4}{10}{Scaling Analysis}{subsection.6.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces TRACE fraud exposure at large scale under collusion ring attack (30\% malicious, 60\nonbreakingspace rounds, 5\nonbreakingspace jobs/round). Bounded interaction window (200\nonbreakingspace rounds) enables $O(N)$ routing overhead at all scales. \emph  {Fill in after running \texttt  {scripts/runLargeScale.ts}.}}}{11}{table.caption.13}\protected@file@percent }
+\newlabel{tab:large_scale}{{6}{11}{TRACE fraud exposure at large scale under collusion ring attack (30\% malicious, 60~rounds, 5~jobs/round). Bounded interaction window (200~rounds) enables $O(N)$ routing overhead at all scales. \emph {Fill in after running \texttt {scripts/runLargeScale.ts}.}}{table.caption.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Adaptive Collusion}{11}{subsection.6.5}\protected@file@percent }
+\newlabel{sec:adaptive-eval}{{6.5}{11}{Adaptive Collusion}{subsection.6.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Twenty-seed ablation results under collusion ring attack, $N{=}50$. Fraud is reported as mean\nonbreakingspace $\pm $\nonbreakingspace standard deviation. ``\%\nonbreakingspace $\Delta $'' is the fraud-mean change relative to the full v2.1 baseline; $|\delta |$ is Cliff's effect size; $p$ is the two-sided Mann--Whitney $U$ statistic against the baseline. None of the five removal conditions reaches significance at $p<0.05$.}}{11}{table.caption.15}\protected@file@percent }
+\newlabel{tab:ablation}{{7}{11}{Twenty-seed ablation results under collusion ring attack, $N{=}50$. Fraud is reported as mean~$\pm $~standard deviation. ``\%~$\Delta $'' is the fraud-mean change relative to the full v2.1 baseline; $|\delta |$ is Cliff's effect size; $p$ is the two-sided Mann--Whitney $U$ statistic against the baseline. None of the five removal conditions reaches significance at $p<0.05$}{table.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}Ablation Study}{11}{subsection.6.6}\protected@file@percent }
+\newlabel{sec:eval:ablation}{{6.6}{11}{Ablation Study}{subsection.6.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Ablation study: contribution of individual TRACE\nonbreakingspace v2.1 mechanisms under collusion ring attack ($N{=}50$, 20\nonbreakingspace seeds). Bars show mean fraud exposure with $\pm 1\sigma $ error bars. Although point estimates rank the clique penalty above repeated-pair decay (and the joint removal of all v2.1 features only $25\%$ above baseline), \emph  {no individual or joint ablation reaches statistical significance at $p<0.05$} (Mann--Whitney U). The mechanisms therefore appear to be individually small and noisily distinguishable contributors rather than dominant single-pillar defences---a finding that foreshadows the negative result on architectural extensions in \S  \ref {sec:complexity}.}}{12}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:ablation}{{4}{12}{Ablation study: contribution of individual TRACE~v2.1 mechanisms under collusion ring attack ($N{=}50$, 20~seeds). Bars show mean fraud exposure with $\pm 1\sigma $ error bars. Although point estimates rank the clique penalty above repeated-pair decay (and the joint removal of all v2.1 features only $25\%$ above baseline), \emph {no individual or joint ablation reaches statistical significance at $p<0.05$} (Mann--Whitney U). The mechanisms therefore appear to be individually small and noisily distinguishable contributors rather than dominant single-pillar defences---a finding that foreshadows the negative result on architectural extensions in \S \ref {sec:complexity}}{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Sensitivity analysis: relative change in fraud exposure under independent perturbation of three TRACE\nonbreakingspace v2.1 hyperparameters (collusion ring attack, $N{=}50$, 5\nonbreakingspace seeds per perturbation level). No perturbation produces catastrophic failure. The decay rate ($\lambda _{\text  {decay}}$) shows the highest sensitivity ($\pm 18\%$ fraud change at $\pm 50\%$ perturbation), in line with repeated-pair decay's position as the second-largest ablation contributor in Table\nonbreakingspace \ref {tab:ablation}. The entropy weight and clique threshold show low sensitivity ($< 12\%$ change at $\pm 25\%$ perturbation), indicating that TRACE\nonbreakingspace v2.1 does not require precise parameter calibration.}}{12}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:sensitivity}{{5}{12}{Sensitivity analysis: relative change in fraud exposure under independent perturbation of three TRACE~v2.1 hyperparameters (collusion ring attack, $N{=}50$, 5~seeds per perturbation level). No perturbation produces catastrophic failure. The decay rate ($\lambda _{\text {decay}}$) shows the highest sensitivity ($\pm 18\%$ fraud change at $\pm 50\%$ perturbation), in line with repeated-pair decay's position as the second-largest ablation contributor in Table~\ref {tab:ablation}. The entropy weight and clique threshold show low sensitivity ($< 12\%$ change at $\pm 25\%$ perturbation), indicating that TRACE~v2.1 does not require precise parameter calibration}{figure.caption.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Sensitivity analysis: fraud-exposure change under $\pm 25\%$ and $\pm 50\%$ perturbation of TRACE\nonbreakingspace v2.1 hyperparameters. Collusion ring, $N{=}50$, 5\nonbreakingspace seeds.}}{12}{table.caption.17}\protected@file@percent }
+\newlabel{tab:sensitivity}{{8}{12}{Sensitivity analysis: fraud-exposure change under $\pm 25\%$ and $\pm 50\%$ perturbation of TRACE~v2.1 hyperparameters. Collusion ring, $N{=}50$, 5~seeds}{table.caption.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.7}Sensitivity Analysis}{12}{subsection.6.7}\protected@file@percent }
+\newlabel{sec:eval:sensitivity}{{6.7}{12}{Sensitivity Analysis}{subsection.6.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces TRACE\nonbreakingspace v2.1 vs.\ TRACE\nonbreakingspace B (Bayesian) under four attack types ($N{=}50$, 20 seeds). Fraud in sats (mean\nonbreakingspace $\pm $\nonbreakingspace std). $p$ = Mann--Whitney two-sided test; $|\delta |$ = Cliff's effect size. $\Delta $ is the percentage reduction in mean fraud for TRACE\nonbreakingspace B relative to v2.1. Sybil cluster: both policies achieve zero fraud (TRACE\nonbreakingspace v2.1 already handles sybil completely; no improvement measurable).}}{13}{table.caption.18}\protected@file@percent }
+\newlabel{tab:bayesian}{{9}{13}{TRACE~v2.1 vs.\ TRACE~B (Bayesian) under four attack types ($N{=}50$, 20 seeds). Fraud in sats (mean~$\pm $~std). $p$ = Mann--Whitney two-sided test; $|\delta |$ = Cliff's effect size. $\Delta $ is the percentage reduction in mean fraud for TRACE~B relative to v2.1. Sybil cluster: both policies achieve zero fraud (TRACE~v2.1 already handles sybil completely; no improvement measurable)}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.8}Bayesian Trust Extension Evaluation}{13}{subsection.6.8}\protected@file@percent }
+\newlabel{sec:eval:bayesian}{{6.8}{13}{Bayesian Trust Extension Evaluation}{subsection.6.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces TRACE version feature flags. v2.1 is the final proposed system; v2.2 and v2.3 are exploratory extensions evaluated for architectural guidance.}}{13}{table.caption.19}\protected@file@percent }
+\newlabel{tab:versions}{{10}{13}{TRACE version feature flags. v2.1 is the final proposed system; v2.2 and v2.3 are exploratory extensions evaluated for architectural guidance}{table.caption.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Complexity-Induced Instability}{13}{section.7}\protected@file@percent }
+\newlabel{sec:complexity}{{7}{13}{Complexity-Induced Instability}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Evaluated Extensions}{13}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Results}{13}{subsection.7.2}\protected@file@percent }
+\citation{davis2006relationship}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Version comparison: fraud exposure mean $\pm \sigma $ and honest-routing share over 20\nonbreakingspace seeds at $N{=}50$ under collusion ring and strategic-default attacks. Zero of the six pairwise version contrasts (3\nonbreakingspace pairs $\times $ 2\nonbreakingspace attacks) reach $p < 0.05$ on fraud exposure; see Table\nonbreakingspace \ref {tab:pairstats}.}}{14}{table.caption.20}\protected@file@percent }
+\newlabel{tab:versioncomp}{{11}{14}{Version comparison: fraud exposure mean $\pm \sigma $ and honest-routing share over 20~seeds at $N{=}50$ under collusion ring and strategic-default attacks. Zero of the six pairwise version contrasts (3~pairs $\times $ 2~attacks) reach $p < 0.05$ on fraud exposure; see Table~\ref {tab:pairstats}}{table.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Complexity versus stability across TRACE versions (collusion ring attack, $N{=}50$, 20\nonbreakingspace seeds). (a)\nonbreakingspace All three versions produce statistically indistinguishable mean fraud (0/6 pairwise contrasts on fraud exposure reach $p < 0.05$). (b)\nonbreakingspace Fraud standard deviation under v2.3 is $17\%$ higher than under the v2.1 baseline; v2.2 is slightly below v2.1, so the cascade is not monotonic but the maximally complex variant has the highest variance. (c)\nonbreakingspace Honest-agent routing share decreases by approximately $2.5$ percentage points under both extensions relative to v2.1.}}{14}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:complexity}{{6}{14}{Complexity versus stability across TRACE versions (collusion ring attack, $N{=}50$, 20~seeds). (a)~All three versions produce statistically indistinguishable mean fraud (0/6 pairwise contrasts on fraud exposure reach $p < 0.05$). (b)~Fraud standard deviation under v2.3 is $17\%$ higher than under the v2.1 baseline; v2.2 is slightly below v2.1, so the cascade is not monotonic but the maximally complex variant has the highest variance. (c)~Honest-agent routing share decreases by approximately $2.5$ percentage points under both extensions relative to v2.1}{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Honest-agent routing share by TRACE version (collusion ring attack, $N{=}50$, 20\nonbreakingspace seeds). The $\sim 2.5$\nonbreakingspace percentage-point reduction under v2.2 and v2.3 relative to v2.1 reflects the \emph  {false-positive tax} imposed by additional heuristic penalties on honest agents. Error bars denote $\pm 1\sigma $ across 20\nonbreakingspace seeds.}}{14}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:falsesupp}{{7}{14}{Honest-agent routing share by TRACE version (collusion ring attack, $N{=}50$, 20~seeds). The $\sim 2.5$~percentage-point reduction under v2.2 and v2.3 relative to v2.1 reflects the \emph {false-positive tax} imposed by additional heuristic penalties on honest agents. Error bars denote $\pm 1\sigma $ across 20~seeds}{figure.caption.22}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Pairwise version comparisons on fraud exposure, Mann--Whitney $U$, 20\nonbreakingspace seeds each at $N{=}50$. $\Delta $ is the mean fraud difference of the second version minus the first. No comparison reaches significance at $\alpha = 0.05$, and all detected effect sizes are negligible-to-small.}}{14}{table.caption.23}\protected@file@percent }
+\newlabel{tab:pairstats}{{12}{14}{Pairwise version comparisons on fraud exposure, Mann--Whitney $U$, 20~seeds each at $N{=}50$. $\Delta $ is the mean fraud difference of the second version minus the first. No comparison reaches significance at $\alpha = 0.05$, and all detected effect sizes are negligible-to-small}{table.caption.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Mechanism: False-Positive Tax}{14}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Scope of the Finding}{15}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Pilot Deployment}{15}{section.8}\protected@file@percent }
+\newlabel{sec:deployment}{{8}{15}{Pilot Deployment}{section.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces satsrouter.live pilot deployment statistics at time of submission. The table is reported for transparency rather than as a performance claim; its purpose is to confirm that TRACE routing is operational on a live system.}}{15}{table.caption.24}\protected@file@percent }
+\newlabel{tab:deployment}{{13}{15}{satsrouter.live pilot deployment statistics at time of submission. The table is reported for transparency rather than as a performance claim; its purpose is to confirm that TRACE routing is operational on a live system}{table.caption.24}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Deployment Configuration}{15}{subsection.8.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Pilot Statistics}{15}{subsection.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}What the Pilot Confirms}{15}{subsection.8.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Scope and Limitations}{16}{subsection.8.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Discussion}{16}{section.9}\protected@file@percent }
+\newlabel{sec:discussion}{{9}{16}{Discussion}{section.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}When does composite trust scoring help?}{16}{subsection.9.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}When does composite trust scoring \emph  {not} help?}{16}{subsection.9.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}Implications for trust-system design}{16}{subsection.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.4}Deployment considerations}{16}{subsection.9.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.5}Threats to validity}{17}{subsection.9.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10}Limitations}{17}{section.10}\protected@file@percent }
+\newlabel{sec:limitations}{{10}{17}{Limitations}{section.10}{}}
+\bibstyle{ACM-Reference-Format}
+\bibcite{kamvar2003eigentrust}{{1}{}{{}}{{}}}
+\bibcite{xiong2004peertrust}{{2}{}{{}}{{}}}
+\bibcite{rao2021bittensor}{{3}{}{{}}{{}}}
+\bibcite{filecoinSpec}{{4}{}{{}}{{}}}
+\bibcite{oceanDocs}{{5}{}{{}}{{}}}
+\bibcite{yu2006sybilguard}{{6}{}{{}}{{}}}
+\bibcite{yu2008sybillimit}{{7}{}{{}}{{}}}
+\bibcite{nisan2007algorithmic}{{8}{}{{}}{{}}}
+\bibcite{myerson1979ic}{{9}{}{{}}{{}}}
+\bibcite{malkhi1997byzantine}{{10}{}{{}}{{}}}
+\bibcite{dellarocas2003digitization}{{11}{}{{}}{{}}}
+\bibcite{anthropic2024mcp}{{12}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {11}Conclusion and Future Work}{18}{section.11}\protected@file@percent }
+\newlabel{sec:conclusion}{{11}{18}{Conclusion and Future Work}{section.11}{}}
+\@writefile{toc}{\contentsline {section}{Acknowledgments}{18}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{18}{section*.28}\protected@file@percent }
+\bibcite{perez2022ignore}{{13}{}{{}}{{}}}
+\bibcite{poon2016lightning}{{14}{}{{}}{{}}}
+\bibcite{sivaraman2020high}{{15}{}{{}}{{}}}
+\bibcite{romano2006appropriate}{{16}{}{{}}{{}}}
+\bibcite{mann1947test}{{17}{}{{}}{{}}}
+\bibcite{davis2006relationship}{{18}{}{{}}{{}}}
+\citation{romano2006appropriate}
+\newlabel{tocindent-1}{0pt}
+\newlabel{tocindent0}{0pt}
+\newlabel{tocindent1}{9.29999pt}
+\newlabel{tocindent2}{16.14998pt}
+\newlabel{tocindent3}{0pt}
+\newlabel{tocindent4}{0pt}
+\newlabel{tocindent5}{0pt}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Cross-attack summary: wins per criterion across versions. v2.1 dominates under the primary attack (collusion ring).}}{20}{table.caption.29}\protected@file@percent }
+\newlabel{tab:fullstats}{{14}{20}{Cross-attack summary: wins per criterion across versions. v2.1 dominates under the primary attack (collusion ring)}{table.caption.29}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Reproducibility Details}{20}{appendix.A}\protected@file@percent }
+\newlabel{app:repro}{{A}{20}{Reproducibility Details}{appendix.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Supplementary Statistics}{20}{appendix.B}\protected@file@percent }
+\newlabel{app:stats}{{B}{20}{Supplementary Statistics}{appendix.B}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Extended Statistical Detail}{20}{appendix.C}\protected@file@percent }
+\newlabel{app:extstats}{{C}{20}{Extended Statistical Detail}{appendix.C}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}Notation Summary}{20}{appendix.D}\protected@file@percent }
+\newlabel{app:notation}{{D}{20}{Notation Summary}{appendix.D}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {15}{\ignorespaces Notation summary.}}{21}{table.caption.30}\protected@file@percent }
+\newlabel{tab:notation}{{15}{21}{Notation summary}{table.caption.30}{}}
+\newlabel{TotPages}{{21}{21}{}{page.21}{}}
+\gdef \@abspage@last{21}

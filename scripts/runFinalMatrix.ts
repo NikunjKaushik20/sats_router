@@ -14,6 +14,7 @@
  *   npx tsx scripts/runFinalMatrix.ts --scale 50               # Single scale
  *   npx tsx scripts/runFinalMatrix.ts --seeds 5                # Fewer seeds (faster)
  *   npx tsx scripts/runFinalMatrix.ts --quick                  # Quick run: 5 seeds, N=50 only
+ *   npx tsx scripts/runFinalMatrix.ts --trace-config guard_mid # TRACE routing preset
  */
 
 import {
@@ -23,7 +24,8 @@ import {
   type ExperimentConfig,
   type AgentModelSpec,
 } from "../src/lib/trace/experiments";
-import type { RoutingPolicy } from "../src/lib/trace";
+import { OPENAI_CHAT_MODEL } from "../src/lib/openaiModel";
+import { TRACE_ROUTING_PRESETS, type RoutingPolicy, type TraceRoutingPreset } from "../src/lib/trace";
 import type { AttackType } from "../src/lib/trace/attacks";
 import {
   descriptiveStats,
@@ -32,7 +34,6 @@ import {
   aggregateMultiSeed,
   formatPctStat,
   formatSatsStat,
-  formatSignificance,
   type ExperimentResult,
 } from "../src/lib/trace/experiments/statistics";
 import * as fs from "fs";
@@ -44,8 +45,8 @@ dotenv.config();
 // ─── Configuration ────────────────────────────────────────────────────────────
 
 const ALL_ATTACKS: AttackType[] = ["strategic-default", "sybil-cluster", "collusion-ring", "whitewashing"];
-const ALL_POLICIES: RoutingPolicy[] = ["TRACE", "REPUTATION", "PRICE"];
-const ALL_SCALES = [30, 50, 100];
+const ALL_POLICIES: RoutingPolicy[] = ["TRACE", "REPUTATION", "PRICE", "STAKE_WEIGHTED"];
+const ALL_SCALES = [500, 1000, 5000, 10000];
 const DEFAULT_SEEDS = 10;
 const ROUNDS = 60;
 const JOBS_PER_ROUND = 5;
@@ -54,7 +55,7 @@ const MALICIOUS_RATIO = 0.3;
 // ─── Agent Mix Builder ────────────────────────────────────────────────────────
 
 function buildMix(n: number): AgentModelSpec[] {
-  const gpt = MODEL_PRESETS["gpt-4o-mini"];
+  const gpt = MODEL_PRESETS[OPENAI_CHAT_MODEL];
   const sarvam = MODEL_PRESETS["sarvam"];
   const llama = MODEL_PRESETS["llama-3.2-3b"];
   const third = Math.floor(n / 3);
@@ -78,12 +79,18 @@ function parseArgs() {
   const quick = args.includes("--quick");
   const attackFilter = get("attack", "");
   const scaleFilter = get("scale", "");
+  const traceRoutingPreset = get("trace-config", "baseline") as TraceRoutingPreset;
+  if (!(traceRoutingPreset in TRACE_ROUTING_PRESETS)) {
+    console.error(`Unknown TRACE config: ${traceRoutingPreset}. Available: ${Object.keys(TRACE_ROUTING_PRESETS).join(", ")}`);
+    process.exit(1);
+  }
 
   return {
     attacks: attackFilter ? [attackFilter as AttackType] : ALL_ATTACKS,
-    scales: scaleFilter ? [parseInt(scaleFilter)] : quick ? [50] : ALL_SCALES,
+    scales: scaleFilter ? scaleFilter.split(",").map((s) => parseInt(s.trim())) : quick ? [50] : ALL_SCALES,
     seeds: parseInt(get("seeds", quick ? "5" : String(DEFAULT_SEEDS))),
     quick,
+    traceRoutingPreset,
   };
 }
 
@@ -109,6 +116,7 @@ async function main() {
   console.log(`  Policies: ${ALL_POLICIES.join(", ")}`);
   console.log(`  Scales: ${opts.scales.join(", ")}`);
   console.log(`  Seeds: 1–${opts.seeds}`);
+  console.log(`  TRACE config: ${opts.traceRoutingPreset}`);
   console.log(`  Total experiments: ${totalExperiments}`);
   console.log(`  Estimated time: ~${Math.ceil(totalExperiments * 20 / 60)} minutes\n`);
 
@@ -137,6 +145,7 @@ async function main() {
             rounds: ROUNDS,
             jobsPerRound: JOBS_PER_ROUND,
             seed,
+            traceRoutingPreset: opts.traceRoutingPreset,
           };
 
           const dir = await runExperiment(config);
@@ -179,11 +188,6 @@ async function main() {
       const traceMetrics = traceCell.seedResults.map((r) => r.metrics);
       const repMetrics = repCell.seedResults.map((r) => r.metrics);
       const priceMetrics = priceCell.seedResults.map((r) => r.metrics);
-
-      // Aggregated stats
-      const traceAgg = aggregateMultiSeed(traceMetrics);
-      const repAgg = aggregateMultiSeed(repMetrics);
-      const priceAgg = aggregateMultiSeed(priceMetrics);
 
       // Significance tests
       const metricKeys = [
@@ -276,7 +280,7 @@ async function main() {
   fs.writeFileSync(path.join(reportDir, "master_results.csv"), csvRows.join("\n"));
 
   // ─── Claim validation ───────────────────────────────────────────────
-  const claims = validateClaims(allCells, significanceResults, opts);
+  const claims = validateClaims(allCells);
   fs.writeFileSync(path.join(reportDir, "claims.md"), claims);
   console.log(`\n${claims}`);
 
@@ -286,11 +290,7 @@ async function main() {
 
 // ─── Claim Validation ─────────────────────────────────────────────────────────
 
-function validateClaims(
-  cells: CellResult[],
-  sigResults: typeof Array.prototype,
-  opts: { attacks: AttackType[]; scales: number[]; seeds: number }
-): string {
+function validateClaims(cells: CellResult[]): string {
   const lines: string[] = [
     "# TRACE — Claim Registry",
     "",

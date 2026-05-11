@@ -8,19 +8,19 @@
   ],
   "data": {
     "fraudMean": [
-      36.9,
-      39,
-      45
+      38.10,
+      38.90,
+      44.62
     ],
     "fraudSigma": [
-      22.84,
-      24.21,
-      30.82
+      25.65,
+      23.60,
+      30.08
     ],
     "honestRouting": [
-      82,
-      79,
-      79
+      81.6,
+      79.0,
+      79.3
     ],
     "catastrophicSeeds": [
       1,
@@ -28,5 +28,5 @@
       2
     ]
   },
-  "note": "Data from 120-experiment validation matrix (3 versions × 2 attacks × 20 seeds)"
+  "note": "Aggregated from 20+ seeds per version of TRACE collusion-ring runs at N=50 (effective version deduced from feature flags)."
 }

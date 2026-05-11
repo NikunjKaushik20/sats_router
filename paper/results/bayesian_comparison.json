@@ -1,0 +1,905 @@
+{
+  "generated_at": "2026-05-10T10:01:33.042Z",
+  "config": {
+    "N": 50,
+    "seeds": 20,
+    "rounds": 60,
+    "jobs_per_round": 5,
+    "malicious_ratio": 0.3
+  },
+  "decision": "INCLUDE_IN_PAPER",
+  "comparisons": [
+    {
+      "attack": "collusion-ring",
+      "v21": {
+        "mean": 136.15,
+        "std": 149.59,
+        "seeds": [
+          {
+            "seed": 1,
+            "fraud": 97,
+            "maliciousRate": 0.12
+          },
+          {
+            "seed": 10,
+            "fraud": 90,
+            "maliciousRate": 0.22
+          },
+          {
+            "seed": 11,
+            "fraud": 30,
+            "maliciousRate": 0.2267
+          },
+          {
+            "seed": 12,
+            "fraud": 95,
+            "maliciousRate": 0.15
+          },
+          {
+            "seed": 13,
+            "fraud": 54,
+            "maliciousRate": 0.0667
+          },
+          {
+            "seed": 14,
+            "fraud": 226,
+            "maliciousRate": 0.1133
+          },
+          {
+            "seed": 15,
+            "fraud": 239,
+            "maliciousRate": 0.3067
+          },
+          {
+            "seed": 16,
+            "fraud": 184,
+            "maliciousRate": 0.3433
+          },
+          {
+            "seed": 17,
+            "fraud": 740,
+            "maliciousRate": 0.7633
+          },
+          {
+            "seed": 18,
+            "fraud": 123,
+            "maliciousRate": 0.27
+          },
+          {
+            "seed": 19,
+            "fraud": 72,
+            "maliciousRate": 0.2667
+          },
+          {
+            "seed": 2,
+            "fraud": 68,
+            "maliciousRate": 0.1433
+          },
+          {
+            "seed": 20,
+            "fraud": 116,
+            "maliciousRate": 0.2267
+          },
+          {
+            "seed": 3,
+            "fraud": 78,
+            "maliciousRate": 0.2167
+          },
+          {
+            "seed": 4,
+            "fraud": 106,
+            "maliciousRate": 0.2133
+          },
+          {
+            "seed": 5,
+            "fraud": 56,
+            "maliciousRate": 0.1933
+          },
+          {
+            "seed": 6,
+            "fraud": 43,
+            "maliciousRate": 0.3
+          },
+          {
+            "seed": 7,
+            "fraud": 167,
+            "maliciousRate": 0.21
+          },
+          {
+            "seed": 8,
+            "fraud": 69,
+            "maliciousRate": 0.3733
+          },
+          {
+            "seed": 9,
+            "fraud": 70,
+            "maliciousRate": 0.2133
+          }
+        ]
+      },
+      "bayesian": {
+        "mean": 36.45,
+        "std": 48.41,
+        "seeds": [
+          {
+            "seed": 1,
+            "fraud": 41,
+            "maliciousRate": 0.0333
+          },
+          {
+            "seed": 10,
+            "fraud": 223,
+            "maliciousRate": 0.0533
+          },
+          {
+            "seed": 11,
+            "fraud": 8,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 12,
+            "fraud": 11,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 13,
+            "fraud": 6,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 14,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 15,
+            "fraud": 36,
+            "maliciousRate": 0.0167
+          },
+          {
+            "seed": 16,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 17,
+            "fraud": 28,
+            "maliciousRate": 0.0233
+          },
+          {
+            "seed": 18,
+            "fraud": 88,
+            "maliciousRate": 0.0433
+          },
+          {
+            "seed": 19,
+            "fraud": 49,
+            "maliciousRate": 0.02
+          },
+          {
+            "seed": 2,
+            "fraud": 11,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 20,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 3,
+            "fraud": 23,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 4,
+            "fraud": 36,
+            "maliciousRate": 0.02
+          },
+          {
+            "seed": 5,
+            "fraud": 27,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 6,
+            "fraud": 14,
+            "maliciousRate": 0.0167
+          },
+          {
+            "seed": 7,
+            "fraud": 42,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 8,
+            "fraud": 18,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 9,
+            "fraud": 68,
+            "maliciousRate": 0.0267
+          }
+        ]
+      },
+      "mann_whitney": {
+        "u": 36.5,
+        "p": 0
+      },
+      "cliffs_delta": -0.8175,
+      "effect_size": "Large",
+      "include_in_paper": true,
+      "verdict": "INCLUDE: Bayesian reduces fraud (p=0, |δ|=0.8175)"
+    },
+    {
+      "attack": "strategic-default",
+      "v21": {
+        "mean": 34,
+        "std": 34.93,
+        "seeds": [
+          {
+            "seed": 1,
+            "fraud": 33,
+            "maliciousRate": 0.2433
+          },
+          {
+            "seed": 10,
+            "fraud": 6,
+            "maliciousRate": 0.2433
+          },
+          {
+            "seed": 11,
+            "fraud": 0,
+            "maliciousRate": 0.31
+          },
+          {
+            "seed": 12,
+            "fraud": 72,
+            "maliciousRate": 0.38
+          },
+          {
+            "seed": 13,
+            "fraud": 12,
+            "maliciousRate": 0.2167
+          },
+          {
+            "seed": 14,
+            "fraud": 84,
+            "maliciousRate": 0.2767
+          },
+          {
+            "seed": 15,
+            "fraud": 9,
+            "maliciousRate": 0.24
+          },
+          {
+            "seed": 16,
+            "fraud": 40,
+            "maliciousRate": 0.32
+          },
+          {
+            "seed": 17,
+            "fraud": 0,
+            "maliciousRate": 0.0867
+          },
+          {
+            "seed": 18,
+            "fraud": 32,
+            "maliciousRate": 0.3333
+          },
+          {
+            "seed": 19,
+            "fraud": 128,
+            "maliciousRate": 0.45
+          },
+          {
+            "seed": 2,
+            "fraud": 22,
+            "maliciousRate": 0.1733
+          },
+          {
+            "seed": 20,
+            "fraud": 0,
+            "maliciousRate": 0.3267
+          },
+          {
+            "seed": 3,
+            "fraud": 89,
+            "maliciousRate": 0.4233
+          },
+          {
+            "seed": 4,
+            "fraud": 34,
+            "maliciousRate": 0.2967
+          },
+          {
+            "seed": 5,
+            "fraud": 33,
+            "maliciousRate": 0.3433
+          },
+          {
+            "seed": 6,
+            "fraud": 0,
+            "maliciousRate": 0.1933
+          },
+          {
+            "seed": 7,
+            "fraud": 0,
+            "maliciousRate": 0.1067
+          },
+          {
+            "seed": 8,
+            "fraud": 60,
+            "maliciousRate": 0.3667
+          },
+          {
+            "seed": 9,
+            "fraud": 26,
+            "maliciousRate": 0.2567
+          }
+        ]
+      },
+      "bayesian": {
+        "mean": 4.15,
+        "std": 7.74,
+        "seeds": [
+          {
+            "seed": 1,
+            "fraud": 0,
+            "maliciousRate": 0.0367
+          },
+          {
+            "seed": 10,
+            "fraud": 13,
+            "maliciousRate": 0.0533
+          },
+          {
+            "seed": 11,
+            "fraud": 8,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 12,
+            "fraud": 0,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 13,
+            "fraud": 0,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 14,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 15,
+            "fraud": 0,
+            "maliciousRate": 0.0167
+          },
+          {
+            "seed": 16,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 17,
+            "fraud": 0,
+            "maliciousRate": 0.0267
+          },
+          {
+            "seed": 18,
+            "fraud": 0,
+            "maliciousRate": 0.0433
+          },
+          {
+            "seed": 19,
+            "fraud": 25,
+            "maliciousRate": 0.02
+          },
+          {
+            "seed": 2,
+            "fraud": 0,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 20,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 3,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 4,
+            "fraud": 19,
+            "maliciousRate": 0.0233
+          },
+          {
+            "seed": 5,
+            "fraud": 0,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 6,
+            "fraud": 0,
+            "maliciousRate": 0.0167
+          },
+          {
+            "seed": 7,
+            "fraud": 18,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 8,
+            "fraud": 0,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 9,
+            "fraud": 0,
+            "maliciousRate": 0.0267
+          }
+        ]
+      },
+      "mann_whitney": {
+        "u": 76.5,
+        "p": 0.0008
+      },
+      "cliffs_delta": -0.6175,
+      "effect_size": "Large",
+      "include_in_paper": true,
+      "verdict": "INCLUDE: Bayesian reduces fraud (p=0.0008, |δ|=0.6175)"
+    },
+    {
+      "attack": "sybil-cluster",
+      "v21": {
+        "mean": 0,
+        "std": 0,
+        "seeds": [
+          {
+            "seed": 1,
+            "fraud": 0,
+            "maliciousRate": 0.0767
+          },
+          {
+            "seed": 10,
+            "fraud": 0,
+            "maliciousRate": 0.3933
+          },
+          {
+            "seed": 11,
+            "fraud": 0,
+            "maliciousRate": 0.1767
+          },
+          {
+            "seed": 12,
+            "fraud": 0,
+            "maliciousRate": 0.38
+          },
+          {
+            "seed": 13,
+            "fraud": 0,
+            "maliciousRate": 0.24
+          },
+          {
+            "seed": 14,
+            "fraud": 0,
+            "maliciousRate": 0.2733
+          },
+          {
+            "seed": 15,
+            "fraud": 0,
+            "maliciousRate": 0.3267
+          },
+          {
+            "seed": 16,
+            "fraud": 0,
+            "maliciousRate": 0.3567
+          },
+          {
+            "seed": 17,
+            "fraud": 0,
+            "maliciousRate": 0.3767
+          },
+          {
+            "seed": 18,
+            "fraud": 0,
+            "maliciousRate": 0.3767
+          },
+          {
+            "seed": 19,
+            "fraud": 0,
+            "maliciousRate": 0.3433
+          },
+          {
+            "seed": 2,
+            "fraud": 0,
+            "maliciousRate": 0.26
+          },
+          {
+            "seed": 20,
+            "fraud": 0,
+            "maliciousRate": 0.2733
+          },
+          {
+            "seed": 3,
+            "fraud": 0,
+            "maliciousRate": 0.42
+          },
+          {
+            "seed": 4,
+            "fraud": 0,
+            "maliciousRate": 0.2833
+          },
+          {
+            "seed": 5,
+            "fraud": 0,
+            "maliciousRate": 0.28
+          },
+          {
+            "seed": 6,
+            "fraud": 0,
+            "maliciousRate": 0.26
+          },
+          {
+            "seed": 7,
+            "fraud": 0,
+            "maliciousRate": 0.55
+          },
+          {
+            "seed": 8,
+            "fraud": 0,
+            "maliciousRate": 0.3133
+          },
+          {
+            "seed": 9,
+            "fraud": 0,
+            "maliciousRate": 0.34
+          }
+        ]
+      },
+      "bayesian": {
+        "mean": 0,
+        "std": 0,
+        "seeds": [
+          {
+            "seed": 1,
+            "fraud": 0,
+            "maliciousRate": 0.0367
+          },
+          {
+            "seed": 10,
+            "fraud": 0,
+            "maliciousRate": 0.0267
+          },
+          {
+            "seed": 11,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 12,
+            "fraud": 0,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 13,
+            "fraud": 0,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 14,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 15,
+            "fraud": 0,
+            "maliciousRate": 0.0167
+          },
+          {
+            "seed": 16,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 17,
+            "fraud": 0,
+            "maliciousRate": 0.0267
+          },
+          {
+            "seed": 18,
+            "fraud": 0,
+            "maliciousRate": 0.0433
+          },
+          {
+            "seed": 19,
+            "fraud": 0,
+            "maliciousRate": 0.02
+          },
+          {
+            "seed": 2,
+            "fraud": 0,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 20,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 3,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 4,
+            "fraud": 0,
+            "maliciousRate": 0.0233
+          },
+          {
+            "seed": 5,
+            "fraud": 0,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 6,
+            "fraud": 0,
+            "maliciousRate": 0.0167
+          },
+          {
+            "seed": 7,
+            "fraud": 0,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 8,
+            "fraud": 0,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 9,
+            "fraud": 0,
+            "maliciousRate": 0.0267
+          }
+        ]
+      },
+      "mann_whitney": {
+        "u": 200,
+        "p": 1
+      },
+      "cliffs_delta": 0,
+      "effect_size": "Negligible",
+      "include_in_paper": false,
+      "verdict": "DROP: No significant improvement (p=1, |δ|=0)"
+    },
+    {
+      "attack": "whitewashing",
+      "v21": {
+        "mean": 185.6,
+        "std": 75.37,
+        "seeds": [
+          {
+            "seed": 1,
+            "fraud": 225,
+            "maliciousRate": 0.1533
+          },
+          {
+            "seed": 10,
+            "fraud": 37,
+            "maliciousRate": 0.0233
+          },
+          {
+            "seed": 11,
+            "fraud": 318,
+            "maliciousRate": 0.1467
+          },
+          {
+            "seed": 12,
+            "fraud": 136,
+            "maliciousRate": 0.13
+          },
+          {
+            "seed": 13,
+            "fraud": 190,
+            "maliciousRate": 0.1633
+          },
+          {
+            "seed": 14,
+            "fraud": 201,
+            "maliciousRate": 0.1
+          },
+          {
+            "seed": 15,
+            "fraud": 115,
+            "maliciousRate": 0.0967
+          },
+          {
+            "seed": 16,
+            "fraud": 191,
+            "maliciousRate": 0.1533
+          },
+          {
+            "seed": 17,
+            "fraud": 253,
+            "maliciousRate": 0.2533
+          },
+          {
+            "seed": 18,
+            "fraud": 139,
+            "maliciousRate": 0.1833
+          },
+          {
+            "seed": 19,
+            "fraud": 109,
+            "maliciousRate": 0.08
+          },
+          {
+            "seed": 2,
+            "fraud": 76,
+            "maliciousRate": 0.03
+          },
+          {
+            "seed": 20,
+            "fraud": 239,
+            "maliciousRate": 0.2233
+          },
+          {
+            "seed": 3,
+            "fraud": 237,
+            "maliciousRate": 0.16
+          },
+          {
+            "seed": 4,
+            "fraud": 86,
+            "maliciousRate": 0.09
+          },
+          {
+            "seed": 5,
+            "fraud": 265,
+            "maliciousRate": 0.2033
+          },
+          {
+            "seed": 6,
+            "fraud": 192,
+            "maliciousRate": 0.1533
+          },
+          {
+            "seed": 7,
+            "fraud": 202,
+            "maliciousRate": 0.17
+          },
+          {
+            "seed": 8,
+            "fraud": 320,
+            "maliciousRate": 0.27
+          },
+          {
+            "seed": 9,
+            "fraud": 181,
+            "maliciousRate": 0.22
+          }
+        ]
+      },
+      "bayesian": {
+        "mean": 24.2,
+        "std": 21.86,
+        "seeds": [
+          {
+            "seed": 1,
+            "fraud": 53,
+            "maliciousRate": 0.0333
+          },
+          {
+            "seed": 10,
+            "fraud": 38,
+            "maliciousRate": 0.0267
+          },
+          {
+            "seed": 11,
+            "fraud": 8,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 12,
+            "fraud": 31,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 13,
+            "fraud": 6,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 14,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 15,
+            "fraud": 24,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 16,
+            "fraud": 0,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 17,
+            "fraud": 72,
+            "maliciousRate": 0.0267
+          },
+          {
+            "seed": 18,
+            "fraud": 70,
+            "maliciousRate": 0.0433
+          },
+          {
+            "seed": 19,
+            "fraud": 18,
+            "maliciousRate": 0.02
+          },
+          {
+            "seed": 2,
+            "fraud": 0,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 20,
+            "fraud": 29,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 3,
+            "fraud": 13,
+            "maliciousRate": 0.0067
+          },
+          {
+            "seed": 4,
+            "fraud": 37,
+            "maliciousRate": 0.0233
+          },
+          {
+            "seed": 5,
+            "fraud": 10,
+            "maliciousRate": 0.01
+          },
+          {
+            "seed": 6,
+            "fraud": 0,
+            "maliciousRate": 0.0167
+          },
+          {
+            "seed": 7,
+            "fraud": 18,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 8,
+            "fraud": 12,
+            "maliciousRate": 0.0133
+          },
+          {
+            "seed": 9,
+            "fraud": 45,
+            "maliciousRate": 0.0267
+          }
+        ]
+      },
+      "mann_whitney": {
+        "u": 5.5,
+        "p": 0
+      },
+      "cliffs_delta": -0.9725,
+      "effect_size": "Large",
+      "include_in_paper": true,
+      "verdict": "INCLUDE: Bayesian reduces fraud (p=0, |δ|=0.9725)"
+    }
+  ]
+}

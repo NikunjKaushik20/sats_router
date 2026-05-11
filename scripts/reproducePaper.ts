@@ -29,7 +29,7 @@ function run(label: string, cmd: string) {
 
   try {
     execSync(cmd, { stdio: "inherit", cwd: process.cwd() });
-  } catch (err) {
+  } catch {
     console.error(`  ⚠ ${label} failed, continuing...`);
   }
 }

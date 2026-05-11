@@ -52,15 +52,6 @@ export interface TemporalProfile {
   temporalRisk: number;
 }
 
-/** Reciprocal trust pair */
-interface ReciprocalPair {
-  agentA: string;
-  agentB: string;
-  aToB: number;  // cumulative trust-building interactions A→B
-  bToA: number;  // cumulative trust-building interactions B→A
-  symmetry: number; // 1.0 = perfectly symmetric
-}
-
 // ─── Configuration ────────────────────────────────────────────────────────────
 
 export const TEMPORAL_CONFIG = {

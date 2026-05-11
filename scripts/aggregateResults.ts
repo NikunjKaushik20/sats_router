@@ -76,7 +76,6 @@ function main() {
   const reportDir = path.join(RESULTS_DIR, `aggregated_n${opts.scale}_${opts.seeds}seeds_${Date.now()}`);
   fs.mkdirSync(reportDir, { recursive: true });
 
-  const allRows: string[] = [];
   const csvRows = ["attack,policy,metric,mean,std,median,q1,q3,min,max,n"];
   const sigRows: string[] = [];
 

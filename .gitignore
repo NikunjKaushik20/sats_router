@@ -49,3 +49,8 @@ dev.db-shm
 dev.db-wal
 
 .vercel
+
+# simulation data and scratch files
+/results/
+/artifacts/
+*.md

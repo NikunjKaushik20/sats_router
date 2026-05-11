@@ -1,0 +1,81 @@
+{
+  "snapshot_at": "2026-05-10T09:28:31.709Z",
+  "providers": {
+    "total": 35,
+    "active": 35,
+    "by_capability": {
+      "quick_scan": 11,
+      "deep_diagnose": 11,
+      "incident_summary": 11,
+      "human_verify": 1,
+      "code_review": 1
+    },
+    "risk_tier_distribution": {
+      "B": 32,
+      "C": 2,
+      "D": 1
+    },
+    "trace_score_distribution": {
+      "min": 500,
+      "max": 829.46,
+      "mean": 539.56,
+      "median": 500,
+      "p25": 500,
+      "p75": 500
+    },
+    "staked": 2,
+    "total_stake_sats": 200
+  },
+  "jobs": {
+    "total": 24,
+    "completed": 24,
+    "failed": 0,
+    "running": 0,
+    "with_lightning_settlement": 0,
+    "with_payout": 0,
+    "total_volume_sats": 255,
+    "total_payout_sats": 0,
+    "by_capability": {
+      "incident_summary": 11,
+      "quick_scan": 9,
+      "deep_diagnose": 4
+    },
+    "completion_rate": 1,
+    "mean_price_sats": 10.63
+  },
+  "routing_decisions": {
+    "total": 24,
+    "by_policy": {
+      "TRACE": 24
+    },
+    "mean_utility_score": 0.1659,
+    "candidates_considered_mean": 11
+  },
+  "economic_events": {
+    "total": 120,
+    "by_type": {
+      "JOB_SUCCESS": 96,
+      "PAYMENT_SETTLED": 24
+    },
+    "defaults": 0,
+    "disputes": 0,
+    "fraud_rate": 0
+  },
+  "trust_graph": {
+    "total_edges": 10,
+    "mean_edge_weight": 0.8788,
+    "mean_successful_co_jobs": 2.1,
+    "total_economic_volume": 371
+  },
+  "score_history": {
+    "total_snapshots": 48,
+    "providers_with_history": 5,
+    "mean_score_volatility": 22.2201
+  },
+  "lightning_evidence": {
+    "jobs_with_payment_hash": 0,
+    "jobs_with_payout_hash": 0,
+    "settlement_proof_rate": 0,
+    "unique_payment_hashes": 0
+  }
+}

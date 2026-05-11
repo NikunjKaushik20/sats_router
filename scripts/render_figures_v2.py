@@ -157,7 +157,6 @@ def fig1_architecture_v2():
     # Economic Ledger → Trust Updater
     arr(7.5, 1.75, 6.8, 1.75)
 
-    ax.set_title("Fig. 1 — TRACE System Architecture", fontsize=8.5, pad=4, y=0.99)
     save(fig, "fig1_architecture")
 
 
@@ -184,8 +183,6 @@ def fig3_scaling():
             color=COLORS[p], alpha=0.12, linewidth=0)
     ax.set_xlabel("Network Size ($N$)")
     ax.set_ylabel("Fraud Exposure (sats)")
-    ax.set_title("Fig. 3 \u2014 Fraud vs. Network Scale\n"
-                 "(Collusion Ring, 30% malicious; shaded = +/-1 s.d., 20 seeds)", fontsize=8)
     ax.set_xticks([30, 50, 100])
     ax.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=5))
     ax.legend(loc="upper right")
@@ -195,29 +192,34 @@ def fig3_scaling():
 
 def fig4_ablation():
     data = load("fig4_ablation.json")["data"]
-    short = ["Full\nTRACE v2.1", "- Repeated-\npair Decay", "- Clique\nPenalty", "- Both\nMechanisms"]
+    short = ["Full\nTRACE v2.1",
+             "- Repeated-\npair Decay",
+             "- Clique\nPenalty",
+             "- All v2.1\nFeatures"]
     values = [d["fraud"] for d in data]
     stds   = [d["std"]   for d in data]
+    pvals  = [d.get("p_value", 1.0) for d in data]
     colors  = [COLORS["v2.1"], "#888888", "#888888", "#444444"]
     hatches = ["", "///", "xxx", "///"]
     x = np.arange(len(short))
-    fig, ax = plt.subplots(figsize=(3.5, 2.6))
+    fig, ax = plt.subplots(figsize=(3.5, 2.7))
     bars = ax.bar(x, values, 0.55, color=colors, hatch=hatches,
                   edgecolor="black", linewidth=0.6, zorder=3)
     ax.errorbar(x, values, yerr=stds, fmt="none", color="black",
                 capsize=3, linewidth=0.8, zorder=4)
     ax.set_xticks(x); ax.set_xticklabels(short, fontsize=7.5)
     ax.set_ylabel("Fraud Exposure (sats)")
-    ax.set_title("Fig. 4 — Ablation Study\n"
-                 "(Collusion Ring, $N$=50; values estimated, full ablation = future work)",
-                 fontsize=7.5)
     ax.set_ylim(bottom=0)
     baseline = values[0]
     for i, (v, bar) in enumerate(zip(values, bars)):
-        if i == 0: continue
+        if i == 0:
+            continue
         pct = (v - baseline) / baseline * 100
-        ax.text(bar.get_x() + bar.get_width()/2, v + stds[i] + 4,
-                f"+{pct:.0f}%", ha="center", fontsize=7, color="#333333")
+        sig = "n.s." if pvals[i] >= 0.05 else "*"
+        ax.text(bar.get_x() + bar.get_width() / 2,
+                v + stds[i] + 3,
+                f"+{pct:.0f}%\n({sig})",
+                ha="center", fontsize=7, color="#333333", linespacing=1.0)
     fig.tight_layout()
     save(fig, "fig4_ablation")
 
@@ -252,11 +254,14 @@ def fig5_complexity():
     ax.set_ylabel("Fraud Std. Dev. (sats)")
     ax.set_title("(b) Fraud Variance", fontsize=8)
     ax.set_ylim(bottom=0)
-    # Annotate 35% increase
+    # Annotate v2.1 -> v2.3 sigma change (computed from data, not hard-coded)
+    sd_pct = (sigmas[2] - sigmas[0]) / sigmas[0] * 100.0
     ax.annotate("", xy=(2, sigmas[2]), xytext=(0, sigmas[0]),
                 arrowprops=dict(arrowstyle="->", color="#555555", lw=0.7,
                                connectionstyle="arc3,rad=-0.3"))
-    ax.text(1.0, 28.5, "+35%", fontsize=7, color="#555555", ha="center")
+    ax.text(1.0, max(sigmas) * 0.95,
+            f"{sd_pct:+.0f}%",
+            fontsize=7, color="#555555", ha="center")
 
     # (c) Honest routing
     ax = axes[2]
@@ -272,8 +277,6 @@ def fig5_complexity():
     ax.axhline(honest[0], color=COLORS["v2.1"], linewidth=0.6,
                linestyle="--", alpha=0.5, zorder=1)
 
-    fig.suptitle("Fig. 5 — Complexity vs. Stability  (Collusion Ring, $N$=50, 20 seeds)",
-                 fontsize=8, y=1.01)
     fig.tight_layout()
     save(fig, "fig5_complexity_stability")
 
@@ -290,14 +293,14 @@ def fig6_suppression():
            edgecolor="black", linewidth=0.6, zorder=3)
     ax.errorbar(x, means, yerr=stds,
                 fmt="none", color="black", capsize=3, linewidth=0.8, zorder=4)
+    drop_pp = means[1] - means[0]
     ax.annotate("", xy=(1, means[1]), xytext=(0, means[0]),
                 arrowprops=dict(arrowstyle="->", color="#555555", lw=0.8))
-    ax.text(0.55, (means[0]+means[1])/2 + 0.5, "-3 pp",
+    ax.text(0.55, (means[0] + means[1]) / 2 + 0.5,
+            f"{drop_pp:+.1f} pp",
             fontsize=7, color="#555555", ha="center")
     ax.set_xticks(x); ax.set_xticklabels(["v2.1", "v2.2", "v2.3"])
     ax.set_ylabel("Honest Routing Share (%)")
-    ax.set_title("Fig. 6 \u2014 Honest Routing by Version\n"
-                 "(Collusion Ring, $N$=50, 20 seeds; error bars = +/-1 s.d.)", fontsize=8)
     ax.set_ylim(60, 100)
     fig.tight_layout()
     save(fig, "fig6_false_suppression")
@@ -315,8 +318,6 @@ def fig7_sensitivity():
     ax.axvline(0, color="#cccccc", linewidth=0.5, zorder=1)
     ax.set_xlabel("Parameter Perturbation (%)")
     ax.set_ylabel("Relative Fraud Change (%)")
-    ax.set_title("Fig. 7 — Sensitivity Analysis\n"
-                 "(Collusion Ring, $N$=50, 5 seeds)", fontsize=8)
     ax.legend(loc="upper left", fontsize=7)
     ax.set_xticks([-50, -25, 0, 25, 50])
     fig.tight_layout()
@@ -341,7 +342,6 @@ def fig2_threat_models():
             cell.set_text_props(weight="bold")
         else:
             cell.set_facecolor("white")
-    ax.set_title("Fig. 2 — Adversarial Threat Models", fontsize=8, pad=8)
     fig.tight_layout()
     save(fig, "fig2_threat_models")
 
