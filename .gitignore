@@ -54,3 +54,4 @@ dev.db-wal
 /results/
 /artifacts/
 *.md
+*.db

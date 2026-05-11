@@ -38,6 +38,10 @@ import {
 } from "../src/lib/trace/experiments/statistics";
 import * as fs from "fs";
 import * as path from "path";
+import { exec } from "child_process";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -46,7 +50,8 @@ dotenv.config();
 
 const ALL_ATTACKS: AttackType[] = ["strategic-default", "sybil-cluster", "collusion-ring", "whitewashing"];
 const ALL_POLICIES: RoutingPolicy[] = ["TRACE", "REPUTATION", "PRICE", "STAKE_WEIGHTED"];
-const ALL_SCALES = [500, 1000, 5000, 10000];
+const ALL_SCALES = [10, 50, 100];
+const MALICIOUS_RATIOS = [0.1, 0.2, 0.3];
 const DEFAULT_SEEDS = 10;
 const ROUNDS = 60;
 const JOBS_PER_ROUND = 5;
@@ -100,6 +105,7 @@ interface CellResult {
   attack: AttackType;
   policy: RoutingPolicy;
   scale: number;
+  maliciousRatio: number;
   seedResults: Array<{ seed: number; metrics: ExperimentResult; dir: string }>;
 }
 
@@ -107,7 +113,7 @@ interface CellResult {
 
 async function main() {
   const opts = parseArgs();
-  const totalExperiments = opts.attacks.length * ALL_POLICIES.length * opts.scales.length * opts.seeds;
+  const totalExperiments = opts.attacks.length * ALL_POLICIES.length * opts.scales.length * MALICIOUS_RATIOS.length * opts.seeds;
 
   console.log("\n╔══════════════════════════════════════════════════════════════════════╗");
   console.log("║          TRACE — FINAL PUBLICATION MATRIX                           ║");
@@ -125,37 +131,53 @@ async function main() {
 
   for (const attack of opts.attacks) {
     for (const scale of opts.scales) {
-      const mix = buildMix(scale);
+      for (const ratio of MALICIOUS_RATIOS) {
+        const mix = buildMix(scale); // Uses standard mix calculation
 
-      for (const policy of ALL_POLICIES) {
-        const cell: CellResult = { attack, policy, scale, seedResults: [] };
+        for (const policy of ALL_POLICIES) {
+          const cell: CellResult = { attack, policy, scale, maliciousRatio: ratio, seedResults: [] };
 
-        for (let seed = 1; seed <= opts.seeds; seed++) {
-          completed++;
-          const progress = `[${completed}/${totalExperiments}]`;
-          console.log(`\n${progress} ${attack} | ${policy} | N=${scale} | seed=${seed}`);
+          // Run seeds in parallel chunks to prevent V8 state pollution while maximizing CPU
+          const chunkSize = 8; 
+          for (let i = 1; i <= opts.seeds; i += chunkSize) {
+            const chunk = Array.from({ length: Math.min(chunkSize, opts.seeds - i + 1) }, (_, idx) => i + idx);
+            
+            const results = await Promise.all(chunk.map(async (seed) => {
+              const config: ExperimentConfig = {
+                ...DEFAULT_CONFIG,
+                policy,
+                attack,
+                agents: scale,
+                agentMix: mix,
+                maliciousRatio: ratio,
+                rounds: ROUNDS,
+                jobsPerRound: JOBS_PER_ROUND,
+                seed,
+                traceRoutingPreset: opts.traceRoutingPreset,
+              };
 
-          const config: ExperimentConfig = {
-            ...DEFAULT_CONFIG,
-            policy,
-            attack,
-            agents: scale,
-            agentMix: mix,
-            maliciousRatio: MALICIOUS_RATIO,
-            rounds: ROUNDS,
-            jobsPerRound: JOBS_PER_ROUND,
-            seed,
-            traceRoutingPreset: opts.traceRoutingPreset,
-          };
+              // Spawn isolated process to guarantee zero memory pollution. Use base64 to avoid Windows CLI quote escaping issues.
+              const configBase64 = Buffer.from(JSON.stringify(config)).toString("base64");
+              const cmd = `npx tsx scripts/runSingle.ts ${configBase64}`;
+              const { stdout } = await execAsync(cmd, { maxBuffer: 1024 * 1024 * 50 });
+              
+              const match = stdout.match(/__DIR__(.*)__DIR__/);
+              if (!match) throw new Error("Failed to parse experiment directory from isolated process: " + stdout);
+              const dir = match[1];
 
-          const dir = await runExperiment(config);
-          const metricsPath = path.join(dir, "metrics.json");
-          const metrics = JSON.parse(fs.readFileSync(metricsPath, "utf-8")) as ExperimentResult;
+              const metricsPath = path.join(dir, "metrics.json");
+              const metrics = JSON.parse(fs.readFileSync(metricsPath, "utf-8")) as ExperimentResult;
+              return { seed, metrics, dir };
+            }));
 
-          cell.seedResults.push({ seed, metrics, dir });
+            for (const res of results) {
+              completed++;
+              console.log(`[${completed}/${totalExperiments}] ${attack} | ${policy} | N=${scale} | Threat=${ratio * 100}% | seed=${res.seed}`);
+              cell.seedResults.push(res);
+            }
+          }
+          allCells.push(cell);
         }
-
-        allCells.push(cell);
       }
     }
   }

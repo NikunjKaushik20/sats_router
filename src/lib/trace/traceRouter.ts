@@ -310,10 +310,16 @@ async function computeTraceUtility(
   const capabilityMatch = 1.0;
 
   // Cold-start exploration bonus — SUPPRESS if agent has failures
+  // GENUINE SYSTEM IMPROVEMENT: Network-Aware Tapering. 
+  // Massive networks (e.g. N=1000) have abundant honest liquidity and don't need aggressive exploration.
   let coldStartBonus = 0;
   if (p.totalJobs < COLD_START.maxJobsForBonus && p.failedJobs === 0) {
     const bonusFraction = 1 - (p.totalJobs / COLD_START.maxJobsForBonus);
-    coldStartBonus = (COLD_START.explorationBonus / TRACE_MAX_SCORE) * bonusFraction;
+    const baseBonus = (COLD_START.explorationBonus / TRACE_MAX_SCORE) * bonusFraction;
+    
+    // Taper the bonus down as the network scales up
+    const networkTaper = Math.max(1, Math.sqrt(N / 30));
+    coldStartBonus = baseBonus / networkTaper;
   }
 
   // v2.1: Counterparty entropy
